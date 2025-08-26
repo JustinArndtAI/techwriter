@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Justin Arndt - Technical Writer | Pharmaceutical to SaaS Documentation Expert</title>
     <meta name="description" content="Experienced GMP Technical Writer specializing in B2B SaaS customer documentation, help centers, and API documentation. 6+ years creating compliance-ready content.">
+    <link rel="stylesheet" href="assets/css/modern-design.css">
     
     <style>
         * {
@@ -28,8 +29,8 @@
         }
         
         /* Header */
-        .header {
-            background: rgba(255, 255, 255, 0.95);
+        .modern-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             backdrop-filter: blur(10px);
             position: fixed;
             top: 0;
@@ -38,7 +39,7 @@
             box-shadow: 0 2px 20px rgba(0,0,0,0.1);
         }
         
-        .nav {
+        .modern-nav {
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -48,7 +49,7 @@
         .logo {
             font-size: 1.5rem;
             font-weight: 700;
-            color: #2c3e50;
+            color: white;
         }
         
         .nav-links {
@@ -59,13 +60,30 @@
         
         .nav-links a {
             text-decoration: none;
-            color: #2c3e50;
+            color: white;
             font-weight: 500;
             transition: color 0.3s ease;
         }
         
         .nav-links a:hover {
-            color: #667eea;
+            color: rgba(255, 255, 255, 0.8);
+        }
+        
+        .mobile-menu-toggle {
+            display: none;
+            flex-direction: column;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0.5rem;
+        }
+        
+        .mobile-menu-toggle span {
+            width: 25px;
+            height: 3px;
+            background: white;
+            margin: 3px 0;
+            transition: 0.3s;
         }
         
         /* Hero Section */
@@ -214,7 +232,7 @@
             margin: 0 auto;
         }
         
-        .portfolio-grid {
+        .grid-auto {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
             gap: 2rem;
@@ -255,23 +273,29 @@
             color: #888;
         }
         
-        .doc-link {
+        .btn-modern {
             display: inline-block;
-            background: #667eea;
-            color: white;
             padding: 0.75rem 1.5rem;
             text-decoration: none;
             border-radius: 25px;
             font-weight: 500;
             transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            font-size: 0.9rem;
         }
         
-        .doc-link:hover {
+        .btn-primary {
+            background: #667eea;
+            color: white;
+        }
+        
+        .btn-primary:hover {
             background: #5a6fd8;
             transform: translateY(-1px);
         }
         
-        .doc-link.coming-soon {
+        .btn-modern.coming-soon {
             background: #ddd;
             color: #888;
             cursor: not-allowed;
@@ -281,8 +305,21 @@
         .contact {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            padding: 80px 0;
+            padding: 80px 0 40px;
             text-align: center;
+        }
+        
+        .modern-footer {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .footer-bottom {
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            font-size: 0.9rem;
+            opacity: 0.8;
         }
         
         .contact h2 {
@@ -323,6 +360,10 @@
                 display: none;
             }
             
+            .mobile-menu-toggle {
+                display: flex;
+            }
+            
             .about-content {
                 grid-template-columns: 1fr;
                 text-align: center;
@@ -337,8 +378,21 @@
                 gap: 1rem;
             }
             
-            .portfolio-grid {
+            .grid-auto {
                 grid-template-columns: 1fr;
+            }
+            
+            .btn-modern {
+                padding: 1rem 1.5rem;
+                font-size: 1rem;
+                min-height: 44px;
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+            }
+            
+            .hero {
+                padding: 140px 0 80px;
             }
         }
         
@@ -364,15 +418,20 @@
 </head>
 <body>
     <!-- Header -->
-    <header class="header">
+    <header class="modern-header">
         <nav class="container">
-            <div class="nav">
+            <div class="modern-nav">
                 <div class="logo">Justin Arndt</div>
                 <ul class="nav-links">
                     <li><a href="#about">About</a></li>
                     <li><a href="#portfolio">Portfolio</a></li>
                     <li><a href="#contact">Contact</a></li>
                 </ul>
+                <button class="mobile-menu-toggle" aria-label="Toggle mobile menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
             </div>
         </nav>
     </header>
@@ -383,7 +442,7 @@
             <h1>Technical Writer</h1>
             <p class="subtitle">Pharmaceutical Compliance → B2B SaaS Customer Success</p>
             <p class="description">6 years creating FDA-compliant documentation with 100% audit readiness. Now applying that precision to customer-facing SaaS documentation that reduces support tickets and drives user success.</p>
-            <a href="#portfolio" class="cta-button">View Portfolio</a>
+            <a href="#portfolio" class="cta-button btn-modern">View Portfolio</a>
         </div>
     </section>
 
@@ -436,42 +495,42 @@
                     <h2>Core User Documentation</h2>
                     <p>Customer-facing guides that drive self-service success and reduce support tickets</p>
                 </div>
-                <div class="portfolio-grid">
-                    <div class="portfolio-item fade-in">
+                <div class="grid-auto">
+                    <div class="portfolio-item card fade-in">
                         <h3>Getting Started Guide: ZipFlow Platform</h3>
                         <div class="doc-meta">
                             <span>📖 1,400 words</span>
                             <span>🎯 New User Onboarding</span>
                         </div>
                         <p>Complete user journey from account setup to first successful purchase request. Includes dashboard overview, key features, and success metrics.</p>
-                        <a href="docs/user-guides/zipflow-getting-started.html" class="doc-link">View Guide</a>
+                        <a href="docs/user-guides/zipflow-getting-started.html" class="btn-modern btn-primary">View Guide</a>
                     </div>
-                    <div class="portfolio-item fade-in">
+                    <div class="portfolio-item card fade-in">
                         <h3>Setting Up Automated Approval Workflows</h3>
                         <div class="doc-meta">
                             <span>📖 900 words</span>
                             <span>🎯 Advanced Features</span>
                         </div>
                         <p>Step-by-step configuration of approval hierarchies, spending thresholds, and escalation rules with decision trees and troubleshooting.</p>
-                        <a href="docs/tutorials/approval-workflows.html" class="doc-link">View Tutorial</a>
+                        <a href="docs/tutorials/approval-workflows.html" class="btn-modern btn-primary">View Tutorial</a>
                     </div>
-                    <div class="portfolio-item fade-in">
+                    <div class="portfolio-item card fade-in">
                         <h3>Managing Multi-Level Purchase Approvals</h3>
                         <div class="doc-meta">
                             <span>📖 850 words</span>
                             <span>🎯 Workflow Management</span>
                         </div>
                         <p>Configuring complex approval matrices, delegation rules, and role-based purchasing controls for enterprise procurement teams.</p>
-                        <a href="docs/tutorials/purchase-approvals.html" class="doc-link">View Tutorial</a>
+                        <a href="docs/tutorials/purchase-approvals.html" class="btn-modern btn-primary">View Tutorial</a>
                     </div>
-                    <div class="portfolio-item fade-in">
+                    <div class="portfolio-item card fade-in">
                         <h3>Budget Controls & Spending Limits</h3>
                         <div class="doc-meta">
                             <span>📖 950 words</span>
                             <span>🎯 Financial Controls</span>
                         </div>
                         <p>Department budget setup, project-based controls, alert configuration, and spending analysis reporting features.</p>
-                        <a href="docs/tutorials/budget-controls.html" class="doc-link">View Tutorial</a>
+                        <a href="docs/tutorials/budget-controls.html" class="btn-modern btn-primary">View Tutorial</a>
                     </div>
                 </div>
             </div>
@@ -484,33 +543,33 @@
                     <h2>Self-Service Support Content</h2>
                     <p>FAQs and troubleshooting guides that empower users and reduce support burden</p>
                 </div>
-                <div class="portfolio-grid">
-                    <div class="portfolio-item fade-in">
+                <div class="grid-auto">
+                    <div class="portfolio-item card fade-in">
                         <h3>Comprehensive FAQ Library</h3>
                         <div class="doc-meta">
                             <span>❓ 20 Questions</span>
                             <span>🎯 Support Deflection</span>
                         </div>
                         <p>Categorized FAQ covering account access, purchase processes, integrations, and compliance. Based on real procurement software user questions.</p>
-                        <a href="docs/support/zipflow-faq-library.html" class="doc-link">View FAQ Library</a>
+                        <a href="docs/support/zipflow-faq-library.html" class="btn-modern btn-primary">View FAQ Library</a>
                     </div>
-                    <div class="portfolio-item fade-in">
+                    <div class="portfolio-item card fade-in">
                         <h3>Troubleshooting: Approval Issues</h3>
                         <div class="doc-meta">
                             <span>📖 1,000 words</span>
                             <span>🎯 Problem Resolution</span>
                         </div>
                         <p>Systematic troubleshooting for stuck workflows, missing approvers, and budget exceptions with decision tree flowchart.</p>
-                        <a href="docs/support/troubleshooting.html" class="doc-link">View Guide</a>
+                        <a href="docs/support/troubleshooting.html" class="btn-modern btn-primary">View Guide</a>
                     </div>
-                    <div class="portfolio-item fade-in">
+                    <div class="portfolio-item card fade-in">
                         <h3>First 30 Days: User Success Path</h3>
                         <div class="doc-meta">
                             <span>📖 700 words</span>
                             <span>🎯 User Adoption</span>
                         </div>
                         <p>Progressive onboarding checklist with weekly milestones, feature adoption goals, and success metrics for new platform users.</p>
-                        <a href="docs/support/onboarding-checklist.html" class="doc-link">View Checklist</a>
+                        <a href="docs/support/onboarding-checklist.html" class="btn-modern btn-primary">View Checklist</a>
                     </div>
                 </div>
             </div>
@@ -523,33 +582,33 @@
                     <h2>Technical Documentation</h2>
                     <p>API references, admin guides, and integration documentation for technical stakeholders</p>
                 </div>
-                <div class="portfolio-grid">
-                    <div class="portfolio-item fade-in">
+                <div class="grid-auto">
+                    <div class="portfolio-item card fade-in">
                         <h3>ZipFlow API Reference</h3>
                         <div class="doc-meta">
                             <span>📖 1,500 words</span>
                             <span>🎯 Developer Integration</span>
                         </div>
                         <p>Complete API documentation with authentication, endpoints, code examples, and error handling for procurement system integrations.</p>
-                        <a href="docs/api/reference.html" class="doc-link">View API Docs</a>
+                        <a href="docs/api/reference.html" class="btn-modern btn-primary">View API Docs</a>
                     </div>
-                    <div class="portfolio-item fade-in">
+                    <div class="portfolio-item card fade-in">
                         <h3>Admin Guide: User Roles & Permissions</h3>
                         <div class="doc-meta">
                             <span>📖 1,200 words</span>
                             <span>🎯 System Administration</span>
                         </div>
                         <p>Role hierarchy configuration, permission matrices, bulk user management, and audit trail administration for enterprise deployments.</p>
-                        <a href="docs/admin/user-management.html" class="doc-link">View Guide</a>
+                        <a href="docs/admin/user-management.html" class="btn-modern btn-primary">View Guide</a>
                     </div>
-                    <div class="portfolio-item fade-in">
+                    <div class="portfolio-item card fade-in">
                         <h3>ERP Integration Guide</h3>
                         <div class="doc-meta">
                             <span>📖 1,000 words</span>
                             <span>🎯 System Integration</span>
                         </div>
                         <p>Step-by-step integration setup for NetSuite and SAP, including authentication, field mapping, and connection testing procedures.</p>
-                        <a href="docs/admin/user-management.html" class="doc-link">View Integration Guide</a>
+                        <a href="docs/admin/user-management.html" class="btn-modern btn-primary">View Integration Guide</a>
                     </div>
                 </div>
             </div>
@@ -562,33 +621,33 @@
                     <h2>Specialized Documentation</h2>
                     <p>Compliance guides, visual tutorials, and advanced features leveraging pharmaceutical expertise</p>
                 </div>
-                <div class="portfolio-grid">
-                    <div class="portfolio-item fade-in">
+                <div class="grid-auto">
+                    <div class="portfolio-item card fade-in">
                         <h3>Audit Trails & Financial Controls</h3>
                         <div class="doc-meta">
                             <span>📖 900 words</span>
                             <span>🎯 Compliance</span>
                         </div>
                         <p>SOX compliance features, audit trail access, automated reporting, and data retention policies drawing from pharmaceutical validation experience.</p>
-                        <a href="docs/compliance/audit-trails.html" class="doc-link">View Documentation</a>
+                        <a href="docs/compliance/audit-trails.html" class="btn-modern btn-primary">View Documentation</a>
                     </div>
-                    <div class="portfolio-item fade-in">
+                    <div class="portfolio-item card fade-in">
                         <h3>Video Tutorial: Purchase Walkthrough</h3>
                         <div class="doc-meta">
                             <span>🎥 3-4 minutes</span>
                             <span>🎯 Visual Learning</span>
                         </div>
                         <p>Professional Camtasia tutorial covering complete purchase request lifecycle with voice narration, callouts, and zoom effects.</p>
-                        <a href="docs/tutorials/purchase-approvals.html" class="doc-link">View Related Documentation</a>
+                        <a href="docs/tutorials/purchase-approvals.html" class="btn-modern btn-primary">View Related Documentation</a>
                     </div>
-                    <div class="portfolio-item fade-in">
+                    <div class="portfolio-item card fade-in">
                         <h3>Interface Quick Reference</h3>
                         <div class="doc-meta">
                             <span>📋 Visual Guide</span>
                             <span>🎯 Reference Material</span>
                         </div>
                         <p>One-page infographic showing key interface elements, navigation shortcuts, and status indicators with professional Snagit styling.</p>
-                        <a href="docs/user-guides/zipflow_getting_started.html" class="doc-link">View Related Guide</a>
+                        <a href="docs/user-guides/zipflow_getting_started.html" class="btn-modern btn-primary">View Related Guide</a>
                     </div>
                 </div>
             </div>
@@ -596,7 +655,7 @@
     </main>
 
     <!-- Contact Section -->
-    <section id="contact" class="contact">
+    <footer id="contact" class="contact modern-footer">
         <div class="container">
             <h2>Let's Work Together</h2>
             <p>Ready to bring pharmaceutical-grade precision to your B2B SaaS documentation</p>
@@ -614,8 +673,11 @@
                     Lancaster, PA
                 </div>
             </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Justin Arndt. All rights reserved.</p>
+            </div>
         </div>
-    </section>
+    </footer>
 
     <script>
         // Simple fade-in animation on scroll
