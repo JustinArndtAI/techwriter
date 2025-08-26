@@ -46,11 +46,7 @@
         }
 
         .header-content {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            gap: 1rem;
+            text-align: center;
         }
 
         h1 {
@@ -62,6 +58,7 @@
         .subtitle {
             font-size: 1.1rem;
             opacity: 0.9;
+            font-style: italic;
         }
 
         .toc {
@@ -78,46 +75,6 @@
             font-size: 1.5rem;
         }
 
-        .toc-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 1rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .toc-section {
-            background: white;
-            padding: 1rem;
-            border-radius: 6px;
-            border-left: 4px solid var(--primary-color);
-        }
-
-        .toc-section h3 {
-            color: var(--dark-text);
-            margin-bottom: 0.5rem;
-            font-size: 1.1rem;
-        }
-
-        .toc-section ul {
-            list-style: none;
-        }
-
-        .toc-section li {
-            margin: 0.25rem 0;
-        }
-
-        .toc-section a {
-            color: var(--medium-text);
-            text-decoration: none;
-            padding: 0.25rem 0;
-            display: block;
-            transition: color 0.2s;
-        }
-
-        .toc-section a:hover {
-            color: var(--primary-color);
-        }
-
         .search-tips {
             background: white;
             padding: 1.5rem;
@@ -131,35 +88,59 @@
             margin-bottom: 1rem;
         }
 
-        .tip-grid {
+        .search-tips ul {
+            list-style: none;
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1rem;
-        }
-
-        .tip-item {
-            display: flex;
-            align-items: flex-start;
             gap: 0.5rem;
         }
 
-        .tip-item code {
+        .search-tips li {
+            padding: 0.5rem 0;
+        }
+
+        .search-tips strong {
+            color: var(--dark-text);
+        }
+
+        .search-tips code {
             background: var(--code-bg);
             padding: 0.2rem 0.4rem;
             border-radius: 3px;
             font-size: 0.9rem;
         }
 
+        kbd {
+            background: var(--code-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 3px;
+            padding: 0.1rem 0.3rem;
+            font-size: 0.9rem;
+            font-family: monospace;
+        }
+
         .contact-info {
+            background: #ecfdf5;
+            border: 1px solid var(--success-color);
+            border-radius: 6px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .contact-info h4 {
+            color: #065f46;
+            margin-bottom: 1rem;
+        }
+
+        .contact-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 1rem;
-            margin-top: 1rem;
         }
 
         .contact-item {
             display: flex;
-            align-items: center;
+            align-items: flex-start;
             gap: 0.5rem;
             padding: 0.75rem;
             background: white;
@@ -167,8 +148,45 @@
             border: 1px solid var(--border-color);
         }
 
-        .contact-icon {
-            font-size: 1.2rem;
+        .toc-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .toc-section {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 6px;
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .toc-section h3 {
+            color: var(--dark-text);
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+
+        .toc-section ul {
+            list-style: none;
+        }
+
+        .toc-section li {
+            margin: 0.5rem 0;
+        }
+
+        .toc-section a {
+            color: var(--medium-text);
+            text-decoration: none;
+            padding: 0.25rem 0;
+            display: block;
+            transition: color 0.2s;
+        }
+
+        .toc-section a:hover {
+            color: var(--primary-color);
+            text-decoration: underline;
         }
 
         .section {
@@ -188,7 +206,7 @@
         .section-header h2 {
             color: var(--primary-color);
             font-size: 1.8rem;
-            margin-bottom: 0.5rem;
+            margin: 0;
         }
 
         .section-content {
@@ -210,7 +228,7 @@
             font-size: 1.3rem;
             font-weight: 600;
             color: var(--dark-text);
-            margin-bottom: 1rem;
+            margin-bottom: 1.5rem;
             padding-left: 2rem;
             position: relative;
         }
@@ -234,10 +252,10 @@
 
         .solution-box {
             background: #ecfdf5;
-            border: 1px solid #10b981;
+            border: 1px solid var(--success-color);
             border-radius: 6px;
             padding: 1.5rem;
-            margin: 1rem 0;
+            margin: 1.5rem 0;
         }
 
         .solution-box h4 {
@@ -251,7 +269,7 @@
             border: 1px solid var(--warning-color);
             border-radius: 6px;
             padding: 1.5rem;
-            margin: 1rem 0;
+            margin: 1.5rem 0;
         }
 
         .warning-box h4 {
@@ -264,7 +282,7 @@
             border: 1px solid var(--primary-color);
             border-radius: 6px;
             padding: 1.5rem;
-            margin: 1rem 0;
+            margin: 1.5rem 0;
         }
 
         .info-box h4 {
@@ -274,6 +292,8 @@
 
         .step-list {
             counter-reset: step-counter;
+            list-style: none;
+            padding-left: 0;
         }
 
         .step-list li {
@@ -335,7 +355,7 @@
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 1rem;
-            margin: 1rem 0;
+            margin: 1.5rem 0;
         }
 
         .timeline-item {
@@ -356,7 +376,7 @@
         .comparison-table {
             width: 100%;
             border-collapse: collapse;
-            margin: 1rem 0;
+            margin: 1.5rem 0;
             background: white;
         }
 
@@ -410,14 +430,12 @@
             border: 1px solid #0ea5e9;
             border-radius: 6px;
             padding: 1.5rem;
-            margin: 1rem 0;
-            position: relative;
+            margin: 1.5rem 0;
         }
 
         .pro-tip::before {
-            content: "💡";
-            font-size: 1.5rem;
-            margin-right: 0.5rem;
+            content: "💡 ";
+            font-size: 1.2rem;
         }
 
         .pro-tip h4 {
@@ -459,6 +477,7 @@
 
         .footer-section a:hover {
             color: var(--primary-color);
+            text-decoration: underline;
         }
 
         .copyright {
@@ -467,6 +486,36 @@
             padding-top: 2rem;
             border-top: 1px solid var(--border-color);
             color: var(--light-text);
+        }
+
+        ul:not(.step-list):not(.requirements-list ul) {
+            margin: 1rem 0;
+            padding-left: 1.5rem;
+        }
+
+        ol:not(.step-list) {
+            margin: 1rem 0;
+            padding-left: 1.5rem;
+        }
+
+        li {
+            margin: 0.5rem 0;
+        }
+
+        strong {
+            color: var(--dark-text);
+            font-weight: 600;
+        }
+
+        p {
+            margin: 1rem 0;
+        }
+
+        h4 {
+            color: var(--dark-text);
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin: 1.5rem 0 1rem 0;
         }
 
         @media (max-width: 768px) {
@@ -479,8 +528,8 @@
             }
 
             .toc-grid,
-            .tip-grid,
-            .contact-info {
+            .timeline-grid,
+            .contact-grid {
                 grid-template-columns: 1fr;
             }
 
@@ -491,6 +540,10 @@
             .faq-question {
                 font-size: 1.1rem;
             }
+
+            .comparison-table {
+                font-size: 0.9rem;
+            }
         }
     </style>
 </head>
@@ -498,10 +551,9 @@
     <header>
         <div class="container">
             <div class="header-content">
-                <div>
-                    <h1>ZipFlow FAQ</h1>
-                    <p class="subtitle">Comprehensive Support Library</p>
-                </div>
+                <h1>ZipFlow FAQ</h1>
+                <p class="subtitle">Comprehensive Support Library</p>
+                <p>Quick answers to common questions about ZipFlow procurement platform</p>
             </div>
         </div>
     </header>
@@ -512,50 +564,34 @@
             <p>This FAQ is organized by topic area to help you find answers quickly. Use <kbd>Ctrl+F</kbd> (Windows) or <kbd>Cmd+F</kbd> (Mac) to search for specific keywords.</p>
 
             <div class="search-tips">
-                <h3>🔍 Quick Search Tips</h3>
-                <div class="tip-grid">
-                    <div class="tip-item">
-                        <span>For login issues:</span>
-                        <div>Search <code>"password"</code> or <code>"access"</code></div>
-                    </div>
-                    <div class="tip-item">
-                        <span>For request problems:</span>
-                        <div>Search <code>"approval"</code> or <code>"stuck"</code></div>
-                    </div>
-                    <div class="tip-item">
-                        <span>For vendor questions:</span>
-                        <div>Search <code>"supplier"</code> or <code>"vendor"</code></div>
-                    </div>
-                    <div class="tip-item">
-                        <span>For budget concerns:</span>
-                        <div>Search <code>"budget"</code> or <code>"spending"</code></div>
-                    </div>
-                </div>
+                <h3>🔍 Quick Search Tips:</h3>
+                <ul>
+                    <li><strong>For login issues:</strong> Search <code>"password"</code> or <code>"access"</code></li>
+                    <li><strong>For request problems:</strong> Search <code>"approval"</code> or <code>"stuck"</code></li>
+                    <li><strong>For vendor questions:</strong> Search <code>"supplier"</code> or <code>"vendor"</code></li>
+                    <li><strong>For budget concerns:</strong> Search <code>"budget"</code> or <code>"spending"</code></li>
+                </ul>
             </div>
 
-            <div class="info-box">
-                <h4>Still need help?</h4>
-                <p>Contact our support team:</p>
-                <div class="contact-info">
+            <div class="contact-info">
+                <h4>Still need help? Contact our support team:</h4>
+                <div class="contact-grid">
                     <div class="contact-item">
-                        <span class="contact-icon">💬</span>
+                        <span>💬</span>
                         <div>
-                            <strong>Live Chat</strong><br>
-                            Click the blue chat bubble (bottom-right corner)
+                            <strong>Live Chat:</strong> Click the blue chat bubble (bottom-right corner)
                         </div>
                     </div>
                     <div class="contact-item">
-                        <span class="contact-icon">📧</span>
+                        <span>📧</span>
                         <div>
-                            <strong>Email</strong><br>
-                            support@zipflow.com (response within 4 hours)
+                            <strong>Email:</strong> support@zipflow.com (response within 4 hours)
                         </div>
                     </div>
                     <div class="contact-item">
-                        <span class="contact-icon">📞</span>
+                        <span>📞</span>
                         <div>
-                            <strong>Phone</strong><br>
-                            1-800-ZIPFLOW (urgent issues only)
+                            <strong>Phone:</strong> 1-800-ZIPFLOW (urgent issues only)
                         </div>
                     </div>
                 </div>
@@ -565,41 +601,41 @@
                 <div class="toc-section">
                     <h3>🔐 Account & Access</h3>
                     <ul>
-                        <li><a href="#faq-1">Password reset procedures</a></li>
-                        <li><a href="#faq-2">Budget code access issues</a></li>
-                        <li><a href="#faq-3">Permission denied errors</a></li>
-                        <li><a href="#faq-4">Notification preferences</a></li>
-                        <li><a href="#faq-5">Cross-department visibility</a></li>
+                        <li><a href="#faq-1">I forgot my password. How do I reset it?</a></li>
+                        <li><a href="#faq-2">Why can't I see certain budget codes or departments?</a></li>
+                        <li><a href="#faq-3">"Permission Denied" error when approving requests</a></li>
+                        <li><a href="#faq-4">How do I change my notification preferences?</a></li>
+                        <li><a href="#faq-5">Why am I seeing requests from other departments?</a></li>
                     </ul>
                 </div>
                 <div class="toc-section">
                     <h3>📝 Purchase Process</h3>
                     <ul>
-                        <li><a href="#faq-6">Pending approval delays</a></li>
-                        <li><a href="#faq-7">Editing submitted requests</a></li>
-                        <li><a href="#faq-8">Emergency request procedures</a></li>
-                        <li><a href="#faq-9">Request type differences</a></li>
-                        <li><a href="#faq-10">Budget tracking methods</a></li>
+                        <li><a href="#faq-6">My request has been "pending approval" for over a week</a></li>
+                        <li><a href="#faq-7">Can I edit a request after it's been submitted?</a></li>
+                        <li><a href="#faq-8">How do I create an urgent or emergency request?</a></li>
+                        <li><a href="#faq-9">Request type differences: goods, services, software, travel</a></li>
+                        <li><a href="#faq-10">How do I track my spending against department budget?</a></li>
                     </ul>
                 </div>
                 <div class="toc-section">
                     <h3>🔗 Integrations & Technical</h3>
                     <ul>
-                        <li><a href="#faq-11">ERP system sync issues</a></li>
-                        <li><a href="#faq-12">Financial data sync frequency</a></li>
-                        <li><a href="#faq-13">API rate limit errors</a></li>
-                        <li><a href="#faq-14">Single sign-on setup</a></li>
-                        <li><a href="#faq-15">Data export capabilities</a></li>
+                        <li><a href="#faq-11">Why isn't my ERP system syncing with ZipFlow?</a></li>
+                        <li><a href="#faq-12">How often does financial data sync?</a></li>
+                        <li><a href="#faq-13">What should I do if I'm getting API rate limit errors?</a></li>
+                        <li><a href="#faq-14">How do I set up single sign-on (SSO)?</a></li>
+                        <li><a href="#faq-15">Can I export my procurement data for external reporting?</a></li>
                     </ul>
                 </div>
                 <div class="toc-section">
                     <h3>📊 Compliance & Reporting</h3>
                     <ul>
-                        <li><a href="#faq-16">SOX compliance features</a></li>
-                        <li><a href="#faq-17">Audit trail access</a></li>
-                        <li><a href="#faq-18">Budget variance analysis</a></li>
-                        <li><a href="#faq-19">Expense reporting features</a></li>
-                        <li><a href="#faq-20">Automated approval workflows</a></li>
+                        <li><a href="#faq-16">How does ZipFlow ensure SOX compliance?</a></li>
+                        <li><a href="#faq-17">Where can I find audit trails for specific requests?</a></li>
+                        <li><a href="#faq-18">How do I generate reports for budget variance analysis?</a></li>
+                        <li><a href="#faq-19">What expense reporting features are available?</a></li>
+                        <li><a href="#faq-20">How do I set up automated approval workflows?</a></li>
                     </ul>
                 </div>
             </div>
@@ -843,50 +879,23 @@
                         <p>It depends on the current approval status.</p>
                     </div>
 
-                    <table class="comparison-table">
-                        <thead>
-                            <tr>
-                                <th>Request Status</th>
-                                <th>Can Edit?</th>
-                                <th>Details</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>Submitted but not yet reviewed</td>
-                                <td><span class="status-indicator status-green">✓ YES</span></td>
-                                <td>Full editing capability</td>
-                            </tr>
-                            <tr>
-                                <td>Returned for more information</td>
-                                <td><span class="status-indicator status-green">✓ YES</span></td>
-                                <td>Edit requested sections only</td>
-                            </tr>
-                            <tr>
-                                <td>On hold</td>
-                                <td><span class="status-indicator status-yellow">⚠ LIMITED</span></td>
-                                <td>Limited editing allowed</td>
-                            </tr>
-                            <tr>
-                                <td>Currently being reviewed</td>
-                                <td><span class="status-indicator status-red">✗ NO</span></td>
-                                <td>Approver is actively working on it</td>
-                            </tr>
-                            <tr>
-                                <td>Already approved</td>
-                                <td><span class="status-indicator status-red">✗ NO</span></td>
-                                <td>Request is locked to maintain audit trail</td>
-                            </tr>
-                            <tr>
-                                <td>In procurement processing</td>
-                                <td><span class="status-indicator status-red">✗ NO</span></td>
-                                <td>Order may already be placed</td>
-                            </tr>
-                        </tbody>
-                    </table>
+                    <h4>When You CAN Edit:</h4>
+                    <ul>
+                        <li>✅ <strong>Submitted but not yet reviewed</strong> - Full editing capability</li>
+                        <li>✅ <strong>Returned for more information</strong> - Edit requested sections only</li>
+                        <li>✅ <strong>On hold</strong> - Limited editing allowed</li>
+                    </ul>
+
+                    <h4>When You CANNOT Edit:</h4>
+                    <ul>
+                        <li>❌ <strong>Currently being reviewed</strong> - Approver is actively working on it</li>
+                        <li>❌ <strong>Already approved</strong> - Request is locked to maintain audit trail</li>
+                        <li>❌ <strong>In procurement processing</strong> - Order may already be placed</li>
+                    </ul>
 
                     <div class="solution-box">
                         <h4>How to Make Changes:</h4>
+                        
                         <p><strong>For Active Requests:</strong></p>
                         <ol class="step-list">
                             <li>Go to your request details page</li>
@@ -938,18 +947,21 @@
                         </ol>
                     </div>
 
-                    <div class="timeline-grid">
-                        <div class="timeline-item">
-                            <strong>High Priority</strong>
-                            Same-day approval (within 4 hours)
-                        </div>
-                        <div class="timeline-item">
-                            <strong>Standard</strong>
-                            2-3 business days
-                        </div>
-                        <div class="timeline-item">
-                            <strong>Low Priority</strong>
-                            5-7 business days
+                    <div class="info-box">
+                        <h4>Emergency Processing Timeline:</h4>
+                        <div class="timeline-grid">
+                            <div class="timeline-item">
+                                <strong>High Priority</strong>
+                                Same-day approval (within 4 hours)
+                            </div>
+                            <div class="timeline-item">
+                                <strong>Standard</strong>
+                                2-3 business days
+                            </div>
+                            <div class="timeline-item">
+                                <strong>Low Priority</strong>
+                                5-7 business days
+                            </div>
                         </div>
                     </div>
 
@@ -964,49 +976,47 @@
 
                     <p>Understanding request types ensures faster approvals and proper budget allocation:</p>
 
-                    <div class="comparison-table">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Type</th>
-                                    <th>Description</th>
-                                    <th>Approval Flow</th>
-                                    <th>Required Items</th>
-                                    <th>Timeline</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td><strong>🛍️ Goods</strong></td>
-                                    <td>Office supplies, equipment, furniture, hardware</td>
-                                    <td>Manager → Finance (if >$500) → Procurement</td>
-                                    <td>Vendor quotes, delivery address, asset tagging info</td>
-                                    <td>3-7 business days</td>
-                                </tr>
-                                <tr>
-                                    <td><strong>🤝 Services</strong></td>
-                                    <td>Consulting, maintenance contracts, professional services</td>
-                                    <td>Manager → Legal (if new vendor) → Finance → Procurement</td>
-                                    <td>Statement of work, contractor agreements, insurance certificates</td>
-                                    <td>5-10 business days</td>
-                                </tr>
-                                <tr>
-                                    <td><strong>💻 Software</strong></td>
-                                    <td>SaaS subscriptions, software licenses, digital tools</td>
-                                    <td>Manager → IT Security → Finance → Procurement</td>
-                                    <td>Security review, license terms, integration requirements</td>
-                                    <td>7-14 business days (includes security review)</td>
-                                </tr>
-                                <tr>
-                                    <td><strong>✈️ Travel</strong></td>
-                                    <td>Flights, hotels, rental cars, conference fees</td>
-                                    <td>Manager → Travel Admin → Finance (if >$1000)</td>
-                                    <td>Business justification, travel policy compliance</td>
-                                    <td>1-3 business days</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
+                    <table class="comparison-table">
+                        <thead>
+                            <tr>
+                                <th>Type</th>
+                                <th>Description</th>
+                                <th>Approval Flow</th>
+                                <th>Required Items</th>
+                                <th>Timeline</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>🛍️ Goods</strong></td>
+                                <td>Office supplies, equipment, furniture, hardware</td>
+                                <td>Manager → Finance (if >$500) → Procurement</td>
+                                <td>Vendor quotes, delivery address, asset tagging info</td>
+                                <td>3-7 business days</td>
+                            </tr>
+                            <tr>
+                                <td><strong>🤝 Services</strong></td>
+                                <td>Consulting, maintenance contracts, professional services</td>
+                                <td>Manager → Legal (if new vendor) → Finance → Procurement</td>
+                                <td>Statement of work, contractor agreements, insurance certificates</td>
+                                <td>5-10 business days</td>
+                            </tr>
+                            <tr>
+                                <td><strong>💻 Software</strong></td>
+                                <td>SaaS subscriptions, software licenses, digital tools</td>
+                                <td>Manager → IT Security → Finance → Procurement</td>
+                                <td>Security review, license terms, integration requirements</td>
+                                <td>7-14 business days (includes security review)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>✈️ Travel</strong></td>
+                                <td>Flights, hotels, rental cars, conference fees</td>
+                                <td>Manager → Travel Admin → Finance (if >$1000)</td>
+                                <td>Business justification, travel policy compliance</td>
+                                <td>1-3 business days</td>
+                            </tr>
+                        </tbody>
+                    </table>
 
                     <div class="pro-tip">
                         <h4>Pro Tip:</h4>
@@ -1023,7 +1033,7 @@
                         <p><strong>Dashboard View:</strong></p>
                         <ol class="step-list">
                             <li>Your main dashboard shows "Budget Status" card</li>
-                            <li><span class="status-indicator status-green">Green = healthy</span>, <span class="status-indicator status-yellow">Yellow = caution (80%)</span>, <span class="status-indicator status-red">Red = over budget (95%+)</span></li>
+                            <li>Green = healthy, Yellow = caution (80%), Red = over budget (95%+)</li>
                             <li>Click the card for detailed breakdown</li>
                         </ol>
 
@@ -1044,22 +1054,25 @@
                         </ol>
                     </div>
 
-                    <div class="timeline-grid">
-                        <div class="timeline-item">
-                            <strong>Week 1</strong>
-                            25% of budget typically used
-                        </div>
-                        <div class="timeline-item">
-                            <strong>Week 2</strong>
-                            50% of budget typically used
-                        </div>
-                        <div class="timeline-item">
-                            <strong>Week 3</strong>
-                            75% of budget typically used
-                        </div>
-                        <div class="timeline-item">
-                            <strong>Week 4</strong>
-                            Monitor closely for overspend risk
+                    <div class="info-box">
+                        <h4>Monthly Budget Calendar:</h4>
+                        <div class="timeline-grid">
+                            <div class="timeline-item">
+                                <strong>Week 1</strong>
+                                25% of budget typically used
+                            </div>
+                            <div class="timeline-item">
+                                <strong>Week 2</strong>
+                                50% of budget typically used
+                            </div>
+                            <div class="timeline-item">
+                                <strong>Week 3</strong>
+                                75% of budget typically used
+                            </div>
+                            <div class="timeline-item">
+                                <strong>Week 4</strong>
+                                Monitor closely for overspend risk
+                            </div>
                         </div>
                     </div>
 
@@ -1075,16 +1088,352 @@
             </div>
         </div>
 
-        <!-- Additional sections would continue here following the same pattern -->
-        <!-- Due to length constraints, I'm showing the structure for the first two sections -->
-        
         <div class="section">
             <div class="section-header">
                 <h2>🔗 Integrations & Technical</h2>
             </div>
             <div class="section-content">
-                <!-- FAQ items 11-15 would go here -->
-                <p><em>Technical integration questions covering ERP sync, API limits, SSO setup, and data export capabilities...</em></p>
+                <div class="faq-item" id="faq-11">
+                    <h3 class="faq-question" data-number="11">Why isn't my ERP system syncing with ZipFlow?</h3>
+
+                    <h4>Common Integration Issues:</h4>
+
+                    <div class="warning-box">
+                        <h4>Credential Problems:</h4>
+                        <ul>
+                            <li>API keys may have expired or changed</li>
+                            <li>Service account passwords require regular updates</li>
+                            <li>Check with your IT team for current authentication credentials</li>
+                        </ul>
+                    </div>
+
+                    <div class="info-box">
+                        <h4>Data Mapping Errors:</h4>
+                        <ul>
+                            <li>Cost centers may not match between systems</li>
+                            <li>Vendor codes could be formatted differently</li>
+                            <li>Contact support to review field mappings</li>
+                        </ul>
+                    </div>
+
+                    <div class="warning-box">
+                        <h4>Network Connectivity:</h4>
+                        <ul>
+                            <li>Firewall rules may block API connections</li>
+                            <li>VPN requirements for secure data transfer</li>
+                            <li>IT department needs to whitelist ZipFlow IP addresses</li>
+                        </ul>
+                    </div>
+
+                    <div class="solution-box">
+                        <h4>Quick Troubleshooting:</h4>
+                        <ol class="step-list">
+                            <li><strong>Check the Integration Status</strong> page in Settings</li>
+                            <li><strong>Review error logs</strong> for specific failure messages</li>
+                            <li><strong>Test connection</strong> using the built-in connectivity tool</li>
+                            <li><strong>Contact support</strong> with error codes for faster resolution</li>
+                        </ol>
+                    </div>
+
+                    <div class="info-box">
+                        <h4>Supported ERP Systems:</h4>
+                        <ul>
+                            <li>SAP (all major versions)</li>
+                            <li>NetSuite</li>
+                            <li>Oracle Financials</li>
+                            <li>Microsoft Dynamics</li>
+                            <li>QuickBooks Enterprise</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="faq-item" id="faq-12">
+                    <h3 class="faq-question" data-number="12">How often does financial data sync between ZipFlow and our accounting system?</h3>
+
+                    <h4>Standard Sync Frequency:</h4>
+
+                    <div class="info-box">
+                        <h4>Real-Time Sync (Immediate):</h4>
+                        <ul>
+                            <li>Purchase requisitions</li>
+                            <li>Approval status updates</li>
+                            <li>Budget availability checks</li>
+                        </ul>
+                    </div>
+
+                    <div class="solution-box">
+                        <h4>Hourly Sync:</h4>
+                        <ul>
+                            <li>Purchase orders</li>
+                            <li>Vendor master data</li>
+                            <li>Cost center updates</li>
+                        </ul>
+                    </div>
+
+                    <div class="warning-box">
+                        <h4>Daily Sync (End of Day):</h4>
+                        <ul>
+                            <li>Invoice processing</li>
+                            <li>Payment status</li>
+                            <li>Budget utilization reports</li>
+                        </ul>
+                    </div>
+
+                    <div class="info-box">
+                        <h4>Weekly Sync (Sundays, 2 AM):</h4>
+                        <ul>
+                            <li>Vendor performance metrics</li>
+                            <li>Historical reporting data</li>
+                            <li>System maintenance updates</li>
+                        </ul>
+                    </div>
+
+                    <div class="solution-box">
+                        <h4>Custom Sync Options:</h4>
+                        <ul>
+                            <li>Enterprise customers can request custom sync frequencies</li>
+                            <li>Critical integrations can be set to 15-minute intervals</li>
+                            <li>Contact your Customer Success Manager for adjustments</li>
+                        </ul>
+                    </div>
+
+                    <div class="pro-tip">
+                        <h4>Sync Status Monitoring:</h4>
+                        Go to Settings > Integrations > Sync Status to view last successful sync times and any error messages.
+                    </div>
+                </div>
+
+                <div class="faq-item" id="faq-13">
+                    <h3 class="faq-question" data-number="13">What should I do if I'm getting API rate limit errors?</h3>
+
+                    <div class="info-box">
+                        <h4>Understanding Rate Limits:</h4>
+                        <p>ZipFlow API rate limits prevent system overload and ensure consistent performance for all users.</p>
+                    </div>
+
+                    <div class="solution-box">
+                        <h4>Current Limits:</h4>
+                        <ul>
+                            <li><strong>Standard Users:</strong> 1,000 API calls per hour</li>
+                            <li><strong>Power Users:</strong> 5,000 API calls per hour</li>
+                            <li><strong>Enterprise:</strong> 15,000 API calls per hour</li>
+                            <li><strong>System Integrations:</strong> 50,000 API calls per hour</li>
+                        </ul>
+                    </div>
+
+                    <div class="warning-box">
+                        <h4>When Rate Limits Trigger:</h4>
+                        <ul>
+                            <li>Bulk data imports/exports</li>
+                            <li>Automated reporting systems</li>
+                            <li>Third-party integrations with high call volume</li>
+                            <li>Development/testing environments making repeated calls</li>
+                        </ul>
+                    </div>
+
+                    <h4>Solutions:</h4>
+
+                    <div class="warning-box">
+                        <h4>Immediate (Temporary Fix):</h4>
+                        <ol class="step-list">
+                            <li>Wait 60 minutes for rate limit reset</li>
+                            <li>Reduce API call frequency in your applications</li>
+                            <li>Implement caching to reduce duplicate requests</li>
+                        </ol>
+                    </div>
+
+                    <div class="solution-box">
+                        <h4>Long-term (Permanent Fix):</h4>
+                        <ol class="step-list">
+                            <li><strong>Optimize API Usage:</strong> Batch requests when possible</li>
+                            <li><strong>Implement Exponential Backoff:</strong> Retry failed requests with increasing delays</li>
+                            <li><strong>Use Webhooks:</strong> Receive real-time updates instead of polling</li>
+                            <li><strong>Request Rate Limit Increase:</strong> Contact support for enterprise-level limits</li>
+                        </ol>
+                    </div>
+
+                    <div class="pro-tip">
+                        <h4>Best Practices:</h4>
+                        <ul>
+                            <li>Cache frequently accessed data locally</li>
+                            <li>Use bulk endpoints for multiple record operations</li>
+                            <li>Monitor your API usage in the developer dashboard</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="faq-item" id="faq-14">
+                    <h3 class="faq-question" data-number="14">How do I set up single sign-on (SSO) with our corporate directory?</h3>
+
+                    <h4>SSO Setup Requirements:</h4>
+
+                    <div class="info-box">
+                        <h4>Supported Identity Providers:</h4>
+                        <ul>
+                            <li>Active Directory (ADFS)</li>
+                            <li>Azure Active Directory</li>
+                            <li>Google Workspace</li>
+                            <li>Okta</li>
+                            <li>OneLogin</li>
+                            <li>PingIdentity</li>
+                            <li>Generic SAML 2.0 providers</li>
+                        </ul>
+                    </div>
+
+                    <div class="requirements-list">
+                        <h4>Prerequisites:</h4>
+                        <ul>
+                            <li><strong>Administrator access</strong> to your identity provider</li>
+                            <li><strong>ZipFlow Enterprise plan</strong> (SSO not available on basic plans)</li>
+                            <li><strong>IT security approval</strong> for integrating new applications</li>
+                            <li><strong>Domain verification</strong> to confirm organization ownership</li>
+                        </ul>
+                    </div>
+
+                    <h4>Setup Process:</h4>
+
+                    <div class="solution-box">
+                        <h4>Phase 1: Planning (1-2 days)</h4>
+                        <ol class="step-list">
+                            <li>Identify which users need ZipFlow access</li>
+                            <li>Determine user groups and permission levels</li>
+                            <li>Plan user attribute mapping (name, email, department, role)</li>
+                        </ol>
+                    </div>
+
+                    <div class="info-box">
+                        <h4>Phase 2: Configuration (3-5 days)</h4>
+                        <ol class="step-list">
+                            <li>Contact ZipFlow support to initiate SSO setup</li>
+                            <li>Provide metadata from your identity provider</li>
+                            <li>Configure user attribute mappings</li>
+                            <li>Set up test users for validation</li>
+                        </ol>
+                    </div>
+
+                    <div class="warning-box">
+                        <h4>Phase 3: Testing (2-3 days)</h4>
+                        <ol class="step-list">
+                            <li>Test login with pilot user group</li>
+                            <li>Verify user provisioning and role assignments</li>
+                            <li>Test user deprovisioning when employees leave</li>
+                        </ol>
+                    </div>
+
+                    <div class="solution-box">
+                        <h4>Phase 4: Rollout (1 day)</h4>
+                        <ol class="step-list">
+                            <li>Communicate changes to all users</li>
+                            <li>Provide backup authentication methods</li>
+                            <li>Monitor for login issues during transition</li>
+                        </ol>
+                    </div>
+
+                    <div class="info-box">
+                        <h4>Ongoing Maintenance:</h4>
+                        <ul>
+                            <li>User provisioning/deprovisioning happens automatically</li>
+                            <li>Group membership changes sync every 4 hours</li>
+                            <li>Contact support for attribute mapping changes</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="faq-item" id="faq-15">
+                    <h3 class="faq-question" data-number="15">Can I export my procurement data for external reporting?</h3>
+
+                    <div class="solution-box">
+                        <h4>Yes! ZipFlow provides comprehensive data export capabilities.</h4>
+                    </div>
+
+                    <div class="info-box">
+                        <h4>Available Export Formats:</h4>
+                        <ul>
+                            <li><strong>CSV:</strong> Best for Excel analysis and pivot tables</li>
+                            <li><strong>Excel:</strong> Formatted reports with charts and summaries</li>
+                            <li><strong>PDF:</strong> Professional reports for executive presentations</li>
+                            <li><strong>JSON:</strong> Raw data for custom applications and integrations</li>
+                        </ul>
+                    </div>
+
+                    <h4>Exportable Data Types:</h4>
+
+                    <div class="solution-box">
+                        <h4>Request Data:</h4>
+                        <ul>
+                            <li>All request details, statuses, and approval history</li>
+                            <li>Custom date ranges and filtering options</li>
+                            <li>Department, cost center, and project breakdowns</li>
+                        </ul>
+                    </div>
+
+                    <div class="info-box">
+                        <h4>Vendor Data:</h4>
+                        <ul>
+                            <li>Vendor master list with contact information</li>
+                            <li>Performance metrics and rating history</li>
+                            <li>Contract terms and payment history</li>
+                        </ul>
+                    </div>
+
+                    <div class="warning-box">
+                        <h4>Financial Data:</h4>
+                        <ul>
+                            <li>Spending analysis by category, department, time period</li>
+                            <li>Budget vs. actual comparisons</li>
+                            <li>Cost savings and efficiency metrics</li>
+                        </ul>
+                    </div>
+
+                    <div class="solution-box">
+                        <h4>Approval Data:</h4>
+                        <ul>
+                            <li>Approval times and bottleneck analysis</li>
+                            <li>Delegation history and coverage reports</li>
+                            <li>SLA compliance and performance metrics</li>
+                        </ul>
+                    </div>
+
+                    <h4>How to Export Data:</h4>
+
+                    <div class="solution-box">
+                        <h4>Quick Export:</h4>
+                        <ol class="step-list">
+                            <li>Navigate to any list view (Requests, Vendors, etc.)</li>
+                            <li>Use filters to narrow down data</li>
+                            <li>Click "Export" button in top-right corner</li>
+                            <li>Choose format and download</li>
+                        </ol>
+                    </div>
+
+                    <div class="info-box">
+                        <h4>Custom Reports:</h4>
+                        <ol class="step-list">
+                            <li>Go to Reports > Custom Report Builder</li>
+                            <li>Select data fields, filters, and grouping options</li>
+                            <li>Preview report before generating</li>
+                            <li>Schedule recurring exports via email</li>
+                        </ol>
+                    </div>
+
+                    <div class="warning-box">
+                        <h4>API Access:</h4>
+                        <ul>
+                            <li>Enterprise customers get API access for automated exports</li>
+                            <li>Real-time data feeds for business intelligence tools</li>
+                            <li>Contact support for API documentation and credentials</li>
+                        </ul>
+                    </div>
+
+                    <div class="pro-tip">
+                        <h4>Data Retention:</h4>
+                        <ul>
+                            <li>Standard plan: 2 years of historical data</li>
+                            <li>Enterprise plan: 7 years of historical data</li>
+                            <li>Data archiving available for longer retention periods</li>
+                        </ul>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -1093,8 +1442,506 @@
                 <h2>📊 Compliance & Reporting</h2>
             </div>
             <div class="section-content">
-                <!-- FAQ items 16-20 would go here -->
-                <p><em>Compliance-focused questions covering SOX requirements, audit trails, variance analysis, and automated workflows...</em></p>
+                <div class="faq-item" id="faq-16">
+                    <h3 class="faq-question" data-number="16">How does ZipFlow ensure SOX compliance for our procurement processes?</h3>
+
+                    <h4>ZipFlow Built-in SOX Controls:</h4>
+
+                    <div class="solution-box">
+                        <h4>Segregation of Duties:</h4>
+                        <ul>
+                            <li>Requesters cannot approve their own purchases</li>
+                            <li>Different users handle requisition, approval, and receiving</li>
+                            <li>System enforces role-based access controls</li>
+                        </ul>
+                    </div>
+
+                    <div class="info-box">
+                        <h4>Approval Authorization:</h4>
+                        <ul>
+                            <li>Configurable spending limits by role and department</li>
+                            <li>Multi-level approval workflows for high-value purchases</li>
+                            <li>Electronic signatures with audit trails</li>
+                        </ul>
+                    </div>
+
+                    <div class="warning-box">
+                        <h4>Audit Trail Maintenance:</h4>
+                        <ul>
+                            <li>Immutable record of all changes and approvals</li>
+                            <li>Complete transaction history with timestamps</li>
+                            <li>User activity logs for compliance reviews</li>
+                        </ul>
+                    </div>
+
+                    <h4>Key SOX Features:</h4>
+
+                    <div class="solution-box">
+                        <h4>Financial Controls:</h4>
+                        <ol class="step-list">
+                            <li><strong>Approval Matrices:</strong> Ensure proper authorization levels</li>
+                            <li><strong>Budget Controls:</strong> Prevent overspending and unauthorized purchases</li>
+                            <li><strong>Vendor Management:</strong> Approved vendor lists and contract compliance</li>
+                            <li><strong>Invoice Matching:</strong> Three-way matching (PO, receipt, invoice)</li>
+                        </ol>
+                    </div>
+
+                    <div class="info-box">
+                        <h4>Audit Reporting:</h4>
+                        <ol class="step-list">
+                            <li><strong>Control Testing Reports:</strong> Evidence for auditor review</li>
+                            <li><strong>Exception Reports:</strong> Identify control violations</li>
+                            <li><strong>User Access Reports:</strong> Role assignments and access reviews</li>
+                            <li><strong>Change Logs:</strong> Complete history of system modifications</li>
+                        </ol>
+                    </div>
+
+                    <div class="warning-box">
+                        <h4>Compliance Documentation:</h4>
+                        <ul>
+                            <li>SOC 2 Type II certification available</li>
+                            <li>SSAE 18 compliance reports</li>
+                            <li>ISO 27001 security framework adherence</li>
+                        </ul>
+                    </div>
+
+                    <div class="pro-tip">
+                        <h4>For Your Auditors:</h4>
+                        <p>ZipFlow can provide auditor access to:</p>
+                        <ul>
+                            <li>Control design documentation</li>
+                            <li>Control effectiveness testing results</li>
+                            <li>Exception reports and remediation tracking</li>
+                            <li>User access certification reports</li>
+                        </ul>
+                        <p>Contact your Customer Success Manager for SOX compliance documentation packages.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item" id="faq-17">
+                    <h3 class="faq-question" data-number="17">Where can I find audit trails for specific requests or transactions?</h3>
+
+                    <h4>Complete Audit Trail Access:</h4>
+
+                    <div class="solution-box">
+                        <h4>Individual Request Audit:</h4>
+                        <ol class="step-list">
+                            <li>Go to your request details page</li>
+                            <li>Click the "Audit Trail" tab</li>
+                            <li>View complete chronological history:
+                                <ul>
+                                    <li>Who made changes and when</li>
+                                    <li>What specific fields were modified</li>
+                                    <li>Approval decisions with justifications</li>
+                                    <li>Status changes with timestamps</li>
+                                    <li>Document uploads and modifications</li>
+                                </ul>
+                            </li>
+                        </ol>
+                    </div>
+
+                    <h4>System-Wide Audit Reports:</h4>
+
+                    <div class="info-box">
+                        <h4>User Activity Reports:</h4>
+                        <ul>
+                            <li>Settings > Audit Logs > User Activity</li>
+                            <li>Filter by user, date range, or action type</li>
+                            <li>Export for compliance documentation</li>
+                        </ul>
+                    </div>
+
+                    <div class="warning-box">
+                        <h4>Financial Transaction Logs:</h4>
+                        <ul>
+                            <li>Reports > Compliance > Financial Audit Trail</li>
+                            <li>Complete purchase-to-pay lifecycle tracking</li>
+                            <li>Integration with accounting systems</li>
+                        </ul>
+                    </div>
+
+                    <div class="solution-box">
+                        <h4>Security Event Logs:</h4>
+                        <ul>
+                            <li>Settings > Security > Access Logs</li>
+                            <li>Login attempts, password changes, role modifications</li>
+                            <li>Failed authentication and suspicious activity alerts</li>
+                        </ul>
+                    </div>
+
+                    <div class="info-box">
+                        <h4>Audit Trail Data Includes:</h4>
+                        <ul>
+                            <li><strong>User Information:</strong> Name, role, IP address, location</li>
+                            <li><strong>Timestamp:</strong> Exact date and time of each action</li>
+                            <li><strong>Action Details:</strong> What was changed, from what to what</li>
+                            <li><strong>Business Context:</strong> Request ID, vendor, amount, justification</li>
+                            <li><strong>System Information:</strong> Browser, device, session details</li>
+                        </ul>
+                    </div>
+
+                    <div class="warning-box">
+                        <h4>Data Retention:</h4>
+                        <ul>
+                            <li><strong>Standard Plan:</strong> 3 years of audit trail data</li>
+                            <li><strong>Enterprise Plan:</strong> 7 years of audit trail data</li>
+                            <li><strong>Custom Retention:</strong> Available for highly regulated industries</li>
+                        </ul>
+                    </div>
+
+                    <div class="pro-tip">
+                        <h4>Auditor Access:</h4>
+                        <p>Temporary read-only access can be granted to external auditors with:</p>
+                        <ul>
+                            <li>Time-limited access credentials</li>
+                            <li>Specific report generation capabilities</li>
+                            <li>Export permissions for compliance documentation</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="faq-item" id="faq-18">
+                    <h3 class="faq-question" data-number="18">How do I generate reports for budget variance analysis?</h3>
+
+                    <h4>Budget Variance Reporting Made Simple:</h4>
+
+                    <div class="solution-box">
+                        <h4>Quick Variance Dashboard:</h4>
+                        <ol class="step-list">
+                            <li>Navigate to Reports > Budget Analysis</li>
+                            <li>Select your department or cost center</li>
+                            <li>Choose comparison period (month-over-month, year-over-year)</li>
+                            <li>View automatic variance calculations with visual indicators</li>
+                        </ol>
+                    </div>
+
+                    <div class="info-box">
+                        <h4>Detailed Variance Report Setup Steps:</h4>
+                        <ol class="step-list">
+                            <li><strong>Go to Reports > Custom Report Builder</strong></li>
+                            <li><strong>Select Report Type:</strong> "Budget vs. Actual Analysis"</li>
+                            <li><strong>Choose Parameters:</strong>
+                                <ul>
+                                    <li>Time period (monthly, quarterly, annually)</li>
+                                    <li>Organizational levels (department, cost center, project)</li>
+                                    <li>Variance thresholds (5%, 10%, 15%)</li>
+                                </ul>
+                            </li>
+                            <li><strong>Add Filters:</strong> Category, vendor, approval status</li>
+                            <li><strong>Generate Report:</strong> Preview before finalizing</li>
+                        </ol>
+                    </div>
+
+                    <div class="warning-box">
+                        <h4>Report Components:</h4>
+                        <ul>
+                            <li><strong>Budget Allocated:</strong> Original budget amounts by category</li>
+                            <li><strong>Actual Spent:</strong> Confirmed expenditures to date</li>
+                            <li><strong>Committed:</strong> Approved but not yet spent amounts</li>
+                            <li><strong>Available:</strong> Remaining budget capacity</li>
+                            <li><strong>Variance %:</strong> Positive/negative deviation from budget</li>
+                            <li><strong>Trend Analysis:</strong> Spending patterns over time</li>
+                        </ul>
+                    </div>
+
+                    <h4>Key Variance Metrics:</h4>
+
+                    <div class="solution-box">
+                        <h4>Favorable Variances (Under Budget):</h4>
+                        <ul>
+                            <li>Indicates potential cost savings opportunities</li>
+                            <li>May suggest conservative budgeting</li>
+                            <li>Could reveal delayed projects or initiatives</li>
+                        </ul>
+                    </div>
+
+                    <div class="warning-box">
+                        <h4>Unfavorable Variances (Over Budget):</h4>
+                        <ul>
+                            <li>Requires immediate attention and explanation</li>
+                            <li>May indicate budget planning issues</li>
+                            <li>Could signal process control problems</li>
+                        </ul>
+                    </div>
+
+                    <div class="info-box">
+                        <h4>Automated Alerts:</h4>
+                        <p>Set up variance alerts for:</p>
+                        <ul>
+                            <li><strong>5% Variance:</strong> Early warning notification</li>
+                            <li><strong>10% Variance:</strong> Manager notification required</li>
+                            <li><strong>15% Variance:</strong> Executive escalation triggered</li>
+                        </ul>
+                    </div>
+
+                    <div class="solution-box">
+                        <h4>Best Practice Reports:</h4>
+                        <ol class="step-list">
+                            <li><strong>Monthly Budget Reviews:</strong> Track progress against annual budgets</li>
+                            <li><strong>Quarterly Variance Analysis:</strong> Detailed category-level review</li>
+                            <li><strong>Year-End Reconciliation:</strong> Final budget vs. actual comparison</li>
+                            <li><strong>Rolling 12-Month Trends:</strong> Identify seasonal patterns</li>
+                        </ol>
+                    </div>
+
+                    <div class="pro-tip">
+                        <h4>Export Options:</h4>
+                        <ul>
+                            <li>Excel format with pivot tables for further analysis</li>
+                            <li>PDF executive summary for management presentations</li>
+                            <li>CSV data for integration with business intelligence tools</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="faq-item" id="faq-19">
+                    <h3 class="faq-question" data-number="19">What expense reporting features are available in ZipFlow?</h3>
+
+                    <h4>Comprehensive Expense Management:</h4>
+
+                    <div class="info-box">
+                        <h4>Expense Report Types:</h4>
+
+                        <p><strong>Travel Expenses:</strong></p>
+                        <ul>
+                            <li>Flight, hotel, car rental, and meal expenses</li>
+                            <li>Per diem calculations with policy compliance</li>
+                            <li>Currency conversion for international travel</li>
+                            <li>Receipt capture via mobile app</li>
+                        </ul>
+
+                        <p><strong>Business Expenses:</strong></p>
+                        <ul>
+                            <li>Client entertainment and business meals</li>
+                            <li>Professional development and training costs</li>
+                            <li>Subscription services and software licenses</li>
+                            <li>Office supplies and equipment purchases</li>
+                        </ul>
+
+                        <p><strong>Project Expenses:</strong></p>
+                        <ul>
+                            <li>Time and material tracking by project code</li>
+                            <li>Client-billable vs. internal expense categorization</li>
+                            <li>Project budget tracking and variance reporting</li>
+                        </ul>
+                    </div>
+
+                    <h4>Key Features:</h4>
+
+                    <div class="solution-box">
+                        <h4>Receipt Management:</h4>
+                        <ul>
+                            <li>Mobile app for receipt capture and OCR processing</li>
+                            <li>Automatic data extraction (amount, vendor, date, category)</li>
+                            <li>Receipt matching with corporate card transactions</li>
+                            <li>Digital receipt storage with audit trail</li>
+                        </ul>
+                    </div>
+
+                    <div class="warning-box">
+                        <h4>Policy Compliance:</h4>
+                        <ul>
+                            <li>Real-time policy checking during expense entry</li>
+                            <li>Automatic flagging of policy violations</li>
+                            <li>Configurable approval workflows based on amount and type</li>
+                            <li>Integration with corporate travel and card programs</li>
+                        </ul>
+                    </div>
+
+                    <div class="info-box">
+                        <h4>Approval Workflows:</h4>
+                        <ul>
+                            <li>Manager approval for all expenses</li>
+                            <li>Finance review for high-value or unusual expenses</li>
+                            <li>Automatic approval for recurring, pre-approved expenses</li>
+                            <li>Escalation paths for disputed or rejected expenses</li>
+                        </ul>
+                    </div>
+
+                    <div class="solution-box">
+                        <h4>Integration Capabilities:</h4>
+                        <ul>
+                            <li>Corporate credit card transaction import</li>
+                            <li>Travel booking system integration</li>
+                            <li>Accounting system synchronization (AP, GL posting)</li>
+                            <li>Payroll integration for employee reimbursements</li>
+                        </ul>
+                    </div>
+
+                    <div class="warning-box">
+                        <h4>Reporting and Analytics:</h4>
+                        <ul>
+                            <li>Employee spending patterns and compliance rates</li>
+                            <li>Department-level expense analysis and benchmarking</li>
+                            <li>Vendor payment analysis and optimization opportunities</li>
+                            <li>Tax reporting and compliance documentation</li>
+                        </ul>
+                    </div>
+
+                    <div class="info-box">
+                        <h4>Mobile App Features:</h4>
+                        <ul>
+                            <li>Offline expense entry and receipt capture</li>
+                            <li>GPS location tracking for business travel</li>
+                            <li>Mileage calculation and tracking</li>
+                            <li>Push notifications for approval status updates</li>
+                        </ul>
+                    </div>
+
+                    <div class="pro-tip">
+                        <h4>Reimbursement Processing:</h4>
+                        <ul>
+                            <li>Integration with payroll for automatic reimbursement</li>
+                            <li>ACH direct deposit options</li>
+                            <li>Check printing and mailing services</li>
+                            <li>International wire transfer capabilities</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="faq-item" id="faq-20">
+                    <h3 class="faq-question" data-number="20">How do I set up automated approval workflows for recurring purchases?</h3>
+
+                    <h4>Streamline Repetitive Approvals:</h4>
+
+                    <div class="info-box">
+                        <h4>When to Use Automated Workflows:</h4>
+                        <ul>
+                            <li>Monthly software subscriptions</li>
+                            <li>Quarterly office supply orders</li>
+                            <li>Annual maintenance contracts</li>
+                            <li>Regular utility and service payments</li>
+                            <li>Scheduled equipment replacements</li>
+                        </ul>
+                    </div>
+
+                    <h4>Setup Process:</h4>
+
+                    <div class="solution-box">
+                        <h4>Step 1: Identify Recurring Patterns</h4>
+                        <ol class="step-list">
+                            <li><strong>Go to Reports > Purchase Analysis</strong></li>
+                            <li><strong>Filter by "Recurring Purchases"</strong></li>
+                            <li><strong>Identify patterns:</strong> Same vendor, similar amounts, regular frequency</li>
+                            <li><strong>Document business justification</strong> for automation</li>
+                        </ol>
+                    </div>
+
+                    <div class="warning-box">
+                        <h4>Step 2: Configure Automation Rules</h4>
+                        <ol class="step-list">
+                            <li><strong>Navigate to Settings > Workflow Automation</strong></li>
+                            <li><strong>Click "Create New Automated Workflow"</strong></li>
+                            <li><strong>Define Triggers:</strong>
+                                <ul>
+                                    <li>Vendor matches approved list</li>
+                                    <li>Amount within predetermined range (±10%)</li>
+                                    <li>Purchase category matches template</li>
+                                    <li>Department and cost center alignment</li>
+                                </ul>
+                            </li>
+                            <li><strong>Set Conditions:</strong>
+                                <ul>
+                                    <li>Budget availability check</li>
+                                    <li>Spending limit compliance</li>
+                                    <li>Vendor contract compliance</li>
+                                    <li>Policy adherence verification</li>
+                                </ul>
+                            </li>
+                        </ol>
+                    </div>
+
+                    <div class="info-box">
+                        <h4>Step 3: Design Approval Path</h4>
+                        <ol class="step-list">
+                            <li><strong>Choose Approval Type:</strong>
+                                <ul>
+                                    <li><strong>Auto-Approve:</strong> No human intervention required</li>
+                                    <li><strong>Express Approval:</strong> 4-hour automatic approval if no objection</li>
+                                    <li><strong>Simplified Approval:</strong> Single approver instead of full chain</li>
+                                </ul>
+                            </li>
+                            <li><strong>Set Notification Rules:</strong>
+                                <ul>
+                                    <li>Who gets notified about auto-approved purchases</li>
+                                    <li>Escalation if automation rules fail</li>
+                                    <li>Weekly/monthly summary reports</li>
+                                </ul>
+                            </li>
+                        </ol>
+                    </div>
+
+                    <h4>Advanced Automation Features:</h4>
+
+                    <div class="solution-box">
+                        <h4>Smart Templates:</h4>
+                        <ul>
+                            <li>Pre-populate request forms with historical data</li>
+                            <li>Automatic vendor selection based on past performance</li>
+                            <li>Budget code assignment based on request type</li>
+                        </ul>
+                    </div>
+
+                    <div class="warning-box">
+                        <h4>Conditional Logic:</h4>
+                        <ul>
+                            <li>If amount > $X, require additional approval</li>
+                            <li>If new vendor, bypass automation and require manual review</li>
+                            <li>If budget remaining < Y%, escalate to department head</li>
+                        </ul>
+                    </div>
+
+                    <div class="info-box">
+                        <h4>Exception Handling:</h4>
+                        <ul>
+                            <li>Automatic fallback to manual approval if criteria not met</li>
+                            <li>Alert notifications for unusual purchase patterns</li>
+                            <li>Override capabilities for urgent business needs</li>
+                        </ul>
+                    </div>
+
+                    <h4>Monitoring and Optimization:</h4>
+
+                    <div class="solution-box">
+                        <h4>Performance Metrics:</h4>
+                        <ul>
+                            <li>Percentage of purchases processed via automation</li>
+                            <li>Time savings compared to manual processing</li>
+                            <li>Accuracy rates and exception frequency</li>
+                            <li>User satisfaction and adoption rates</li>
+                        </ul>
+                    </div>
+
+                    <div class="warning-box">
+                        <h4>Regular Review Process:</h4>
+                        <ol class="step-list">
+                            <li><strong>Monthly:</strong> Review automation performance and exceptions</li>
+                            <li><strong>Quarterly:</strong> Adjust dollar thresholds and approval criteria</li>
+                            <li><strong>Annually:</strong> Comprehensive workflow optimization review</li>
+                        </ol>
+                    </div>
+
+                    <div class="info-box">
+                        <h4>Risk Management:</h4>
+                        <ul>
+                            <li>Maximum automation limits by category</li>
+                            <li>Required periodic human review (quarterly/annually)</li>
+                            <li>Audit trail maintenance for all automated decisions</li>
+                            <li>Control testing for compliance requirements</li>
+                        </ul>
+                    </div>
+
+                    <div class="pro-tip">
+                        <h4>Getting Started:</h4>
+                        <p>Contact your ZipFlow Customer Success Manager to:</p>
+                        <ul>
+                            <li>Analyze your purchase patterns for automation opportunities</li>
+                            <li>Configure pilot automation workflows</li>
+                            <li>Provide training on automation management</li>
+                            <li>Establish monitoring and optimization processes</li>
+                        </ul>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -1103,13 +1950,17 @@
         <div class="container">
             <div class="footer-content">
                 <div class="footer-section">
-                    <h3>Quick Reference</h3>
-                    <ul>
-                        <li>Login Issues → Password Reset → New Password</li>
-                        <li>Stuck Requests → Check Workflow → Contact Approver → Escalate</li>
-                        <li>Budget Questions → Dashboard → Budget Card → Detailed Reports</li>
-                        <li>Technical Problems → Settings → Integration Status → Contact Support</li>
-                    </ul>
+                    <h3>📞 Additional Support Resources</h3>
+                    <div class="requirements-list">
+                        <h4>Quick Reference Card</h4>
+                        <p><strong>Print this for easy access:</strong></p>
+                        <ul>
+                            <li><strong>Login Issues:</strong> Forgot password → Reset link → New password</li>
+                            <li><strong>Stuck Requests:</strong> Check workflow → Contact approver → Escalate if needed</li>
+                            <li><strong>Budget Questions:</strong> Dashboard → Budget card → Detailed reports</li>
+                            <li><strong>Technical Problems:</strong> Settings → Integration status → Contact support</li>
+                        </ul>
+                    </div>
                 </div>
                 <div class="footer-section">
                     <h3>Video Tutorial Library</h3>
