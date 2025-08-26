@@ -1,0 +1,1711 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZipFlow API Reference Documentation</title>
+    <meta name="description" content="Complete API reference for ZipFlow procurement platform covering authentication, purchase requests, approvals, and vendor management">
+    <link rel="stylesheet" href="../../assets/css/documentation.css">
+    <style>
+        .endpoint-card {
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: 0.5rem;
+            margin: 1rem 0;
+            overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .endpoint-header {
+            background: var(--background);
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+        }
+        .endpoint-method {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 0.25rem;
+            font-weight: bold;
+            font-size: 0.85rem;
+            min-width: 60px;
+            text-align: center;
+        }
+        .method-get { background: #10b981; color: white; }
+        .method-post { background: #3b82f6; color: white; }
+        .method-put { background: #f59e0b; color: white; }
+        .method-delete { background: #ef4444; color: white; }
+        .endpoint-path {
+            font-family: monospace;
+            font-size: 1.1rem;
+            color: var(--text-primary);
+            margin-left: 1rem;
+        }
+        .endpoint-content {
+            padding: 1.5rem;
+            display: none;
+        }
+        .endpoint-header.active + .endpoint-content {
+            display: block;
+        }
+        .expand-icon {
+            transition: transform 0.3s ease;
+            font-size: 1.2rem;
+        }
+        .endpoint-header.active .expand-icon {
+            transform: rotate(180deg);
+        }
+        .parameter-table {
+            margin: 1rem 0;
+        }
+        .parameter-table th {
+            background: var(--background);
+            font-weight: 600;
+        }
+        .parameter-required {
+            color: var(--error-color);
+            font-weight: bold;
+        }
+        .parameter-optional {
+            color: var(--text-secondary);
+        }
+        .response-example {
+            background: #1e293b;
+            color: #e2e8f0;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin: 1rem 0;
+            overflow-x: auto;
+        }
+        .response-example pre {
+            margin: 0;
+            font-family: 'Monaco', 'Menlo', 'Courier New', monospace;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+        .auth-section {
+            background: linear-gradient(135deg, #fef3c7 0%, #f59e0b 100%);
+            border: 2px solid var(--warning-color);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            margin: 2rem 0;
+            color: #92400e;
+        }
+        .tab-container {
+            margin: 2rem 0;
+        }
+        .tab-buttons {
+            display: flex;
+            border-bottom: 2px solid var(--border-color);
+            margin-bottom: 1rem;
+        }
+        .tab-button {
+            background: none;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--text-secondary);
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s ease;
+        }
+        .tab-button.active {
+            color: var(--primary-color);
+            border-bottom-color: var(--primary-color);
+        }
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .status-code {
+            display: inline-block;
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.25rem;
+            font-family: monospace;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+        .status-200 { background: #d1fae5; color: #065f46; }
+        .status-201 { background: #dbeafe; color: #1e40af; }
+        .status-400 { background: #fecaca; color: #991b1b; }
+        .status-401 { background: #fed7d7; color: #c53030; }
+        .status-403 { background: #fbb6ce; color: #97266d; }
+        .status-404 { background: #e0e7ff; color: #3730a3; }
+        .status-500 { background: #fee2e2; color: #991b1b; }
+        .sdk-example {
+            background: var(--background);
+            border: 1px solid var(--border-color);
+            border-radius: 0.5rem;
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+        .rate-limit-info {
+            background: #dbeafe;
+            border-left: 4px solid #3b82f6;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 0 0.5rem 0.5rem 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="doc-header">
+        <h1>ZipFlow API Reference</h1>
+        <p class="subtitle">Complete Integration Guide for Developers</p>
+    </div>
+
+    <div class="breadcrumb">
+        <a href="../../index.html">Portfolio</a> / 
+        <a href="../index.html">Documentation</a> / 
+        <span>API Reference</span>
+    </div>
+
+    <div class="doc-container">
+        <div class="info-box">
+            <strong>API Version:</strong> v2.1 | 
+            <strong>Base URL:</strong> https://api.zipflow.com/v2 | 
+            <strong>Documentation Updated:</strong> January 2024
+        </div>
+
+        <div class="toc" id="table-of-contents">
+            <h3>Table of Contents</h3>
+        </div>
+
+        <h2 id="overview">API Overview</h2>
+        
+        <p>The ZipFlow API provides programmatic access to all core procurement platform functionality. Built on RESTful principles with JSON data formats, the API enables seamless integration with enterprise systems, custom applications, and third-party tools. This comprehensive reference covers authentication, endpoints, request/response formats, and practical implementation examples.</p>
+
+        <div class="success-box">
+            <strong>Key Features:</strong>
+            <ul>
+                <li>RESTful design with predictable resource URLs</li>
+                <li>JSON request and response bodies</li>
+                <li>OAuth 2.0 and API key authentication</li>
+                <li>Comprehensive webhook support</li>
+                <li>Rate limiting and usage monitoring</li>
+                <li>Extensive filtering and pagination options</li>
+            </ul>
+        </div>
+
+        <div class="rate-limit-info">
+            <strong>Rate Limits:</strong> 1000 requests per hour for standard accounts, 5000 per hour for enterprise accounts. Burst limits allow up to 100 requests per minute.
+        </div>
+
+        <h2 id="authentication">Authentication</h2>
+
+        <div class="auth-section">
+            <h3>🔐 Authentication Methods</h3>
+            <p>ZipFlow API supports two authentication methods: OAuth 2.0 for user-delegated access and API keys for server-to-server communication.</p>
+        </div>
+
+        <h3>OAuth 2.0 Authentication</h3>
+
+        <p>OAuth 2.0 is the recommended method for applications that need to act on behalf of users. It provides secure, token-based authentication with fine-grained scope control.</p>
+
+        <div class="tab-container">
+            <div class="tab-buttons">
+                <button class="tab-button active" onclick="switchTab('oauth-flow')">Authorization Flow</button>
+                <button class="tab-button" onclick="switchTab('oauth-scopes')">Scopes & Permissions</button>
+                <button class="tab-button" onclick="switchTab('oauth-examples')">Code Examples</button>
+            </div>
+            
+            <div class="tab-content active" id="oauth-flow">
+                <h4>Authorization Code Flow</h4>
+                <ol>
+                    <li><strong>Authorization Request:</strong> Redirect users to authorization server</li>
+                    <li><strong>User Consent:</strong> User grants permissions to your application</li>
+                    <li><strong>Authorization Code:</strong> Receive code via redirect callback</li>
+                    <li><strong>Token Exchange:</strong> Exchange code for access and refresh tokens</li>
+                    <li><strong>API Access:</strong> Use access token for authenticated requests</li>
+                </ol>
+
+                <div class="code-block">
+                    <pre>
+# Step 1: Authorization URL
+https://auth.zipflow.com/oauth/authorize?
+  response_type=code&
+  client_id=YOUR_CLIENT_ID&
+  redirect_uri=https://yourapp.com/callback&
+  scope=requests:read requests:write approvals:read&
+  state=RANDOM_STATE_STRING
+
+# Step 2: Token Exchange
+POST https://auth.zipflow.com/oauth/token
+Content-Type: application/x-www-form-urlencoded
+
+grant_type=authorization_code&
+code=AUTHORIZATION_CODE&
+client_id=YOUR_CLIENT_ID&
+client_secret=YOUR_CLIENT_SECRET&
+redirect_uri=https://yourapp.com/callback
+                    </pre>
+                </div>
+            </div>
+            
+            <div class="tab-content" id="oauth-scopes">
+                <h4>Available Scopes</h4>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Scope</th>
+                            <th>Description</th>
+                            <th>Access Level</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>requests:read</code></td>
+                            <td>Read purchase requests</td>
+                            <td>User's accessible requests</td>
+                        </tr>
+                        <tr>
+                            <td><code>requests:write</code></td>
+                            <td>Create and modify requests</td>
+                            <td>User's department</td>
+                        </tr>
+                        <tr>
+                            <td><code>approvals:read</code></td>
+                            <td>View approval status</td>
+                            <td>User's approval queue</td>
+                        </tr>
+                        <tr>
+                            <td><code>approvals:write</code></td>
+                            <td>Process approvals</td>
+                            <td>User's approval authority</td>
+                        </tr>
+                        <tr>
+                            <td><code>budgets:read</code></td>
+                            <td>View budget information</td>
+                            <td>Assigned budgets only</td>
+                        </tr>
+                        <tr>
+                            <td><code>vendors:read</code></td>
+                            <td>Access vendor directory</td>
+                            <td>Active vendors</td>
+                        </tr>
+                        <tr>
+                            <td><code>admin</code></td>
+                            <td>Full administrative access</td>
+                            <td>System administrators</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="tab-content" id="oauth-examples">
+                <h4>Implementation Examples</h4>
+                
+                <div class="sdk-example">
+                    <strong>JavaScript/Node.js</strong>
+                    <div class="code-block">
+                        <pre>
+const OAuth2 = require('oauth').OAuth2;
+
+const oauth2 = new OAuth2(
+    'YOUR_CLIENT_ID',
+    'YOUR_CLIENT_SECRET',
+    'https://auth.zipflow.com',
+    '/oauth/authorize',
+    '/oauth/token'
+);
+
+// Get authorization URL
+const authUrl = oauth2.getAuthorizeUrl({
+    redirect_uri: 'https://yourapp.com/callback',
+    scope: 'requests:read requests:write',
+    state: 'random_state_string'
+});
+
+// Exchange code for token
+oauth2.getOAuthAccessToken(
+    authorizationCode,
+    {
+        grant_type: 'authorization_code',
+        redirect_uri: 'https://yourapp.com/callback'
+    },
+    (error, access_token, refresh_token, results) => {
+        // Store tokens securely
+        console.log('Access Token:', access_token);
+    }
+);
+                        </pre>
+                    </div>
+                </div>
+
+                <div class="sdk-example">
+                    <strong>Python</strong>
+                    <div class="code-block">
+                        <pre>
+import requests
+from urllib.parse import urlencode
+
+# Authorization URL
+auth_params = {
+    'response_type': 'code',
+    'client_id': 'YOUR_CLIENT_ID',
+    'redirect_uri': 'https://yourapp.com/callback',
+    'scope': 'requests:read requests:write',
+    'state': 'random_state_string'
+}
+
+auth_url = f"https://auth.zipflow.com/oauth/authorize?{urlencode(auth_params)}"
+
+# Token exchange
+token_data = {
+    'grant_type': 'authorization_code',
+    'code': authorization_code,
+    'client_id': 'YOUR_CLIENT_ID',
+    'client_secret': 'YOUR_CLIENT_SECRET',
+    'redirect_uri': 'https://yourapp.com/callback'
+}
+
+response = requests.post('https://auth.zipflow.com/oauth/token', data=token_data)
+tokens = response.json()
+                        </pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <h3>API Key Authentication</h3>
+
+        <p>API keys provide a simpler authentication method for server-to-server integrations. Keys are scoped to specific resources and can be easily revoked if compromised.</p>
+
+        <div class="warning-box">
+            <strong>Security Best Practices:</strong>
+            <ul>
+                <li>Never expose API keys in client-side code</li>
+                <li>Use environment variables to store keys</li>
+                <li>Rotate keys regularly (every 90 days recommended)</li>
+                <li>Use different keys for different environments</li>
+                <li>Monitor key usage in the admin dashboard</li>
+            </ul>
+        </div>
+
+        <div class="code-block">
+            <pre>
+# API Key Authentication Header
+Authorization: Bearer YOUR_API_KEY
+
+# Example Request
+curl -H "Authorization: Bearer zf_live_1234567890abcdef..." \
+     -H "Content-Type: application/json" \
+     https://api.zipflow.com/v2/requests
+            </pre>
+        </div>
+
+        <h2 id="purchase-requests">Purchase Requests Endpoints</h2>
+
+        <p>Purchase request endpoints provide complete CRUD operations for managing procurement requests throughout their lifecycle.</p>
+
+        <div class="endpoint-card">
+            <div class="endpoint-header" onclick="toggleEndpoint(this)">
+                <div>
+                    <span class="endpoint-method method-get">GET</span>
+                    <span class="endpoint-path">/requests</span>
+                </div>
+                <span class="expand-icon">▼</span>
+            </div>
+            <div class="endpoint-content">
+                <h4>Retrieve Purchase Requests</h4>
+                <p>Get a paginated list of purchase requests with optional filtering and sorting capabilities.</p>
+
+                <h5>Query Parameters</h5>
+                <table class="parameter-table">
+                    <thead>
+                        <tr>
+                            <th>Parameter</th>
+                            <th>Type</th>
+                            <th>Required</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>page</code></td>
+                            <td>integer</td>
+                            <td class="parameter-optional">Optional</td>
+                            <td>Page number (default: 1)</td>
+                        </tr>
+                        <tr>
+                            <td><code>limit</code></td>
+                            <td>integer</td>
+                            <td class="parameter-optional">Optional</td>
+                            <td>Items per page (default: 25, max: 100)</td>
+                        </tr>
+                        <tr>
+                            <td><code>status</code></td>
+                            <td>string</td>
+                            <td class="parameter-optional">Optional</td>
+                            <td>Filter by status: draft, submitted, approved, rejected</td>
+                        </tr>
+                        <tr>
+                            <td><code>department</code></td>
+                            <td>string</td>
+                            <td class="parameter-optional">Optional</td>
+                            <td>Filter by department ID</td>
+                        </tr>
+                        <tr>
+                            <td><code>created_after</code></td>
+                            <td>datetime</td>
+                            <td class="parameter-optional">Optional</td>
+                            <td>ISO 8601 format (e.g., 2024-01-01T00:00:00Z)</td>
+                        </tr>
+                        <tr>
+                            <td><code>amount_min</code></td>
+                            <td>decimal</td>
+                            <td class="parameter-optional">Optional</td>
+                            <td>Minimum request amount</td>
+                        </tr>
+                        <tr>
+                            <td><code>amount_max</code></td>
+                            <td>decimal</td>
+                            <td class="parameter-optional">Optional</td>
+                            <td>Maximum request amount</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h5>Response</h5>
+                <div class="status-code status-200">200 OK</div>
+
+                <div class="response-example">
+                    <pre>
+{
+  "data": [
+    {
+      "id": "req_1234567890",
+      "title": "Office Supplies - Q1 2024",
+      "description": "Quarterly office supplies order for marketing department",
+      "amount": 875.50,
+      "currency": "USD",
+      "status": "pending_approval",
+      "priority": "normal",
+      "category": "office_supplies",
+      "department": {
+        "id": "dept_marketing",
+        "name": "Marketing",
+        "budget_code": "MKTG-2024"
+      },
+      "requestor": {
+        "id": "user_jane_doe",
+        "name": "Jane Doe",
+        "email": "jane.doe@company.com"
+      },
+      "vendor": {
+        "id": "vendor_office_depot",
+        "name": "Office Depot Business",
+        "status": "preferred"
+      },
+      "approval_chain": [
+        {
+          "level": 1,
+          "approver": {
+            "id": "user_mike_manager",
+            "name": "Mike Manager",
+            "role": "Department Head"
+          },
+          "status": "approved",
+          "approved_at": "2024-01-15T10:30:00Z"
+        },
+        {
+          "level": 2,
+          "approver": {
+            "id": "user_finance_team",
+            "name": "Finance Team",
+            "role": "Budget Reviewer"
+          },
+          "status": "pending",
+          "assigned_at": "2024-01-15T10:30:00Z"
+        }
+      ],
+      "line_items": [
+        {
+          "id": "item_1",
+          "description": "Premium Copy Paper - 10 reams",
+          "quantity": 10,
+          "unit_price": 45.99,
+          "total_price": 459.90
+        },
+        {
+          "id": "item_2", 
+          "description": "Blue Ink Pens - 5 boxes",
+          "quantity": 5,
+          "unit_price": 12.99,
+          "total_price": 64.95
+        }
+      ],
+      "attachments": [
+        {
+          "id": "att_quote_001",
+          "filename": "office_depot_quote.pdf",
+          "size": 245760,
+          "mime_type": "application/pdf",
+          "upload_date": "2024-01-14T16:45:00Z"
+        }
+      ],
+      "created_at": "2024-01-14T16:00:00Z",
+      "updated_at": "2024-01-15T10:30:00Z",
+      "expected_delivery": "2024-01-25T00:00:00Z"
+    }
+  ],
+  "pagination": {
+    "page": 1,
+    "limit": 25,
+    "total_items": 1,
+    "total_pages": 1,
+    "has_next": false,
+    "has_previous": false
+  }
+}
+                    </pre>
+                </div>
+            </div>
+        </div>
+
+        <div class="endpoint-card">
+            <div class="endpoint-header" onclick="toggleEndpoint(this)">
+                <div>
+                    <span class="endpoint-method method-post">POST</span>
+                    <span class="endpoint-path">/requests</span>
+                </div>
+                <span class="expand-icon">▼</span>
+            </div>
+            <div class="endpoint-content">
+                <h4>Create Purchase Request</h4>
+                <p>Submit a new purchase request with line items, attachments, and approval routing.</p>
+
+                <h5>Request Body</h5>
+                <div class="code-block">
+                    <pre>
+{
+  "title": "Software License Renewal",
+  "description": "Annual renewal of Adobe Creative Cloud licenses for design team",
+  "amount": 2400.00,
+  "currency": "USD",
+  "priority": "normal",
+  "category": "software",
+  "department_id": "dept_design",
+  "vendor_id": "vendor_adobe",
+  "budget_code": "DESIGN-SW-2024",
+  "cost_center": "CC-400",
+  "expected_delivery": "2024-02-01T00:00:00Z",
+  "business_justification": "Required for ongoing design projects and client deliverables",
+  "line_items": [
+    {
+      "description": "Adobe Creative Cloud - Annual License",
+      "quantity": 10,
+      "unit_price": 240.00,
+      "total_price": 2400.00,
+      "category": "software_license"
+    }
+  ],
+  "custom_fields": {
+    "license_type": "annual",
+    "users_covered": 10,
+    "renewal_date": "2025-02-01"
+  }
+}
+                    </pre>
+                </div>
+
+                <h5>Response</h5>
+                <div class="status-code status-201">201 Created</div>
+
+                <div class="response-example">
+                    <pre>
+{
+  "id": "req_2345678901",
+  "title": "Software License Renewal",
+  "status": "submitted",
+  "approval_chain": [
+    {
+      "level": 1,
+      "approver": {
+        "id": "user_design_manager",
+        "name": "Sarah Design Manager"
+      },
+      "status": "pending",
+      "sla_expires_at": "2024-01-17T16:00:00Z"
+    }
+  ],
+  "created_at": "2024-01-16T16:00:00Z",
+  "tracking_url": "https://app.zipflow.com/requests/req_2345678901"
+}
+                    </pre>
+                </div>
+
+                <h5>Error Responses</h5>
+                <div class="status-code status-400">400 Bad Request</div>
+                <p>Invalid request data or missing required fields</p>
+
+                <div class="status-code status-403">403 Forbidden</div>
+                <p>Insufficient permissions or budget unavailable</p>
+            </div>
+        </div>
+
+        <div class="endpoint-card">
+            <div class="endpoint-header" onclick="toggleEndpoint(this)">
+                <div>
+                    <span class="endpoint-method method-put">PUT</span>
+                    <span class="endpoint-path">/requests/{id}</span>
+                </div>
+                <span class="expand-icon">▼</span>
+            </div>
+            <div class="endpoint-content">
+                <h4>Update Purchase Request</h4>
+                <p>Modify an existing purchase request. Only requests in "draft" status can be fully updated. Submitted requests allow limited modifications.</p>
+
+                <h5>Path Parameters</h5>
+                <table class="parameter-table">
+                    <thead>
+                        <tr>
+                            <th>Parameter</th>
+                            <th>Type</th>
+                            <th>Required</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>id</code></td>
+                            <td>string</td>
+                            <td class="parameter-required">Required</td>
+                            <td>Unique request identifier</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h5>Request Body</h5>
+                <div class="code-block">
+                    <pre>
+{
+  "title": "Updated Software License Renewal",
+  "amount": 2640.00,
+  "line_items": [
+    {
+      "id": "item_1",
+      "description": "Adobe Creative Cloud - Annual License",
+      "quantity": 11,
+      "unit_price": 240.00,
+      "total_price": 2640.00
+    }
+  ],
+  "custom_fields": {
+    "users_covered": 11,
+    "change_reason": "Additional user added to team"
+  }
+}
+                    </pre>
+                </div>
+
+                <h5>Response</h5>
+                <div class="status-code status-200">200 OK</div>
+                <p>Returns the updated request object with current status and approval chain.</p>
+            </div>
+        </div>
+
+        <div class="endpoint-card">
+            <div class="endpoint-header" onclick="toggleEndpoint(this)">
+                <div>
+                    <span class="endpoint-method method-delete">DELETE</span>
+                    <span class="endpoint-path">/requests/{id}</span>
+                </div>
+                <span class="expand-icon">▼</span>
+            </div>
+            <div class="endpoint-content">
+                <h4>Cancel Purchase Request</h4>
+                <p>Cancel or withdraw a purchase request. Only requests that haven't been approved can be cancelled.</p>
+
+                <h5>Response</h5>
+                <div class="status-code status-200">200 OK</div>
+
+                <div class="response-example">
+                    <pre>
+{
+  "id": "req_2345678901",
+  "status": "cancelled",
+  "cancelled_at": "2024-01-16T18:30:00Z",
+  "cancelled_by": {
+    "id": "user_jane_doe",
+    "name": "Jane Doe"
+  },
+  "message": "Request successfully cancelled"
+}
+                    </pre>
+                </div>
+
+                <h5>Error Responses</h5>
+                <div class="status-code status-403">403 Forbidden</div>
+                <p>Request cannot be cancelled (already approved or completed)</p>
+
+                <div class="status-code status-404">404 Not Found</div>
+                <p>Request not found or access denied</p>
+            </div>
+        </div>
+
+        <h2 id="approvals">Approval Endpoints</h2>
+
+        <p>Approval endpoints enable programmatic management of the approval process, including reviewing, approving, and rejecting purchase requests.</p>
+
+        <div class="endpoint-card">
+            <div class="endpoint-header" onclick="toggleEndpoint(this)">
+                <div>
+                    <span class="endpoint-method method-get">GET</span>
+                    <span class="endpoint-path">/approvals/pending</span>
+                </div>
+                <span class="expand-icon">▼</span>
+            </div>
+            <div class="endpoint-content">
+                <h4>Get Pending Approvals</h4>
+                <p>Retrieve all purchase requests pending approval by the authenticated user.</p>
+
+                <h5>Query Parameters</h5>
+                <table class="parameter-table">
+                    <thead>
+                        <tr>
+                            <th>Parameter</th>
+                            <th>Type</th>
+                            <th>Required</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>priority</code></td>
+                            <td>string</td>
+                            <td class="parameter-optional">Optional</td>
+                            <td>Filter by priority: low, normal, high, urgent</td>
+                        </tr>
+                        <tr>
+                            <td><code>amount_threshold</code></td>
+                            <td>decimal</td>
+                            <td class="parameter-optional">Optional</td>
+                            <td>Show only requests above threshold</td>
+                        </tr>
+                        <tr>
+                            <td><code>sla_expiring</code></td>
+                            <td>boolean</td>
+                            <td class="parameter-optional">Optional</td>
+                            <td>Show only requests with SLA expiring soon</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h5>Response</h5>
+                <div class="status-code status-200">200 OK</div>
+
+                <div class="response-example">
+                    <pre>
+{
+  "data": [
+    {
+      "request_id": "req_1234567890",
+      "title": "Office Supplies - Q1 2024",
+      "amount": 875.50,
+      "currency": "USD",
+      "priority": "normal",
+      "requestor": {
+        "name": "Jane Doe",
+        "department": "Marketing"
+      },
+      "approval_level": 2,
+      "assigned_at": "2024-01-15T10:30:00Z",
+      "sla_expires_at": "2024-01-17T10:30:00Z",
+      "time_remaining": "1 day 12 hours",
+      "available_actions": ["approve", "reject", "request_more_info", "delegate"],
+      "budget_impact": {
+        "remaining_budget": 15240.50,
+        "percentage_consumed": 0.32
+      }
+    }
+  ],
+  "summary": {
+    "total_pending": 1,
+    "total_value": 875.50,
+    "sla_breaches_soon": 0,
+    "high_priority": 0
+  }
+}
+                    </pre>
+                </div>
+            </div>
+        </div>
+
+        <div class="endpoint-card">
+            <div class="endpoint-header" onclick="toggleEndpoint(this)">
+                <div>
+                    <span class="endpoint-method method-post">POST</span>
+                    <span class="endpoint-path">/approvals/{request_id}/approve</span>
+                </div>
+                <span class="expand-icon">▼</span>
+            </div>
+            <div class="endpoint-content">
+                <h4>Approve Request</h4>
+                <p>Approve a purchase request at the current approval level.</p>
+
+                <h5>Request Body</h5>
+                <div class="code-block">
+                    <pre>
+{
+  "comments": "Approved - budget allocation confirmed for Q1 office supplies",
+  "conditions": [
+    "Delivery must be completed by January 25, 2024",
+    "Invoice to be sent to Accounts Payable team"
+  ],
+  "modified_amount": 875.50,
+  "notify_requestor": true
+}
+                    </pre>
+                </div>
+
+                <h5>Response</h5>
+                <div class="status-code status-200">200 OK</div>
+
+                <div class="response-example">
+                    <pre>
+{
+  "request_id": "req_1234567890",
+  "approval_status": "approved_level_2",
+  "next_approver": {
+    "id": "user_procurement_team",
+    "name": "Procurement Team",
+    "level": 3
+  },
+  "approved_at": "2024-01-16T14:15:00Z",
+  "comments": "Approved - budget allocation confirmed for Q1 office supplies",
+  "overall_status": "pending_approval",
+  "estimated_completion": "2024-01-18T17:00:00Z"
+}
+                    </pre>
+                </div>
+            </div>
+        </div>
+
+        <div class="endpoint-card">
+            <div class="endpoint-header" onclick="toggleEndpoint(this)">
+                <div>
+                    <span class="endpoint-method method-post">POST</span>
+                    <span class="endpoint-path">/approvals/{request_id}/reject</span>
+                </div>
+                <span class="expand-icon">▼</span>
+            </div>
+            <div class="endpoint-content">
+                <h4>Reject Request</h4>
+                <p>Reject a purchase request with detailed reasoning and optional suggestions.</p>
+
+                <h5>Request Body</h5>
+                <div class="code-block">
+                    <pre>
+{
+  "reason_code": "insufficient_justification",
+  "comments": "Please provide more detailed business justification and consider alternative vendors with better pricing.",
+  "suggestions": [
+    "Include ROI analysis for software purchase",
+    "Obtain quotes from at least 2 additional vendors",
+    "Consider quarterly licensing instead of annual"
+  ],
+  "allow_resubmission": true,
+  "notify_requestor": true
+}
+                    </pre>
+                </div>
+
+                <h5>Response</h5>
+                <div class="status-code status-200">200 OK</div>
+
+                <div class="response-example">
+                    <pre>
+{
+  "request_id": "req_2345678901",
+  "approval_status": "rejected",
+  "rejected_at": "2024-01-16T15:45:00Z",
+  "rejected_by": {
+    "id": "user_finance_director",
+    "name": "Finance Director"
+  },
+  "reason_code": "insufficient_justification",
+  "can_resubmit": true,
+  "resubmission_deadline": "2024-01-30T17:00:00Z"
+}
+                    </pre>
+                </div>
+            </div>
+        </div>
+
+        <h2 id="vendors">Vendor Management Endpoints</h2>
+
+        <p>Vendor endpoints provide access to supplier directory, vendor performance data, and relationship management capabilities.</p>
+
+        <div class="endpoint-card">
+            <div class="endpoint-header" onclick="toggleEndpoint(this)">
+                <div>
+                    <span class="endpoint-method method-get">GET</span>
+                    <span class="endpoint-path">/vendors</span>
+                </div>
+                <span class="expand-icon">▼</span>
+            </div>
+            <div class="endpoint-content">
+                <h4>List Vendors</h4>
+                <p>Retrieve vendor directory with filtering and search capabilities.</p>
+
+                <h5>Query Parameters</h5>
+                <table class="parameter-table">
+                    <thead>
+                        <tr>
+                            <th>Parameter</th>
+                            <th>Type</th>
+                            <th>Required</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>status</code></td>
+                            <td>string</td>
+                            <td class="parameter-optional">Optional</td>
+                            <td>active, inactive, preferred, pending</td>
+                        </tr>
+                        <tr>
+                            <td><code>category</code></td>
+                            <td>string</td>
+                            <td class="parameter-optional">Optional</td>
+                            <td>Filter by vendor category</td>
+                        </tr>
+                        <tr>
+                            <td><code>search</code></td>
+                            <td>string</td>
+                            <td class="parameter-optional">Optional</td>
+                            <td>Search vendor name or description</td>
+                        </tr>
+                        <tr>
+                            <td><code>country</code></td>
+                            <td>string</td>
+                            <td class="parameter-optional">Optional</td>
+                            <td>ISO country code filter</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h5>Response</h5>
+                <div class="status-code status-200">200 OK</div>
+
+                <div class="response-example">
+                    <pre>
+{
+  "data": [
+    {
+      "id": "vendor_office_depot",
+      "name": "Office Depot Business",
+      "status": "preferred",
+      "category": ["office_supplies", "technology"],
+      "contact": {
+        "primary_contact": "Sarah Johnson",
+        "email": "sarah.johnson@officedepot.com",
+        "phone": "+1-800-555-0123"
+      },
+      "address": {
+        "street": "6600 North Military Trail",
+        "city": "Boca Raton",
+        "state": "FL",
+        "postal_code": "33496",
+        "country": "US"
+      },
+      "performance": {
+        "rating": 4.7,
+        "on_time_delivery": 0.94,
+        "quality_score": 4.5,
+        "total_orders": 247,
+        "total_spent": 45780.32
+      },
+      "contracts": [
+        {
+          "id": "contract_od_2024",
+          "type": "master_service_agreement",
+          "effective_date": "2024-01-01",
+          "expiration_date": "2024-12-31",
+          "discount_tier": "preferred_10"
+        }
+      ],
+      "certifications": ["minority_owned", "small_business"],
+      "payment_terms": {
+        "standard_terms": "net_30",
+        "early_pay_discount": 0.02,
+        "accepted_methods": ["check", "ach", "wire_transfer"]
+      },
+      "created_at": "2023-03-15T10:00:00Z",
+      "last_updated": "2024-01-12T14:30:00Z"
+    }
+  ],
+  "pagination": {
+    "page": 1,
+    "limit": 25,
+    "total_items": 1,
+    "total_pages": 1
+  }
+}
+                    </pre>
+                </div>
+            </div>
+        </div>
+
+        <div class="endpoint-card">
+            <div class="endpoint-header" onclick="toggleEndpoint(this)">
+                <div>
+                    <span class="endpoint-method method-post">POST</span>
+                    <span class="endpoint-path">/vendors</span>
+                </div>
+                <span class="expand-icon">▼</span>
+            </div>
+            <div class="endpoint-content">
+                <h4>Create Vendor</h4>
+                <p>Add a new vendor to the system with complete profile information.</p>
+
+                <h5>Request Body</h5>
+                <div class="code-block">
+                    <pre>
+{
+  "name": "TechSource Solutions",
+  "business_type": "corporation",
+  "tax_id": "12-3456789",
+  "duns_number": "123456789",
+  "category": ["technology", "consulting"],
+  "description": "Enterprise technology solutions and consulting services",
+  "website": "https://www.techsource.com",
+  "contact": {
+    "primary_contact": "Michael Chen",
+    "title": "Account Manager",
+    "email": "m.chen@techsource.com",
+    "phone": "+1-555-123-4567",
+    "mobile": "+1-555-987-6543"
+  },
+  "address": {
+    "street": "1234 Tech Boulevard",
+    "suite": "Suite 500",
+    "city": "San Francisco",
+    "state": "CA",
+    "postal_code": "94105",
+    "country": "US"
+  },
+  "billing_address": {
+    "same_as_primary": false,
+    "street": "1234 Tech Boulevard",
+    "suite": "Billing Department",
+    "city": "San Francisco", 
+    "state": "CA",
+    "postal_code": "94105",
+    "country": "US"
+  },
+  "bank_details": {
+    "bank_name": "First National Bank",
+    "routing_number": "121000248",
+    "account_number": "1234567890",
+    "account_type": "checking"
+  },
+  "certifications": ["women_owned", "sdb_certified"],
+  "insurance": {
+    "general_liability": {
+      "carrier": "ABC Insurance",
+      "policy_number": "GL-123456789",
+      "coverage_amount": 2000000,
+      "expiration_date": "2024-12-31"
+    },
+    "professional_liability": {
+      "carrier": "XYZ Insurance", 
+      "policy_number": "PL-987654321",
+      "coverage_amount": 1000000,
+      "expiration_date": "2024-12-31"
+    }
+  },
+  "references": [
+    {
+      "company": "Fortune 500 Corp",
+      "contact": "Jane Smith",
+      "email": "j.smith@fortune500.com",
+      "phone": "+1-555-999-8888"
+    }
+  ]
+}
+                    </pre>
+                </div>
+
+                <h5>Response</h5>
+                <div class="status-code status-201">201 Created</div>
+
+                <div class="response-example">
+                    <pre>
+{
+  "id": "vendor_techsource_001",
+  "name": "TechSource Solutions",
+  "status": "pending_approval",
+  "created_at": "2024-01-16T16:45:00Z",
+  "approval_process": {
+    "current_stage": "compliance_review",
+    "assigned_to": "procurement_team",
+    "estimated_completion": "2024-01-23T17:00:00Z"
+  },
+  "next_steps": [
+    "Compliance team will review certifications",
+    "Financial verification in progress",
+    "References will be contacted within 2 business days"
+  ]
+}
+                    </pre>
+                </div>
+            </div>
+        </div>
+
+        <h2 id="webhooks">Webhook Configuration</h2>
+
+        <p>Webhooks enable real-time notifications for events in ZipFlow, allowing your applications to respond immediately to status changes, approvals, and other important events.</p>
+
+        <div class="success-box">
+            <strong>Supported Events:</strong>
+            <ul>
+                <li><code>request.created</code> - New purchase request submitted</li>
+                <li><code>request.approved</code> - Request approved at any level</li>
+                <li><code>request.rejected</code> - Request rejected</li>
+                <li><code>request.completed</code> - Request fully approved and ready for procurement</li>
+                <li><code>budget.threshold_exceeded</code> - Budget threshold warnings</li>
+                <li><code>vendor.status_changed</code> - Vendor approval status updates</li>
+            </ul>
+        </div>
+
+        <h3>Webhook Setup</h3>
+
+        <div class="code-block">
+            <pre>
+POST /webhooks
+{
+  "url": "https://yourapp.com/webhooks/zipflow",
+  "events": ["request.approved", "request.rejected"],
+  "secret": "your_webhook_secret_key",
+  "active": true,
+  "retry_policy": {
+    "max_attempts": 3,
+    "backoff_multiplier": 2
+  }
+}
+            </pre>
+        </div>
+
+        <h3>Webhook Payload Example</h3>
+
+        <div class="response-example">
+            <pre>
+{
+  "id": "evt_1234567890",
+  "type": "request.approved",
+  "created_at": "2024-01-16T14:15:00Z",
+  "data": {
+    "request": {
+      "id": "req_1234567890",
+      "title": "Office Supplies - Q1 2024",
+      "amount": 875.50,
+      "status": "approved_level_2",
+      "approval_level": 2,
+      "approver": {
+        "id": "user_finance_team",
+        "name": "Finance Team"
+      },
+      "next_approval_level": 3,
+      "next_approver": {
+        "id": "user_procurement_team",
+        "name": "Procurement Team"
+      }
+    }
+  },
+  "signature": "sha256=your_calculated_signature"
+}
+            </pre>
+        </div>
+
+        <h2 id="error-handling">Error Handling</h2>
+
+        <p>The ZipFlow API uses conventional HTTP response codes and provides detailed error information in JSON format.</p>
+
+        <h3>HTTP Status Codes</h3>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Status Code</th>
+                    <th>Meaning</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><span class="status-code status-200">200</span></td>
+                    <td>OK</td>
+                    <td>Request successful</td>
+                </tr>
+                <tr>
+                    <td><span class="status-code status-201">201</span></td>
+                    <td>Created</td>
+                    <td>Resource created successfully</td>
+                </tr>
+                <tr>
+                    <td><span class="status-code status-400">400</span></td>
+                    <td>Bad Request</td>
+                    <td>Invalid request parameters or body</td>
+                </tr>
+                <tr>
+                    <td><span class="status-code status-401">401</span></td>
+                    <td>Unauthorized</td>
+                    <td>Authentication required or failed</td>
+                </tr>
+                <tr>
+                    <td><span class="status-code status-403">403</span></td>
+                    <td>Forbidden</td>
+                    <td>Insufficient permissions</td>
+                </tr>
+                <tr>
+                    <td><span class="status-code status-404">404</span></td>
+                    <td>Not Found</td>
+                    <td>Resource does not exist</td>
+                </tr>
+                <tr>
+                    <td><span class="status-code status-500">500</span></td>
+                    <td>Internal Server Error</td>
+                    <td>Server encountered an error</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3>Error Response Format</h3>
+
+        <div class="response-example">
+            <pre>
+{
+  "error": {
+    "code": "validation_error",
+    "message": "Request validation failed",
+    "details": [
+      {
+        "field": "amount",
+        "message": "Amount must be greater than 0"
+      },
+      {
+        "field": "vendor_id",
+        "message": "Vendor not found or inactive"
+      }
+    ],
+    "request_id": "req_debug_abc123",
+    "timestamp": "2024-01-16T15:30:00Z"
+  }
+}
+            </pre>
+        </div>
+
+        <h2 id="sdk-examples">SDK Examples and Libraries</h2>
+
+        <p>Official and community-supported SDKs are available for popular programming languages to accelerate integration development.</p>
+
+        <div class="tab-container">
+            <div class="tab-buttons">
+                <button class="tab-button active" onclick="switchTab('sdk-javascript')">JavaScript/Node.js</button>
+                <button class="tab-button" onclick="switchTab('sdk-python')">Python</button>
+                <button class="tab-button" onclick="switchTab('sdk-php')">PHP</button>
+                <button class="tab-button" onclick="switchTab('sdk-curl')">cURL</button>
+            </div>
+            
+            <div class="tab-content active" id="sdk-javascript">
+                <div class="sdk-example">
+                    <h4>Installation</h4>
+                    <div class="code-block">
+                        <pre>npm install zipflow-api-client</pre>
+                    </div>
+                    
+                    <h4>Basic Usage</h4>
+                    <div class="code-block">
+                        <pre>
+const ZipFlow = require('zipflow-api-client');
+
+const client = new ZipFlow({
+    apiKey: 'your_api_key',
+    environment: 'production' // or 'sandbox'
+});
+
+// Create a purchase request
+async function createRequest() {
+    try {
+        const request = await client.requests.create({
+            title: 'Office Supplies Order',
+            amount: 250.00,
+            currency: 'USD',
+            category: 'office_supplies',
+            department_id: 'dept_marketing',
+            line_items: [
+                {
+                    description: 'Printer Paper - 10 reams',
+                    quantity: 10,
+                    unit_price: 12.99,
+                    total_price: 129.90
+                }
+            ]
+        });
+        
+        console.log('Request created:', request.id);
+        return request;
+    } catch (error) {
+        console.error('Error creating request:', error.message);
+        throw error;
+    }
+}
+
+// Get pending approvals
+async function getPendingApprovals() {
+    try {
+        const approvals = await client.approvals.getPending({
+            priority: 'high',
+            limit: 10
+        });
+        
+        approvals.data.forEach(approval => {
+            console.log(`Request ${approval.request_id}: ${approval.title}`);
+            console.log(`Amount: $${approval.amount} - SLA: ${approval.time_remaining}`);
+        });
+        
+        return approvals;
+    } catch (error) {
+        console.error('Error fetching approvals:', error.message);
+        throw error;
+    }
+}
+                        </pre>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="tab-content" id="sdk-python">
+                <div class="sdk-example">
+                    <h4>Installation</h4>
+                    <div class="code-block">
+                        <pre>pip install zipflow-python</pre>
+                    </div>
+                    
+                    <h4>Basic Usage</h4>
+                    <div class="code-block">
+                        <pre>
+import zipflow
+from zipflow.exceptions import ZipFlowAPIError
+
+# Initialize client
+client = zipflow.Client(
+    api_key='your_api_key',
+    environment='production'  # or 'sandbox'
+)
+
+# Create a purchase request
+def create_request():
+    try:
+        request = client.requests.create(
+            title='Software License Purchase',
+            amount=1200.00,
+            currency='USD',
+            category='software',
+            department_id='dept_it',
+            vendor_id='vendor_microsoft',
+            line_items=[
+                {
+                    'description': 'Microsoft Office 365 - Annual License',
+                    'quantity': 5,
+                    'unit_price': 240.00,
+                    'total_price': 1200.00
+                }
+            ]
+        )
+        
+        print(f'Request created: {request.id}')
+        return request
+        
+    except ZipFlowAPIError as e:
+        print(f'API Error: {e.message}')
+        if e.details:
+            for detail in e.details:
+                print(f'  {detail.field}: {detail.message}')
+        raise
+
+# Approve a request
+def approve_request(request_id):
+    try:
+        approval = client.approvals.approve(
+            request_id=request_id,
+            comments='Approved - budget confirmed and vendor verified',
+            notify_requestor=True
+        )
+        
+        print(f'Request {request_id} approved')
+        print(f'Next approver: {approval.next_approver.name}')
+        return approval
+        
+    except ZipFlowAPIError as e:
+        print(f'Approval failed: {e.message}')
+        raise
+
+# List vendors with filtering
+def list_vendors():
+    try:
+        vendors = client.vendors.list(
+            status='active',
+            category='technology',
+            limit=50
+        )
+        
+        for vendor in vendors.data:
+            print(f'{vendor.name} - Rating: {vendor.performance.rating}/5')
+            
+        return vendors
+        
+    except ZipFlowAPIError as e:
+        print(f'Error listing vendors: {e.message}')
+        raise
+                        </pre>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="tab-content" id="sdk-php">
+                <div class="sdk-example">
+                    <h4>Installation</h4>
+                    <div class="code-block">
+                        <pre>composer require zipflow/zipflow-php</pre>
+                    </div>
+                    
+                    <h4>Basic Usage</h4>
+                    <div class="code-block">
+                        <pre>
+<?php
+require_once 'vendor/autoload.php';
+
+use ZipFlow\Client;
+use ZipFlow\Exception\ApiException;
+
+// Initialize client
+$client = new Client([
+    'api_key' => 'your_api_key',
+    'environment' => 'production' // or 'sandbox'
+]);
+
+// Create a purchase request
+function createRequest($client) {
+    try {
+        $request = $client->requests->create([
+            'title' => 'Marketing Materials Order',
+            'amount' => 850.00,
+            'currency' => 'USD',
+            'category' => 'marketing',
+            'department_id' => 'dept_marketing',
+            'vendor_id' => 'vendor_staples',
+            'line_items' => [
+                [
+                    'description' => 'Business Cards - 1000 count',
+                    'quantity' => 5,
+                    'unit_price' => 45.00,
+                    'total_price' => 225.00
+                ],
+                [
+                    'description' => 'Promotional Banners - Large',
+                    'quantity' => 3,
+                    'unit_price' => 125.00,
+                    'total_price' => 375.00
+                ]
+            ]
+        ]);
+        
+        echo "Request created: " . $request->id . "\n";
+        echo "Status: " . $request->status . "\n";
+        
+        return $request;
+        
+    } catch (ApiException $e) {
+        echo "API Error: " . $e->getMessage() . "\n";
+        if ($e->getDetails()) {
+            foreach ($e->getDetails() as $detail) {
+                echo "  {$detail->field}: {$detail->message}\n";
+            }
+        }
+        throw $e;
+    }
+}
+
+// Get request by ID
+function getRequest($client, $requestId) {
+    try {
+        $request = $client->requests->get($requestId);
+        
+        echo "Request: " . $request->title . "\n";
+        echo "Amount: $" . number_format($request->amount, 2) . "\n";
+        echo "Status: " . $request->status . "\n";
+        
+        if ($request->approval_chain) {
+            echo "Approval Progress:\n";
+            foreach ($request->approval_chain as $level => $approval) {
+                $status = $approval->status;
+                $approver = $approval->approver->name;
+                echo "  Level {$level}: {$status} by {$approver}\n";
+            }
+        }
+        
+        return $request;
+        
+    } catch (ApiException $e) {
+        echo "Error retrieving request: " . $e->getMessage() . "\n";
+        throw $e;
+    }
+}
+
+// Usage examples
+$request = createRequest($client);
+$retrievedRequest = getRequest($client, $request->id);
+?>
+                        </pre>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="tab-content" id="sdk-curl">
+                <div class="sdk-example">
+                    <h4>Authentication</h4>
+                    <div class="code-block">
+                        <pre>
+# Set your API key as environment variable
+export ZIPFLOW_API_KEY="your_api_key"
+
+# All requests include the Authorization header
+curl -H "Authorization: Bearer $ZIPFLOW_API_KEY" \
+     -H "Content-Type: application/json" \
+     https://api.zipflow.com/v2/requests
+                        </pre>
+                    </div>
+                    
+                    <h4>Create Purchase Request</h4>
+                    <div class="code-block">
+                        <pre>
+curl -X POST https://api.zipflow.com/v2/requests \
+  -H "Authorization: Bearer $ZIPFLOW_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "title": "IT Equipment Purchase",
+    "description": "New laptops for development team",
+    "amount": 4500.00,
+    "currency": "USD",
+    "category": "technology",
+    "department_id": "dept_engineering",
+    "vendor_id": "vendor_dell",
+    "line_items": [
+      {
+        "description": "Dell Laptop - Developer Edition",
+        "quantity": 3,
+        "unit_price": 1500.00,
+        "total_price": 4500.00
+      }
+    ],
+    "business_justification": "Required for new team members starting next month"
+  }'
+                        </pre>
+                    </div>
+                    
+                    <h4>Approve Request</h4>
+                    <div class="code-block">
+                        <pre>
+curl -X POST https://api.zipflow.com/v2/approvals/req_1234567890/approve \
+  -H "Authorization: Bearer $ZIPFLOW_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "comments": "Approved - budget confirmed for Q1 team expansion",
+    "conditions": [
+      "Delivery required by February 15, 2024",
+      "Standard warranty extension included"
+    ],
+    "notify_requestor": true
+  }'
+                        </pre>
+                    </div>
+                    
+                    <h4>List Pending Approvals</h4>
+                    <div class="code-block">
+                        <pre>
+curl -G https://api.zipflow.com/v2/approvals/pending \
+  -H "Authorization: Bearer $ZIPFLOW_API_KEY" \
+  -d priority=high \
+  -d sla_expiring=true \
+  -d limit=20
+                        </pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <h2 id="summary">Summary and Next Steps</h2>
+
+        <div class="success-box">
+            <strong>API Integration Checklist:</strong>
+            <ul>
+                <li>Obtain API credentials from ZipFlow admin console</li>
+                <li>Test authentication with sandbox environment</li>
+                <li>Implement core request/approval workflows</li>
+                <li>Set up webhook endpoints for real-time updates</li>
+                <li>Add comprehensive error handling and logging</li>
+                <li>Test thoroughly before production deployment</li>
+            </ul>
+        </div>
+
+        <div class="info-box">
+            <strong>Additional Resources:</strong>
+            <ul>
+                <li><strong>API Status:</strong> Monitor uptime at status.zipflow.com</li>
+                <li><strong>Developer Support:</strong> api-support@zipflow.com</li>
+                <li><strong>Community Forum:</strong> developers.zipflow.com</li>
+                <li><strong>Change Log:</strong> Regular updates on API improvements</li>
+                <li><strong>Rate Limit Monitoring:</strong> Usage dashboard in admin console</li>
+            </ul>
+        </div>
+
+        <div class="button-group">
+            <a href="../admin/user-management.html" class="btn btn-primary">Next: User Management</a>
+            <a href="../support/onboarding-checklist.html" class="btn btn-secondary">Previous: Onboarding Checklist</a>
+        </div>
+
+        <div class="footer">
+            <p><strong>Last Updated:</strong> January 2024 | <strong>Version:</strong> 2.1</p>
+            <p>Created by <a href="../../index.html">Justin Arndt</a> - Technical Writing Portfolio</p>
+        </div>
+    </div>
+
+    <script src="../../assets/js/documentation.js"></script>
+    <script>
+        function toggleEndpoint(element) {
+            element.classList.toggle('active');
+        }
+        
+        function switchTab(tabName) {
+            // Hide all tab contents
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            
+            // Remove active class from all buttons
+            document.querySelectorAll('.tab-button').forEach(button => {
+                button.classList.remove('active');
+            });
+            
+            // Show selected tab content
+            document.getElementById(tabName).classList.add('active');
+            
+            // Add active class to clicked button
+            event.target.classList.add('active');
+        }
+    </script>
+</body>
+</html>

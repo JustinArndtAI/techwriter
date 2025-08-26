@@ -1,0 +1,1014 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZipFlow New User Onboarding Checklist</title>
+    <meta name="description" content="Interactive onboarding checklist for new ZipFlow users with Week 1, Week 2-3, and Week 4+ tasks including progress tracking">
+    <link rel="stylesheet" href="../../assets/css/documentation.css">
+    <style>
+        .onboarding-progress {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 1rem;
+            margin: 2rem 0;
+            text-align: center;
+        }
+        .progress-bar {
+            background: rgba(255, 255, 255, 0.3);
+            height: 20px;
+            border-radius: 10px;
+            margin: 1rem 0;
+            overflow: hidden;
+        }
+        .progress-fill {
+            background: linear-gradient(90deg, #10b981, #34d399);
+            height: 100%;
+            width: 0%;
+            border-radius: 10px;
+            transition: width 0.5s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+        .week-section {
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            border: 2px solid var(--primary-color);
+            border-radius: 1rem;
+            padding: 2rem;
+            margin: 2rem 0;
+            position: relative;
+        }
+        .week-section::before {
+            content: attr(data-week);
+            position: absolute;
+            top: -15px;
+            left: 30px;
+            background: var(--primary-color);
+            color: white;
+            padding: 0.5rem 1.5rem;
+            border-radius: 2rem;
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+        .task-category {
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .task-category h4 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+        }
+        .task-category h4::before {
+            content: '📋';
+            margin-right: 0.5rem;
+        }
+        .task-item {
+            display: flex;
+            align-items: flex-start;
+            margin: 1rem 0;
+            padding: 1rem;
+            background: #f8fafc;
+            border-radius: 0.5rem;
+            border-left: 4px solid var(--border-color);
+            transition: all 0.3s ease;
+        }
+        .task-item.completed {
+            background: #d1fae5;
+            border-left-color: var(--success-color);
+        }
+        .task-item.high-priority {
+            border-left-color: var(--error-color);
+            background: #fef2f2;
+        }
+        .task-item.medium-priority {
+            border-left-color: var(--warning-color);
+            background: #fffbeb;
+        }
+        .task-checkbox {
+            margin-right: 1rem;
+            transform: scale(1.2);
+            cursor: pointer;
+        }
+        .task-content {
+            flex: 1;
+        }
+        .task-title {
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+        .task-description {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+        .task-resources {
+            margin-top: 0.5rem;
+        }
+        .task-resources a {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-size: 0.85rem;
+            margin-right: 1rem;
+        }
+        .task-resources a:hover {
+            text-decoration: underline;
+        }
+        .priority-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 1rem;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-left: 1rem;
+        }
+        .priority-high {
+            background: var(--error-color);
+            color: white;
+        }
+        .priority-medium {
+            background: var(--warning-color);
+            color: #92400e;
+        }
+        .priority-low {
+            background: var(--success-color);
+            color: white;
+        }
+        .milestone-achievement {
+            background: linear-gradient(135deg, #10b981 0%, #34d399 100%);
+            color: white;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin: 1rem 0;
+            text-align: center;
+            font-weight: bold;
+            display: none;
+        }
+        .milestone-achievement.show {
+            display: block;
+            animation: slideIn 0.5s ease;
+        }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .quick-links {
+            background: var(--background);
+            border: 1px solid var(--border-color);
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            margin: 2rem 0;
+        }
+        .quick-links h3 {
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+        .links-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+        .link-card {
+            background: white;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            border: 1px solid var(--border-color);
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        .link-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        .link-card a {
+            text-decoration: none;
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+        .completion-celebration {
+            background: linear-gradient(135deg, #a855f7 0%, #ec4899 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 1rem;
+            text-align: center;
+            margin: 2rem 0;
+            display: none;
+        }
+        .completion-celebration.show {
+            display: block;
+            animation: celebrate 1s ease;
+        }
+        @keyframes celebrate {
+            0% { transform: scale(0.8); opacity: 0; }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <div class="doc-header">
+        <h1>New User Onboarding Checklist</h1>
+        <p class="subtitle">Your Complete Guide to ZipFlow Mastery</p>
+    </div>
+
+    <div class="breadcrumb">
+        <a href="../../index.html">Portfolio</a> / 
+        <a href="../index.html">Documentation</a> / 
+        <span>Onboarding Checklist</span>
+    </div>
+
+    <div class="doc-container">
+        <div class="info-box">
+            <strong>Welcome to ZipFlow!</strong> This interactive checklist will guide you through your first month, ensuring you master all essential features and become productive quickly.
+        </div>
+
+        <div class="onboarding-progress">
+            <h3>Your Onboarding Progress</h3>
+            <div class="progress-bar">
+                <div class="progress-fill" id="overall-progress">0%</div>
+            </div>
+            <p id="progress-text">Get started by completing your Week 1 essentials!</p>
+        </div>
+
+        <div class="toc" id="table-of-contents">
+            <h3>Table of Contents</h3>
+        </div>
+
+        <h2 id="overview">Onboarding Overview</h2>
+        
+        <p>Your ZipFlow onboarding journey is structured in three phases designed to build your expertise progressively. Each week focuses on specific capabilities, from essential daily tasks to advanced features that will make you a procurement power user.</p>
+
+        <div class="success-box">
+            <strong>Onboarding Goals:</strong>
+            <ul>
+                <li><strong>Week 1:</strong> Master basic navigation and essential daily tasks</li>
+                <li><strong>Weeks 2-3:</strong> Develop intermediate skills and workflow proficiency</li>
+                <li><strong>Week 4+:</strong> Advanced features and optimization techniques</li>
+                <li><strong>Ongoing:</strong> Continuous learning and best practice adoption</li>
+            </ul>
+        </div>
+
+        <div class="quick-links">
+            <h3>Essential Resources</h3>
+            <div class="links-grid">
+                <div class="link-card">
+                    <a href="../getting-started/zipflow_getting_started.html">📚 Getting Started Guide</a>
+                </div>
+                <div class="link-card">
+                    <a href="../tutorials/approval-workflows.html">⚡ Approval Workflows</a>
+                </div>
+                <div class="link-card">
+                    <a href="zipflow-faq-library.html">❓ FAQ Library</a>
+                </div>
+                <div class="link-card">
+                    <a href="troubleshooting.html">🔧 Troubleshooting</a>
+                </div>
+                <div class="link-card">
+                    <a href="../api/reference.html">🔗 API Reference</a>
+                </div>
+                <div class="link-card">
+                    <a href="../admin/user-management.html">👥 User Management</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="week-section" data-week="WEEK 1">
+            <h2 id="week-1">Week 1: Essential Foundation</h2>
+            <p>Your first week focuses on getting comfortable with ZipFlow's core features and completing your essential setup tasks.</p>
+
+            <div class="milestone-achievement" id="week1-milestone">
+                🎉 Congratulations! You've completed your Week 1 essentials and are ready for intermediate features!
+            </div>
+
+            <div class="task-category">
+                <h4>Account Setup and Profile Configuration</h4>
+                
+                <div class="task-item high-priority" data-task="setup-1">
+                    <input type="checkbox" class="task-checkbox" id="task-setup-1">
+                    <div class="task-content">
+                        <div class="task-title">
+                            Complete your user profile
+                            <span class="priority-badge priority-high">High Priority</span>
+                        </div>
+                        <div class="task-description">
+                            Add your photo, contact information, department, and manager details. This ensures proper approval routing and professional communication.
+                        </div>
+                        <div class="task-resources">
+                            <a href="#" onclick="showTooltip('Navigate to Settings → Profile → Edit Details')">📍 Step-by-step guide</a>
+                            <a href="#" onclick="showTooltip('Upload a professional headshot, minimum 200x200px')">📷 Photo requirements</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="task-item high-priority" data-task="setup-2">
+                    <input type="checkbox" class="task-checkbox" id="task-setup-2">
+                    <div class="task-content">
+                        <div class="task-title">
+                            Configure notification preferences
+                            <span class="priority-badge priority-high">High Priority</span>
+                        </div>
+                        <div class="task-description">
+                            Set up email and mobile notifications for approvals, budget alerts, and system updates. Choose frequency and delivery methods that work for your schedule.
+                        </div>
+                        <div class="task-resources">
+                            <a href="#" onclick="showTooltip('Settings → Notifications → Configure all categories')">⚙️ Settings location</a>
+                            <a href="#" onclick="showTooltip('Enable mobile push notifications for fastest approval response')">📱 Mobile setup</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="task-item medium-priority" data-task="setup-3">
+                    <input type="checkbox" class="task-checkbox" id="task-setup-3">
+                    <div class="task-content">
+                        <div class="task-title">
+                            Download and set up mobile app
+                            <span class="priority-badge priority-medium">Medium Priority</span>
+                        </div>
+                        <div class="task-description">
+                            Install ZipFlow mobile app from App Store or Google Play. Log in and enable push notifications for on-the-go approvals and budget monitoring.
+                        </div>
+                        <div class="task-resources">
+                            <a href="#" onclick="showTooltip('Available on iOS App Store and Google Play Store')">📱 Download links</a>
+                            <a href="#" onclick="showTooltip('Use same login credentials as web version')">🔑 Login help</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="task-category">
+                <h4>System Navigation and Basic Features</h4>
+                
+                <div class="task-item high-priority" data-task="nav-1">
+                    <input type="checkbox" class="task-checkbox" id="task-nav-1">
+                    <div class="task-content">
+                        <div class="task-title">
+                            Explore dashboard and main navigation
+                            <span class="priority-badge priority-high">High Priority</span>
+                        </div>
+                        <div class="task-description">
+                            Spend 15-20 minutes familiarizing yourself with the dashboard layout, main menu items, and key widgets. Customize your dashboard view for optimal productivity.
+                        </div>
+                        <div class="task-resources">
+                            <a href="#" onclick="showTooltip('Dashboard → Customize View → Select preferred widgets')">🎛️ Customization guide</a>
+                            <a href="../getting-started/zipflow_getting_started.html">📖 Navigation tutorial</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="task-item high-priority" data-task="nav-2">
+                    <input type="checkbox" class="task-checkbox" id="task-nav-2">
+                    <div class="task-content">
+                        <div class="task-title">
+                            Create your first purchase request
+                            <span class="priority-badge priority-high">High Priority</span>
+                        </div>
+                        <div class="task-description">
+                            Submit a simple purchase request to understand the process. Use a small office supply purchase ($50 or less) as your test case.
+                        </div>
+                        <div class="task-resources">
+                            <a href="#" onclick="showTooltip('Requests → New Request → Office Supplies category')">➕ Create request</a>
+                            <a href="#" onclick="showTooltip('Include detailed description and business justification')">📝 Best practices</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="task-item medium-priority" data-task="nav-3">
+                    <input type="checkbox" class="task-checkbox" id="task-nav-3">
+                    <div class="task-content">
+                        <div class="task-title">
+                            Learn search and filtering capabilities
+                            <span class="priority-badge priority-medium">Medium Priority</span>
+                        </div>
+                        <div class="task-description">
+                            Practice using search functionality, date filters, and status filters to find specific requests, vendors, or budget information quickly.
+                        </div>
+                        <div class="task-resources">
+                            <a href="#" onclick="showTooltip('Use global search bar and advanced filters in each section')">🔍 Search tips</a>
+                            <a href="#" onclick="showTooltip('Save frequently used filter combinations as shortcuts')">💾 Filter shortcuts</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="task-category">
+                <h4>Training and Knowledge Building</h4>
+                
+                <div class="task-item medium-priority" data-task="training-1">
+                    <input type="checkbox" class="task-checkbox" id="task-training-1">
+                    <div class="task-content">
+                        <div class="task-title">
+                            Complete "ZipFlow Basics" training module
+                            <span class="priority-badge priority-medium">Medium Priority</span>
+                        </div>
+                        <div class="task-description">
+                            Take the interactive training course covering fundamental concepts, navigation, and basic workflows. Approximately 30-45 minutes to complete.
+                        </div>
+                        <div class="task-resources">
+                            <a href="#" onclick="showTooltip('Training → ZipFlow Basics → Start Course')">🎓 Training portal</a>
+                            <a href="#" onclick="showTooltip('Course includes quiz and completion certificate')">🏆 Certification info</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="task-item low-priority" data-task="training-2">
+                    <input type="checkbox" class="task-checkbox" id="task-training-2">
+                    <div class="task-content">
+                        <div class="task-title">
+                            Review company-specific procurement policies
+                            <span class="priority-badge priority-low">Low Priority</span>
+                        </div>
+                        <div class="task-description">
+                            Read your organization's procurement policies, approval limits, and vendor requirements as they apply to ZipFlow workflows.
+                        </div>
+                        <div class="task-resources">
+                            <a href="#" onclick="showTooltip('Check company intranet or HR resources for policies')">📋 Policy location</a>
+                            <a href="#" onclick="showTooltip('Ask your manager for department-specific guidelines')">👥 Manager guidance</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="task-item medium-priority" data-task="training-3">
+                    <input type="checkbox" class="task-checkbox" id="task-training-3">
+                    <div class="task-content">
+                        <div class="task-title">
+                            Identify your key contacts and support resources
+                            <span class="priority-badge priority-medium">Medium Priority</span>
+                        </div>
+                        <div class="task-description">
+                            Create a contact list including your manager, IT support, procurement team, and ZipFlow system administrators for future assistance.
+                        </div>
+                        <div class="task-resources">
+                            <a href="#" onclick="showTooltip('Add contacts to your phone and email for quick access')">📞 Contact management</a>
+                            <a href="troubleshooting.html">🔧 Support resources</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="week-section" data-week="WEEKS 2-3">
+            <h2 id="weeks-2-3">Weeks 2-3: Building Proficiency</h2>
+            <p>Now that you're comfortable with basics, it's time to develop intermediate skills and explore more sophisticated features.</p>
+
+            <div class="milestone-achievement" id="weeks23-milestone">
+                🚀 Excellent progress! You're now proficient with ZipFlow's core capabilities and ready for advanced features!
+            </div>
+
+            <div class="task-category">
+                <h4>Advanced Request Management</h4>
+                
+                <div class="task-item high-priority" data-task="advanced-1">
+                    <input type="checkbox" class="task-checkbox" id="task-advanced-1">
+                    <div class="task-content">
+                        <div class="task-title">
+                            Master different request types and categories
+                            <span class="priority-badge priority-high">High Priority</span>
+                        </div>
+                        <div class="task-description">
+                            Practice creating requests across different categories: capital equipment, software/SaaS, professional services, and recurring subscriptions. Understand category-specific requirements.
+                        </div>
+                        <div class="task-resources">
+                            <a href="#" onclick="showTooltip('Each category has different approval chains and requirements')">📋 Category differences</a>
+                            <a href="../tutorials/approval-workflows.html">⚡ Workflow guide</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="task-item high-priority" data-task="advanced-2">
+                    <input type="checkbox" class="task-checkbox" id="task-advanced-2">
+                    <div class="task-content">
+                        <div class="task-title">
+                            Learn to attach and manage supporting documents
+                            <span class="priority-badge priority-high">High Priority</span>
+                        </div>
+                        <div class="task-description">
+                            Practice uploading quotes, specifications, contracts, and other supporting documents. Understand file size limits and acceptable formats.
+                        </div>
+                        <div class="task-resources">
+                            <a href="#" onclick="showTooltip('Supported formats: PDF, DOC, XLS, JPG, PNG. Max 25MB per file')">📎 File requirements</a>
+                            <a href="#" onclick="showTooltip('Organize documents with clear naming conventions')">📁 Organization tips</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="task-item medium-priority" data-task="advanced-3">
+                    <input type="checkbox" class="task-checkbox" id="task-advanced-3">
+                    <div class="task-content">
+                        <div class="task-title">
+                            Understand and use budget codes and cost centers
+                            <span class="priority-badge priority-medium">Medium Priority</span>
+                        </div>
+                        <div class="task-description">
+                            Learn how to correctly assign budget codes, cost centers, and project codes to your requests. Understand the impact on financial reporting and approvals.
+                        </div>
+                        <div class="task-resources">
+                            <a href="../tutorials/budget-controls.html">💰 Budget guide</a>
+                            <a href="#" onclick="showTooltip('Ask your finance team for department-specific budget codes')">🧮 Finance contact</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="task-category">
+                <h4>Approval and Workflow Mastery</h4>
+                
+                <div class="task-item high-priority" data-task="workflow-1">
+                    <input type="checkbox" class="task-checkbox" id="task-workflow-1">
+                    <div class="task-content">
+                        <div class="task-title">
+                            Practice approving requests (if you have approval authority)
+                            <span class="priority-badge priority-high">High Priority</span>
+                        </div>
+                        <div class="task-description">
+                            If you have approval responsibilities, practice reviewing and approving/rejecting requests. Understand your approval limits and delegation options.
+                        </div>
+                        <div class="task-resources">
+                            <a href="../tutorials/purchase-approvals.html">✅ Approval guide</a>
+                            <a href="#" onclick="showTooltip('Set up delegation for vacation or business travel')">👥 Delegation setup</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="task-item medium-priority" data-task="workflow-2">
+                    <input type="checkbox" class="task-checkbox" id="task-workflow-2">
+                    <div class="task-content">
+                        <div class="task-title">
+                            Learn to track and follow up on pending requests
+                            <span class="priority-badge priority-medium">Medium Priority</span>
+                        </div>
+                        <div class="task-description">
+                            Understand how to monitor request progress, send reminders to approvers, and escalate when necessary. Use dashboard widgets for efficient tracking.
+                        </div>
+                        <div class="task-resources">
+                            <a href="#" onclick="showTooltip('Dashboard → My Requests widget shows all pending items')">📊 Tracking dashboard</a>
+                            <a href="#" onclick="showTooltip('Send polite reminders after 48 hours of inactivity')">⏰ Follow-up timing</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="task-item medium-priority" data-task="workflow-3">
+                    <input type="checkbox" class="task-checkbox" id="task-workflow-3">
+                    <div class="task-content">
+                        <div class="task-title">
+                            Understand emergency and expedited request procedures
+                            <span class="priority-badge priority-medium">Medium Priority</span>
+                        </div>
+                        <div class="task-description">
+                            Learn when and how to use emergency request flags, expedited approval processes, and after-hours approval procedures for urgent business needs.
+                        </div>
+                        <div class="task-resources">
+                            <a href="#" onclick="showTooltip('Emergency requests require detailed justification and executive approval')">🚨 Emergency criteria</a>
+                            <a href="troubleshooting.html">🔧 Escalation procedures</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="task-category">
+                <h4>Vendor and Catalog Management</h4>
+                
+                <div class="task-item medium-priority" data-task="vendor-1">
+                    <input type="checkbox" class="task-checkbox" id="task-vendor-1">
+                    <div class="task-content">
+                        <div class="task-title">
+                            Explore vendor catalogs and preferred suppliers
+                            <span class="priority-badge priority-medium">Medium Priority</span>
+                        </div>
+                        <div class="task-description">
+                            Browse available vendor catalogs, understand preferred supplier agreements, and learn how to request new vendor additions to the system.
+                        </div>
+                        <div class="task-resources">
+                            <a href="#" onclick="showTooltip('Vendors → Catalogs → Browse by category')">🛒 Catalog browser</a>
+                            <a href="#" onclick="showTooltip('Preferred vendors offer better pricing and faster approvals')">⭐ Preferred benefits</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="task-item low-priority" data-task="vendor-2">
+                    <input type="checkbox" class="task-checkbox" id="task-vendor-2">
+                    <div class="task-content">
+                        <div class="task-title">
+                            Learn to request new vendor setup
+                            <span class="priority-badge priority-low">Low Priority</span>
+                        </div>
+                        <div class="task-description">
+                            Understand the process for adding new vendors to the system, required documentation, and approval procedures for vendor onboarding.
+                        </div>
+                        <div class="task-resources">
+                            <a href="#" onclick="showTooltip('Vendors → Request New Vendor → Complete vendor information form')">➕ New vendor request</a>
+                            <a href="#" onclick="showTooltip('New vendors require compliance and financial verification')">🔍 Vendor vetting</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="task-category">
+                <h4>Reporting and Analytics</h4>
+                
+                <div class="task-item medium-priority" data-task="reporting-1">
+                    <input type="checkbox" class="task-checkbox" id="task-reporting-1">
+                    <div class="task-content">
+                        <div class="task-title">
+                            Generate your first spending report
+                            <span class="priority-badge priority-medium">Medium Priority</span>
+                        </div>
+                        <div class="task-description">
+                            Create a personal spending report to understand your procurement activity, identify patterns, and track budget utilization over time.
+                        </div>
+                        <div class="task-resources">
+                            <a href="#" onclick="showTooltip('Reports → Personal Spending → Select date range and categories')">📈 Report generator</a>
+                            <a href="#" onclick="showTooltip('Schedule monthly reports for ongoing budget awareness')">⏰ Scheduled reports</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="task-item low-priority" data-task="reporting-2">
+                    <input type="checkbox" class="task-checkbox" id="task-reporting-2">
+                    <div class="task-content">
+                        <div class="task-title">
+                            Explore department and team analytics (if authorized)
+                            <span class="priority-badge priority-low">Low Priority</span>
+                        </div>
+                        <div class="task-description">
+                            If you have appropriate permissions, explore team and department-level analytics to understand broader spending patterns and opportunities.
+                        </div>
+                        <div class="task-resources">
+                            <a href="#" onclick="showTooltip('Analytics → Department View → Select your department')">📊 Analytics dashboard</a>
+                            <a href="#" onclick="showTooltip('Contact admin if you need additional reporting access')">🔐 Access requests</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="week-section" data-week="WEEK 4+">
+            <h2 id="week-4-plus">Week 4+: Advanced Features and Optimization</h2>
+            <p>You're now ready to explore advanced features, optimization techniques, and become a ZipFlow power user.</p>
+
+            <div class="milestone-achievement" id="week4-milestone">
+                🏆 Congratulations! You're now a ZipFlow power user with mastery of advanced features and optimization techniques!
+            </div>
+
+            <div class="task-category">
+                <h4>Advanced System Features</h4>
+                
+                <div class="task-item high-priority" data-task="power-1">
+                    <input type="checkbox" class="task-checkbox" id="task-power-1">
+                    <div class="task-content">
+                        <div class="task-title">
+                            Set up automation rules and favorites
+                            <span class="priority-badge priority-high">High Priority</span>
+                        </div>
+                        <div class="task-description">
+                            Create automation rules for recurring purchases, set up request templates for common items, and configure favorite vendors and products for quick access.
+                        </div>
+                        <div class="task-resources">
+                            <a href="#" onclick="showTooltip('Settings → Automation → Create Rules for recurring items')">🤖 Automation setup</a>
+                            <a href="#" onclick="showTooltip('Templates save 80% of time on similar requests')">📋 Template benefits</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="task-item high-priority" data-task="power-2">
+                    <input type="checkbox" class="task-checkbox" id="task-power-2">
+                    <div class="task-content">
+                        <div class="task-title">
+                            Master bulk operations and batch processing
+                            <span class="priority-badge priority-high">High Priority</span>
+                        </div>
+                        <div class="task-description">
+                            Learn to handle multiple requests efficiently through bulk operations, batch approvals, and mass updates. Essential for high-volume procurement activities.
+                        </div>
+                        <div class="task-resources">
+                            <a href="#" onclick="showTooltip('Select multiple items → Actions → Bulk Operations')">📦 Bulk operations</a>
+                            <a href="#" onclick="showTooltip('Batch processing reduces admin time by 60%')">⚡ Efficiency gains</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="task-item medium-priority" data-task="power-3">
+                    <input type="checkbox" class="task-checkbox" id="task-power-3">
+                    <div class="task-content">
+                        <div class="task-title">
+                            Explore API and integration capabilities
+                            <span class="priority-badge priority-medium">Medium Priority</span>
+                        </div>
+                        <div class="task-description">
+                            If you have technical skills, explore ZipFlow's API documentation and integration possibilities with other business systems you use.
+                        </div>
+                        <div class="task-resources">
+                            <a href="../api/reference.html">🔗 API documentation</a>
+                            <a href="#" onclick="showTooltip('Popular integrations: Slack, Microsoft Teams, ERP systems')">🔌 Integration options</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="task-category">
+                <h4>Performance Optimization</h4>
+                
+                <div class="task-item medium-priority" data-task="optimize-1">
+                    <input type="checkbox" class="task-checkbox" id="task-optimize-1">
+                    <div class="task-content">
+                        <div class="task-title">
+                            Customize dashboard for maximum efficiency
+                            <span class="priority-badge priority-medium">Medium Priority</span>
+                        </div>
+                        <div class="task-description">
+                            Fine-tune your dashboard layout, widget selection, and default views based on your usage patterns. Create role-specific views for different responsibilities.
+                        </div>
+                        <div class="task-resources">
+                            <a href="#" onclick="showTooltip('Dashboard → Customize → Save multiple layouts for different roles')">🎛️ Custom layouts</a>
+                            <a href="#" onclick="showTooltip('Analyze usage patterns to optimize widget selection')">📊 Usage analytics</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="task-item medium-priority" data-task="optimize-2">
+                    <input type="checkbox" class="task-checkbox" id="task-optimize-2">
+                    <div class="task-content">
+                        <div class="task-title">
+                            Implement advanced search and filter strategies
+                            <span class="priority-badge priority-medium">Medium Priority</span>
+                        </div>
+                        <div class="task-description">
+                            Master advanced search operators, create saved search queries, and build complex filters for rapid information retrieval across large datasets.
+                        </div>
+                        <div class="task-resources">
+                            <a href="#" onclick="showTooltip('Use operators like AND, OR, quotes for exact phrases')">🔍 Search operators</a>
+                            <a href="#" onclick="showTooltip('Save frequently used searches as bookmarks')">🔖 Search bookmarks</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="task-item low-priority" data-task="optimize-3">
+                    <input type="checkbox" class="task-checkbox" id="task-optimize-3">
+                    <div class="task-content">
+                        <div class="task-title">
+                            Configure advanced notification and alert rules
+                            <span class="priority-badge priority-low">Low Priority</span>
+                        </div>
+                        <div class="task-description">
+                            Set up sophisticated notification rules based on conditions, thresholds, and business logic. Reduce notification noise while ensuring critical alerts reach you immediately.
+                        </div>
+                        <div class="task-resources">
+                            <a href="#" onclick="showTooltip('Notifications → Advanced Rules → Conditional Logic')">⚙️ Advanced rules</a>
+                            <a href="#" onclick="showTooltip('Balance information needs with notification overload')">⚖️ Balance strategy</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="task-category">
+                <h4>Leadership and Knowledge Sharing</h4>
+                
+                <div class="task-item medium-priority" data-task="leadership-1">
+                    <input type="checkbox" class="task-checkbox" id="task-leadership-1">
+                    <div class="task-content">
+                        <div class="task-title">
+                            Mentor new users and share best practices
+                            <span class="priority-badge priority-medium">Medium Priority</span>
+                        </div>
+                        <div class="task-description">
+                            Help onboard new team members, share your ZipFlow expertise, and contribute to your organization's knowledge base and best practices documentation.
+                        </div>
+                        <div class="task-resources">
+                            <a href="#" onclick="showTooltip('Volunteer to be a ZipFlow champion for your department')">👑 Champion program</a>
+                            <a href="#" onclick="showTooltip('Document department-specific workflows and tips')">📝 Knowledge sharing</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="task-item low-priority" data-task="leadership-2">
+                    <input type="checkbox" class="task-checkbox" id="task-leadership-2">
+                    <div class="task-content">
+                        <div class="task-title">
+                            Provide feedback and feature requests
+                            <span class="priority-badge priority-low">Low Priority</span>
+                        </div>
+                        <div class="task-description">
+                            Actively participate in user feedback sessions, suggest improvements, and help shape ZipFlow's future development based on your real-world usage experience.
+                        </div>
+                        <div class="task-resources">
+                            <a href="#" onclick="showTooltip('Help → Feedback → Submit Feature Requests')">💡 Feature requests</a>
+                            <a href="#" onclick="showTooltip('Join beta testing programs for early access to new features')">🧪 Beta testing</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="task-category">
+                <h4>Continuous Learning</h4>
+                
+                <div class="task-item low-priority" data-task="learning-1">
+                    <input type="checkbox" class="task-checkbox" id="task-learning-1">
+                    <div class="task-content">
+                        <div class="task-title">
+                            Complete advanced training certifications
+                            <span class="priority-badge priority-low">Low Priority</span>
+                        </div>
+                        <div class="task-description">
+                            Pursue advanced ZipFlow certifications in areas like system administration, advanced reporting, or integration management based on your role and interests.
+                        </div>
+                        <div class="task-resources">
+                            <a href="#" onclick="showTooltip('Training → Advanced Courses → Select certification track')">🎓 Certification paths</a>
+                            <a href="#" onclick="showTooltip('Certifications enhance career development and system expertise')">📈 Career benefits</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="task-item low-priority" data-task="learning-2">
+                    <input type="checkbox" class="task-checkbox" id="task-learning-2">
+                    <div class="task-content">
+                        <div class="task-title">
+                            Stay updated with new features and releases
+                            <span class="priority-badge priority-low">Low Priority</span>
+                        </div>
+                        <div class="task-description">
+                            Subscribe to ZipFlow newsletters, join user communities, and regularly check for new features and updates that could benefit your procurement processes.
+                        </div>
+                        <div class="task-resources">
+                            <a href="#" onclick="showTooltip('Help → Whats New → Subscribe to release notifications')">📧 Update notifications</a>
+                            <a href="#" onclick="showTooltip('Join LinkedIn ZipFlow User Group for peer discussions')">👥 User community</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="completion-celebration" id="completion-celebration">
+            <h2>🎉 Outstanding Achievement!</h2>
+            <p>You've completed the comprehensive ZipFlow onboarding program and are now a certified power user!</p>
+            <p>Continue exploring, learning, and helping others maximize their ZipFlow experience.</p>
+        </div>
+
+        <h2 id="progress-tracking">Progress Tracking and Milestones</h2>
+
+        <div class="info-box">
+            <strong>Your Learning Journey:</strong>
+            <ul>
+                <li><strong>Week 1 Completion:</strong> Foundation established, ready for daily productivity</li>
+                <li><strong>Weeks 2-3 Completion:</strong> Proficient user with intermediate skills</li>
+                <li><strong>Week 4+ Completion:</strong> Advanced power user with optimization expertise</li>
+                <li><strong>100% Completion:</strong> ZipFlow expert ready to mentor others</li>
+            </ul>
+        </div>
+
+        <h2 id="support-resources">Ongoing Support and Resources</h2>
+
+        <div class="success-box">
+            <strong>Your Support Network:</strong>
+            <ul>
+                <li><strong>Help Desk:</strong> Technical support and troubleshooting assistance</li>
+                <li><strong>Training Team:</strong> Additional learning resources and advanced training</li>
+                <li><strong>User Community:</strong> Peer support and best practice sharing</li>
+                <li><strong>Documentation:</strong> Comprehensive guides and reference materials</li>
+                <li><strong>Manager/Mentor:</strong> Role-specific guidance and feedback</li>
+            </ul>
+        </div>
+
+        <div class="button-group">
+            <a href="../api/reference.html" class="btn btn-primary">Next: API Reference</a>
+            <a href="troubleshooting.html" class="btn btn-secondary">Previous: Troubleshooting</a>
+        </div>
+
+        <div class="footer">
+            <p><strong>Last Updated:</strong> January 2024 | <strong>Version:</strong> 2.0</p>
+            <p>Created by <a href="../../index.html">Justin Arndt</a> - Technical Writing Portfolio</p>
+        </div>
+    </div>
+
+    <script src="../../assets/js/documentation.js"></script>
+    <script>
+        // Progress tracking variables
+        let totalTasks = 0;
+        let completedTasks = 0;
+        
+        // Initialize progress tracking
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeProgressTracking();
+            loadSavedProgress();
+        });
+        
+        function initializeProgressTracking() {
+            const checkboxes = document.querySelectorAll('.task-checkbox');
+            totalTasks = checkboxes.length;
+            
+            checkboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', function() {
+                    updateTaskStatus(this);
+                    saveProgress();
+                    updateOverallProgress();
+                    checkMilestones();
+                });
+            });
+        }
+        
+        function updateTaskStatus(checkbox) {
+            const taskItem = checkbox.closest('.task-item');
+            if (checkbox.checked) {
+                taskItem.classList.add('completed');
+                completedTasks++;
+            } else {
+                taskItem.classList.remove('completed');
+                completedTasks--;
+            }
+        }
+        
+        function updateOverallProgress() {
+            const percentage = Math.round((completedTasks / totalTasks) * 100);
+            const progressFill = document.getElementById('overall-progress');
+            const progressText = document.getElementById('progress-text');
+            
+            progressFill.style.width = percentage + '%';
+            progressFill.textContent = percentage + '%';
+            
+            if (percentage < 25) {
+                progressText.textContent = "Great start! Keep building your ZipFlow foundation.";
+            } else if (percentage < 50) {
+                progressText.textContent = "Excellent progress! You're becoming proficient quickly.";
+            } else if (percentage < 75) {
+                progressText.textContent = "Outstanding work! You're well on your way to mastery.";
+            } else if (percentage < 100) {
+                progressText.textContent = "Almost there! Just a few more tasks to complete.";
+            } else {
+                progressText.textContent = "Congratulations! You're now a ZipFlow expert!";
+                showCompletionCelebration();
+            }
+        }
+        
+        function checkMilestones() {
+            checkWeekMilestone('week-1', ['setup-1', 'setup-2', 'nav-1', 'nav-2', 'training-1'], 'week1-milestone');
+            checkWeekMilestone('weeks-2-3', ['advanced-1', 'advanced-2', 'workflow-1', 'reporting-1'], 'weeks23-milestone');
+            checkWeekMilestone('week-4+', ['power-1', 'power-2', 'optimize-1'], 'week4-milestone');
+        }
+        
+        function checkWeekMilestone(weekId, keyTasks, milestoneId) {
+            const completedKeyTasks = keyTasks.filter(taskId => {
+                const checkbox = document.getElementById('task-' + taskId);
+                return checkbox && checkbox.checked;
+            });
+            
+            if (completedKeyTasks.length === keyTasks.length) {
+                const milestone = document.getElementById(milestoneId);
+                if (milestone && !milestone.classList.contains('show')) {
+                    milestone.classList.add('show');
+                    setTimeout(() => milestone.classList.remove('show'), 5000);
+                }
+            }
+        }
+        
+        function showCompletionCelebration() {
+            const celebration = document.getElementById('completion-celebration');
+            celebration.classList.add('show');
+        }
+        
+        function saveProgress() {
+            const checkboxes = document.querySelectorAll('.task-checkbox');
+            const progressData = {};
+            
+            checkboxes.forEach(checkbox => {
+                progressData[checkbox.id] = checkbox.checked;
+            });
+            
+            localStorage.setItem('zipflow-onboarding-progress', JSON.stringify(progressData));
+        }
+        
+        function loadSavedProgress() {
+            const savedData = localStorage.getItem('zipflow-onboarding-progress');
+            if (savedData) {
+                const progressData = JSON.parse(savedData);
+                completedTasks = 0;
+                
+                Object.keys(progressData).forEach(checkboxId => {
+                    const checkbox = document.getElementById(checkboxId);
+                    if (checkbox) {
+                        checkbox.checked = progressData[checkboxId];
+                        if (checkbox.checked) {
+                            updateTaskStatus(checkbox);
+                        }
+                    }
+                });
+                
+                updateOverallProgress();
+                checkMilestones();
+            }
+        }
+        
+        function showTooltip(message) {
+            // Simple tooltip implementation
+            alert(message);
+        }
+    </script>
+</body>
+</html>

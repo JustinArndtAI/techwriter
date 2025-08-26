@@ -1,0 +1,940 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZipFlow Troubleshooting Guide - Interactive Problem Resolution</title>
+    <meta name="description" content="Comprehensive interactive troubleshooting guide with flowchart-style problem solving for common ZipFlow approval issues">
+    <link rel="stylesheet" href="../../assets/css/documentation.css">
+    <style>
+        .flowchart-step {
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            border: 2px solid var(--primary-color);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            position: relative;
+        }
+        .flowchart-step::before {
+            content: attr(data-step);
+            position: absolute;
+            top: -10px;
+            left: 20px;
+            background: var(--primary-color);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 0.25rem;
+            font-size: 0.85rem;
+            font-weight: bold;
+        }
+        .decision-box {
+            background: linear-gradient(135deg, #fef3c7 0%, #f59e0b 100%);
+            border: 2px solid var(--warning-color);
+            color: #92400e;
+        }
+        .solution-box {
+            background: linear-gradient(135deg, #d1fae5 0%, #10b981 100%);
+            border: 2px solid var(--success-color);
+            color: #065f46;
+        }
+        .troubleshooting-nav {
+            position: sticky;
+            top: 20px;
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: 0.5rem;
+            padding: 1rem;
+            margin-bottom: 2rem;
+        }
+        .problem-category {
+            cursor: pointer;
+            padding: 0.75rem;
+            margin: 0.25rem 0;
+            border-radius: 0.5rem;
+            border: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+        }
+        .problem-category:hover {
+            background: var(--background);
+            border-color: var(--primary-color);
+        }
+        .problem-category.active {
+            background: var(--primary-color);
+            color: white;
+        }
+        .diagnostic-tool {
+            background: #1e293b;
+            color: #e2e8f0;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin: 1rem 0;
+            font-family: monospace;
+        }
+        .status-indicator {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+        .status-ok { background-color: var(--success-color); }
+        .status-warning { background-color: var(--warning-color); }
+        .status-error { background-color: var(--error-color); }
+        .expandable-section {
+            border: 1px solid var(--border-color);
+            border-radius: 0.5rem;
+            margin: 1rem 0;
+            overflow: hidden;
+        }
+        .expandable-header {
+            background: var(--background);
+            padding: 1rem;
+            cursor: pointer;
+            font-weight: 600;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .expandable-content {
+            padding: 1rem;
+            display: none;
+        }
+        .expandable-header.active + .expandable-content {
+            display: block;
+        }
+        .expand-icon {
+            transition: transform 0.3s ease;
+        }
+        .expandable-header.active .expand-icon {
+            transform: rotate(180deg);
+        }
+    </style>
+</head>
+<body>
+    <div class="doc-header">
+        <h1>Interactive Troubleshooting Guide</h1>
+        <p class="subtitle">Resolve Issues Quickly with Step-by-Step Solutions</p>
+    </div>
+
+    <div class="breadcrumb">
+        <a href="../../index.html">Portfolio</a> / 
+        <a href="../index.html">Documentation</a> / 
+        <span>Troubleshooting</span>
+    </div>
+
+    <div class="doc-container">
+        <div class="info-box">
+            <strong>Guide Usage:</strong> 
+            Follow the flowchart-style steps for systematic problem resolution. Click on problem categories to jump to specific solutions.
+        </div>
+
+        <div class="troubleshooting-nav">
+            <h3>Quick Problem Navigation</h3>
+            <div class="problem-category" onclick="scrollToSection('approval-stuck')">
+                <span class="status-indicator status-error"></span>
+                Approvals Stuck in Workflow
+            </div>
+            <div class="problem-category" onclick="scrollToSection('login-issues')">
+                <span class="status-indicator status-warning"></span>
+                Login and Authentication Problems
+            </div>
+            <div class="problem-category" onclick="scrollToSection('budget-errors')">
+                <span class="status-indicator status-error"></span>
+                Budget Control Errors
+            </div>
+            <div class="problem-category" onclick="scrollToSection('notification-failures')">
+                <span class="status-indicator status-warning"></span>
+                Notification Not Received
+            </div>
+            <div class="problem-category" onclick="scrollToSection('performance-issues')">
+                <span class="status-indicator status-warning"></span>
+                System Performance Issues
+            </div>
+            <div class="problem-category" onclick="scrollToSection('integration-problems')">
+                <span class="status-indicator status-error"></span>
+                Integration Failures
+            </div>
+        </div>
+
+        <div class="toc" id="table-of-contents">
+            <h3>Table of Contents</h3>
+        </div>
+
+        <h2 id="overview">Troubleshooting Methodology</h2>
+        
+        <p>This interactive troubleshooting guide uses a systematic, flowchart-based approach to help you quickly identify and resolve common ZipFlow issues. Each problem category includes diagnostic steps, root cause analysis, and proven solutions with validation checkpoints.</p>
+
+        <div class="success-box">
+            <strong>Before You Begin:</strong>
+            <ul>
+                <li>Have your user credentials and system information ready</li>
+                <li>Note any error messages or codes you've encountered</li>
+                <li>Document the steps that led to the problem</li>
+                <li>Check system status at status.zipflow.com</li>
+            </ul>
+        </div>
+
+        <h2 id="approval-stuck">Approval Workflow Issues</h2>
+
+        <h3>Problem: Purchase Request Stuck in Approval Chain</h3>
+
+        <div class="flowchart-step" data-step="STEP 1">
+            <h4>Initial Diagnosis</h4>
+            <p><strong>Check the request status:</strong> Navigate to Request Tracking → View Details</p>
+            
+            <div class="diagnostic-tool">
+Status Check Results:
+□ Request shows "Pending Approval" 
+□ Current approver is identified
+□ Request has been pending > 24 hours
+□ No error messages visible
+            </div>
+            
+            <p><strong>Decision Point:</strong> Is the current approver identified and active?</p>
+        </div>
+
+        <div class="flowchart-step decision-box" data-step="STEP 2A">
+            <h4>If Approver is Identified and Active</h4>
+            <p>The approver is known and their account is active. Check communication and workload.</p>
+            
+            <strong>Actions to Take:</strong>
+            <ol>
+                <li>Send friendly reminder to approver via system notification</li>
+                <li>Check if approver has mobile app enabled for faster response</li>
+                <li>Verify approver's notification preferences are configured</li>
+                <li>Review approver's current workload in admin dashboard</li>
+            </ol>
+            
+            <div class="warning-box">
+                <strong>If no response within 4 hours:</strong> Escalate to next level approver or approver's manager
+            </div>
+        </div>
+
+        <div class="flowchart-step decision-box" data-step="STEP 2B">
+            <h4>If Approver is Unavailable or Unknown</h4>
+            <p>The approver is out of office, on leave, or system cannot identify approver.</p>
+            
+            <strong>Immediate Actions:</strong>
+            <ol>
+                <li>Check if approver has set up delegation in their profile</li>
+                <li>Look for "Out of Office" flags in the user directory</li>
+                <li>Review organizational chart for backup approvers</li>
+                <li>Check approval matrix configuration for this request type</li>
+            </ol>
+        </div>
+
+        <div class="flowchart-step solution-box" data-step="STEP 3">
+            <h4>Resolution: Manual Delegation</h4>
+            <p>For admin users, you can manually delegate approval to resolve stuck requests:</p>
+            
+            <div class="code-block">
+                <pre>
+Navigation Path:
+Admin → Workflow Management → Active Requests → 
+[Select Request] → Actions → "Delegate Approval"
+
+Required Information:
+- Original approver name
+- Delegate approver (must have appropriate authority level)
+- Reason for delegation
+- Notification preferences
+                </pre>
+            </div>
+            
+            <div class="success-box">
+                <strong>Validation Steps:</strong>
+                <ul>
+                    <li>Confirm delegate receives notification</li>
+                    <li>Verify request moves to delegate's pending queue</li>
+                    <li>Check that audit trail records delegation</li>
+                    <li>Original approver receives delegation notification</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="expandable-section">
+            <div class="expandable-header" onclick="toggleSection(this)">
+                <span>Advanced Workflow Diagnostics</span>
+                <span class="expand-icon">▼</span>
+            </div>
+            <div class="expandable-content">
+                <h4>Rule Engine Analysis</h4>
+                <div class="diagnostic-tool">
+System Check Commands:
+1. Check approval rules: GET /api/approval-rules?requestId=[REQUEST_ID]
+2. Validate user permissions: GET /api/users/[APPROVER_ID]/permissions
+3. Review workflow logs: GET /api/workflows/[WORKFLOW_ID]/logs
+4. Check system health: GET /api/system/health
+                </div>
+                
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Issue Type</th>
+                            <th>Diagnostic Command</th>
+                            <th>Expected Response</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Rules Conflict</td>
+                            <td>approval-rules-validator</td>
+                            <td>No conflicting rules found</td>
+                        </tr>
+                        <tr>
+                            <td>Permission Error</td>
+                            <td>user-permission-check</td>
+                            <td>User has required approval authority</td>
+                        </tr>
+                        <tr>
+                            <td>System Lock</td>
+                            <td>workflow-lock-status</td>
+                            <td>No active locks detected</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <h2 id="login-issues">Login and Authentication Problems</h2>
+
+        <h3>Problem: Unable to Access ZipFlow System</h3>
+
+        <div class="flowchart-step" data-step="STEP 1">
+            <h4>Basic Authentication Check</h4>
+            <p>Start with the most common authentication issues:</p>
+            
+            <div class="diagnostic-tool">
+Pre-Check Items:
+□ Username/email is correct (check for typos)
+□ Password is correct (try typing in notepad first)
+□ Caps Lock is OFF
+□ Using supported browser (Chrome, Firefox, Safari, Edge)
+□ JavaScript is enabled
+□ Cookies are enabled
+            </div>
+        </div>
+
+        <div class="flowchart-step decision-box" data-step="STEP 2">
+            <h4>Error Message Analysis</h4>
+            <p>Different error messages require different solutions:</p>
+            
+            <div class="expandable-section">
+                <div class="expandable-header" onclick="toggleSection(this)">
+                    <span>"Invalid Credentials" Error</span>
+                    <span class="expand-icon">▼</span>
+                </div>
+                <div class="expandable-content">
+                    <strong>Root Causes:</strong>
+                    <ul>
+                        <li>Incorrect username or password</li>
+                        <li>Account locked due to failed attempts</li>
+                        <li>Password expired and requires reset</li>
+                        <li>Account deactivated by administrator</li>
+                    </ul>
+                    
+                    <strong>Solutions:</strong>
+                    <ol>
+                        <li>Use "Forgot Password" link to reset password</li>
+                        <li>Contact IT admin if account is locked</li>
+                        <li>Check email for account status notifications</li>
+                        <li>Try logging in from different device/browser</li>
+                    </ol>
+                </div>
+            </div>
+
+            <div class="expandable-section">
+                <div class="expandable-header" onclick="toggleSection(this)">
+                    <span>"Session Timeout" or "Access Denied"</span>
+                    <span class="expand-icon">▼</span>
+                </div>
+                <div class="expandable-content">
+                    <strong>Immediate Actions:</strong>
+                    <ol>
+                        <li>Clear browser cache and cookies</li>
+                        <li>Close all browser windows and restart</li>
+                        <li>Try incognito/private browsing mode</li>
+                        <li>Check if VPN is interfering</li>
+                    </ol>
+                    
+                    <div class="warning-box">
+                        <strong>For Remote Workers:</strong> Check if your IP address is on the company's allowed list
+                    </div>
+                </div>
+            </div>
+
+            <div class="expandable-section">
+                <div class="expandable-header" onclick="toggleSection(this)">
+                    <span>"Two-Factor Authentication Required"</span>
+                    <span class="expand-icon">▼</span>
+                </div>
+                <div class="expandable-content">
+                    <strong>Setup Required:</strong>
+                    <ol>
+                        <li>Download authenticator app (Google Authenticator, Authy, etc.)</li>
+                        <li>Scan QR code provided during setup</li>
+                        <li>Enter 6-digit code from authenticator app</li>
+                        <li>Save backup codes in secure location</li>
+                    </ol>
+                    
+                    <strong>Troubleshooting 2FA:</strong>
+                    <ul>
+                        <li>Ensure device time is synchronized</li>
+                        <li>Try backup codes if primary method fails</li>
+                        <li>Contact admin to reset 2FA if device is lost</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="flowchart-step solution-box" data-step="STEP 3">
+            <h4>Resolution: Advanced Authentication Troubleshooting</h4>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th>Browser</th>
+                        <th>Clear Cache Steps</th>
+                        <th>Additional Notes</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Chrome</td>
+                        <td>Ctrl+Shift+Delete → Select "All time" → Clear data</td>
+                        <td>Also disable extensions temporarily</td>
+                    </tr>
+                    <tr>
+                        <td>Firefox</td>
+                        <td>Ctrl+Shift+Delete → Select "Everything" → Clear now</td>
+                        <td>Try Firefox Safe Mode</td>
+                    </tr>
+                    <tr>
+                        <td>Safari</td>
+                        <td>Safari Menu → Clear History → All history</td>
+                        <td>Check Privacy settings</td>
+                    </tr>
+                    <tr>
+                        <td>Edge</td>
+                        <td>Ctrl+Shift+Delete → Select "All time" → Clear</td>
+                        <td>Reset Edge if issues persist</td>
+                    </tr>
+                </tbody>
+            </tbody>
+        </table>
+        </div>
+
+        <h2 id="budget-errors">Budget Control Errors</h2>
+
+        <h3>Problem: Budget Validation Failures</h3>
+
+        <div class="flowchart-step" data-step="STEP 1">
+            <h4>Budget Error Identification</h4>
+            <p>Common budget-related error scenarios and initial checks:</p>
+            
+            <div class="diagnostic-tool">
+Error Types to Identify:
+□ "Insufficient Budget" - Amount exceeds available budget
+□ "Budget Not Found" - Department/project budget missing
+□ "Budget Expired" - Attempting to use expired budget period
+□ "Approval Required" - Budget threshold exceeded
+□ "Multi-Department Error" - Cross-department allocation issue
+            </div>
+        </div>
+
+        <div class="flowchart-step decision-box" data-step="STEP 2">
+            <h4>Budget Availability Analysis</h4>
+            
+            <div class="info-box">
+                <strong>Check Budget Status:</strong>
+                <ol>
+                    <li>Navigate to Budget Dashboard</li>
+                    <li>Select relevant department/project</li>
+                    <li>Review current period allocation</li>
+                    <li>Check pending commitments</li>
+                    <li>Verify budget expiration dates</li>
+                </ol>
+            </div>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th>Budget Status</th>
+                        <th>Available Actions</th>
+                        <th>Required Approvals</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>90-100% Used</td>
+                        <td>Request budget increase</td>
+                        <td>Department Head + Finance</td>
+                    </tr>
+                    <tr>
+                        <td>Over 100% Used</td>
+                        <td>Emergency approval required</td>
+                        <td>Director + CFO</td>
+                    </tr>
+                    <tr>
+                        <td>Budget Expired</td>
+                        <td>Extend budget period</td>
+                        <td>Finance Team</td>
+                    </tr>
+                    <tr>
+                        <td>Budget Not Allocated</td>
+                        <td>Create budget allocation</td>
+                        <td>Budget Administrator</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="flowchart-step solution-box" data-step="STEP 3">
+            <h4>Resolution: Budget Reallocation Process</h4>
+            
+            <div class="code-block">
+                <pre>
+Budget Reallocation Workflow:
+
+1. Access Admin Panel → Budget Management
+2. Select Source Budget (with available funds)
+3. Choose Destination Budget (requiring funds)
+4. Specify reallocation amount
+5. Provide business justification
+6. Submit for approval workflow
+
+Approval Chain:
+Source Dept Head → Destination Dept Head → Finance → CFO (if >$10K)
+                </pre>
+            </div>
+            
+            <div class="warning-box">
+                <strong>Emergency Procedures:</strong> For business-critical purchases exceeding budget, use Emergency Approval workflow which bypasses normal budget controls but requires executive approval within 24 hours.
+            </div>
+        </div>
+
+        <h2 id="notification-failures">Notification System Issues</h2>
+
+        <h3>Problem: Not Receiving System Notifications</h3>
+
+        <div class="flowchart-step" data-step="STEP 1">
+            <h4>Notification Channel Diagnosis</h4>
+            
+            <div class="diagnostic-tool">
+Notification Channel Check:
+□ Email notifications enabled in profile
+□ Email address is current and correct
+□ Check spam/junk folders
+□ Mobile app notifications enabled (if applicable)
+□ Browser notifications permitted
+□ Push notification settings configured
+            </div>
+        </div>
+
+        <div class="flowchart-step decision-box" data-step="STEP 2">
+            <h4>Notification Preferences Audit</h4>
+            
+            <p><strong>Profile Settings to Verify:</strong></p>
+            <ul>
+                <li>User Profile → Notification Preferences</li>
+                <li>Email frequency settings (immediate, daily digest, weekly)</li>
+                <li>Notification categories (approvals, budgets, system alerts)</li>
+                <li>Mobile device registration status</li>
+            </ul>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th>Notification Type</th>
+                        <th>Default Setting</th>
+                        <th>Recommended Setting</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Approval Requests</td>
+                        <td>Email + Mobile</td>
+                        <td>Email + Mobile</td>
+                    </tr>
+                    <tr>
+                        <td>Budget Alerts</td>
+                        <td>Email only</td>
+                        <td>Email + Dashboard</td>
+                    </tr>
+                    <tr>
+                        <td>System Updates</td>
+                        <td>Weekly digest</td>
+                        <td>Weekly digest</td>
+                    </tr>
+                    <tr>
+                        <td>Escalations</td>
+                        <td>Immediate</td>
+                        <td>Immediate + SMS</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="flowchart-step solution-box" data-step="STEP 3">
+            <h4>Resolution: Notification System Reset</h4>
+            
+            <div class="success-box">
+                <strong>Complete Notification Reset Process:</strong>
+                <ol>
+                    <li><strong>Profile Update:</strong> Settings → Profile → Update email and mobile</li>
+                    <li><strong>Preference Reset:</strong> Notification Preferences → Reset to defaults</li>
+                    <li><strong>Test Notifications:</strong> Send test notification to verify delivery</li>
+                    <li><strong>Mobile Re-registration:</strong> Log out and back in to mobile app</li>
+                    <li><strong>Browser Permissions:</strong> Allow notifications in browser settings</li>
+                </ol>
+            </div>
+            
+            <div class="diagnostic-tool">
+Verification Commands:
+1. Test email: Settings → Send Test Email
+2. Test mobile: Settings → Send Test Push
+3. Check delivery: Admin → Notification Logs → [Your User ID]
+4. Verify queues: System → Message Queues → Status
+            </div>
+        </div>
+
+        <h2 id="performance-issues">System Performance Problems</h2>
+
+        <h3>Problem: Slow Loading or Timeout Errors</h3>
+
+        <div class="flowchart-step" data-step="STEP 1">
+            <h4>Performance Baseline Check</h4>
+            
+            <div class="diagnostic-tool">
+Performance Metrics to Check:
+□ Page load time > 5 seconds
+□ Search operations timing out
+□ Dashboard widgets loading slowly  
+□ File uploads failing or incomplete
+□ Browser showing "Page Unresponsive" warnings
+□ Mobile app crashes or freezes
+            </div>
+        </div>
+
+        <div class="flowchart-step decision-box" data-step="STEP 2">
+            <h4>Client vs. Server Issue Identification</h4>
+            
+            <div class="expandable-section">
+                <div class="expandable-header" onclick="toggleSection(this)">
+                    <span>Client-Side Performance Issues</span>
+                    <span class="expand-icon">▼</span>
+                </div>
+                <div class="expandable-content">
+                    <strong>Browser-Related Solutions:</strong>
+                    <ul>
+                        <li>Clear browser cache and cookies completely</li>
+                        <li>Disable unnecessary browser extensions</li>
+                        <li>Close other tabs and applications</li>
+                        <li>Check available system memory (RAM)</li>
+                        <li>Try different browser or incognito mode</li>
+                    </ul>
+                    
+                    <div class="info-box">
+                        <strong>Browser Optimization:</strong>
+                        <ul>
+                            <li>Chrome: Use Task Manager (Shift+Esc) to identify memory-heavy tabs</li>
+                            <li>Firefox: Check about:performance for resource usage</li>
+                            <li>Safari: Develop menu → Show JavaScript Console for errors</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="expandable-section">
+                <div class="expandable-header" onclick="toggleSection(this)">
+                    <span>Network Connectivity Issues</span>
+                    <span class="expand-icon">▼</span>
+                </div>
+                <div class="expandable-content">
+                    <strong>Network Diagnostics:</strong>
+                    <ol>
+                        <li>Test connection to zipflow.com using ping command</li>
+                        <li>Check internet speed using speedtest.net</li>
+                        <li>Try accessing from different network (mobile hotspot)</li>
+                        <li>Check corporate firewall settings</li>
+                        <li>Verify VPN is not causing slowdowns</li>
+                    </ol>
+                    
+                    <div class="diagnostic-tool">
+Network Test Commands:
+Windows: ping zipflow.com
+Mac/Linux: ping -c 4 zipflow.com
+Expected: Response time < 100ms
+
+Traceroute: tracert zipflow.com (Windows) or traceroute zipflow.com (Mac/Linux)
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="flowchart-step solution-box" data-step="STEP 3">
+            <h4>Resolution: Performance Optimization</h4>
+            
+            <div class="success-box">
+                <strong>Immediate Performance Boosters:</strong>
+                <ul>
+                    <li><strong>Browser Cache:</strong> Clear all browsing data for zipflow.com domain</li>
+                    <li><strong>Connection Quality:</strong> Use wired ethernet instead of WiFi</li>
+                    <li><strong>Peak Hours:</strong> Avoid usage during 9-10 AM and 1-2 PM peak times</li>
+                    <li><strong>Dashboard Optimization:</strong> Customize dashboard to show only essential widgets</li>
+                    <li><strong>Search Filters:</strong> Use specific filters to reduce data load</li>
+                </ul>
+            </div>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th>Action</th>
+                        <th>Expected Improvement</th>
+                        <th>Time to Effect</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Clear cache completely</td>
+                        <td>50% faster page loads</td>
+                        <td>Immediate</td>
+                    </tr>
+                    <tr>
+                        <td>Disable browser extensions</td>
+                        <td>30% performance boost</td>
+                        <td>Immediate</td>
+                    </tr>
+                    <tr>
+                        <td>Use wired connection</td>
+                        <td>More stable, 20% faster</td>
+                        <td>Immediate</td>
+                    </tr>
+                    <tr>
+                        <td>Optimize dashboard</td>
+                        <td>60% faster dashboard load</td>
+                        <td>After reconfiguration</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h2 id="integration-problems">Integration and Data Sync Issues</h2>
+
+        <h3>Problem: ERP or External System Integration Failures</h3>
+
+        <div class="flowchart-step" data-step="STEP 1">
+            <h4>Integration Health Assessment</h4>
+            
+            <div class="diagnostic-tool">
+Integration Status Check:
+□ Check System Status dashboard for known issues
+□ Verify last successful sync timestamp
+□ Review integration error logs
+□ Check data consistency between systems
+□ Validate API connection status
+□ Confirm authentication credentials are valid
+            </div>
+        </div>
+
+        <div class="flowchart-step decision-box" data-step="STEP 2">
+            <h4>Data Synchronization Analysis</h4>
+            
+            <div class="warning-box">
+                <strong>Common Integration Issues:</strong>
+                <ul>
+                    <li><strong>Sync Delays:</strong> Data appears in ZipFlow but not in ERP (or vice versa)</li>
+                    <li><strong>Authentication Failures:</strong> API keys expired or credentials changed</li>
+                    <li><strong>Data Format Errors:</strong> Field mapping issues or data type mismatches</li>
+                    <li><strong>Network Issues:</strong> Firewall blocking API calls or network timeouts</li>
+                    <li><strong>Version Conflicts:</strong> API version incompatibility</li>
+                </ul>
+            </div>
+            
+            <div class="code-block">
+                <pre>
+Integration Troubleshooting Commands:
+
+1. Check API Status:
+   GET /api/integrations/status
+   Expected: {"status": "healthy", "last_sync": "2024-01-15T10:30:00Z"}
+
+2. Test Connection:
+   GET /api/integrations/test-connection/[SYSTEM_NAME]
+   Expected: {"connection": "successful", "response_time": "<1000ms"}
+
+3. Review Sync Logs:
+   GET /api/integrations/sync-logs?limit=50
+   Look for: Error messages, failed transactions, retry attempts
+
+4. Manual Sync Trigger:
+   POST /api/integrations/manual-sync
+   Body: {"system": "ERP", "scope": "incremental"}
+                </pre>
+            </div>
+        </div>
+
+        <div class="flowchart-step solution-box" data-step="STEP 3">
+            <h4>Resolution: Integration Recovery Process</h4>
+            
+            <div class="success-box">
+                <strong>Step-by-Step Recovery:</strong>
+                <ol>
+                    <li><strong>Credential Refresh:</strong> Update API keys and authentication tokens</li>
+                    <li><strong>Configuration Validation:</strong> Verify field mappings and data transformations</li>
+                    <li><strong>Test Sync:</strong> Run small-scale test sync to validate configuration</li>
+                    <li><strong>Incremental Sync:</strong> Sync recent changes only to catch up</li>
+                    <li><strong>Full Reconciliation:</strong> Compare critical data points between systems</li>
+                    <li><strong>Monitor:</strong> Set up enhanced monitoring for next 48 hours</li>
+                </ol>
+            </div>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th>Integration Type</th>
+                        <th>Recovery Time</th>
+                        <th>Data Impact</th>
+                        <th>Validation Required</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Financial Data (ERP)</td>
+                        <td>2-4 hours</td>
+                        <td>High</td>
+                        <td>Full reconciliation</td>
+                    </tr>
+                    <tr>
+                        <td>User Directory (LDAP/AD)</td>
+                        <td>30 minutes</td>
+                        <td>Medium</td>
+                        <td>User access testing</td>
+                    </tr>
+                    <tr>
+                        <td>Vendor Master Data</td>
+                        <td>1-2 hours</td>
+                        <td>Medium</td>
+                        <td>Sample validation</td>
+                    </tr>
+                    <tr>
+                        <td>Approval Workflows</td>
+                        <td>15 minutes</td>
+                        <td>Low</td>
+                        <td>Test approval</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h2 id="escalation">Escalation Procedures</h2>
+
+        <h3>When to Escalate Issues</h3>
+
+        <div class="error-box">
+            <strong>Immediate Escalation Required:</strong>
+            <ul>
+                <li>System-wide outage affecting multiple users</li>
+                <li>Data corruption or loss detected</li>
+                <li>Security breach or unauthorized access</li>
+                <li>Financial data synchronization failures</li>
+                <li>Critical business processes completely blocked</li>
+            </ul>
+        </div>
+
+        <div class="info-box">
+            <strong>Standard Escalation Path:</strong>
+            <ol>
+                <li><strong>Level 1:</strong> IT Help Desk (help@yourcompany.com)</li>
+                <li><strong>Level 2:</strong> ZipFlow System Administrator</li>
+                <li><strong>Level 3:</strong> ZipFlow Technical Support (support@zipflow.com)</li>
+                <li><strong>Level 4:</strong> ZipFlow Engineering Team (Priority clients only)</li>
+            </ol>
+        </div>
+
+        <h3>Support Request Information</h3>
+
+        <div class="diagnostic-tool">
+Information to Include in Support Requests:
+
+System Environment:
+- ZipFlow version/build number
+- Browser type and version
+- Operating system
+- Network environment (corporate, VPN, etc.)
+
+Issue Details:
+- Exact error messages or codes
+- Steps to reproduce the problem
+- Time when issue first occurred
+- Number of users affected
+- Business impact assessment
+
+Screenshots/Logs:
+- Error screenshots
+- Browser console logs (F12 → Console)
+- Network tab showing failed requests
+- System logs if admin access available
+        </div>
+
+        <h2 id="prevention">Issue Prevention and Best Practices</h2>
+
+        <div class="success-box">
+            <strong>Proactive Maintenance:</strong>
+            <ul>
+                <li><strong>Weekly:</strong> Clear browser cache, check for system updates</li>
+                <li><strong>Monthly:</strong> Review notification settings, validate integrations</li>
+                <li><strong>Quarterly:</strong> Update passwords, review user permissions</li>
+                <li><strong>Annually:</strong> Full system health check, disaster recovery testing</li>
+            </ul>
+        </div>
+
+        <div class="warning-box">
+            <strong>Common Mistakes to Avoid:</strong>
+            <ul>
+                <li>Ignoring browser compatibility warnings</li>
+                <li>Not keeping integration credentials current</li>
+                <li>Failing to test changes in staging environment</li>
+                <li>Overlooking user training for new features</li>
+                <li>Not monitoring system performance metrics</li>
+            </ul>
+        </div>
+
+        <h2 id="summary">Summary and Quick Reference</h2>
+
+        <div class="info-box">
+            <strong>Emergency Contact Information:</strong>
+            <ul>
+                <li><strong>System Outages:</strong> Status updates at status.zipflow.com</li>
+                <li><strong>Critical Issues:</strong> Call +1-800-ZIPFLOW for immediate assistance</li>
+                <li><strong>Security Concerns:</strong> Email security@zipflow.com</li>
+                <li><strong>General Support:</strong> Submit ticket at support.zipflow.com</li>
+            </ul>
+        </div>
+
+        <div class="button-group">
+            <a href="onboarding-checklist.html" class="btn btn-primary">Next: Onboarding Checklist</a>
+            <a href="../tutorials/budget-controls.html" class="btn btn-secondary">Previous: Budget Controls</a>
+        </div>
+
+        <div class="footer">
+            <p><strong>Last Updated:</strong> January 2024 | <strong>Version:</strong> 3.2</p>
+            <p>Created by <a href="../../index.html">Justin Arndt</a> - Technical Writing Portfolio</p>
+        </div>
+    </div>
+
+    <script src="../../assets/js/documentation.js"></script>
+    <script>
+        function scrollToSection(sectionId) {
+            document.getElementById(sectionId).scrollIntoView({ behavior: 'smooth' });
+            // Update active category
+            document.querySelectorAll('.problem-category').forEach(cat => cat.classList.remove('active'));
+            event.target.classList.add('active');
+        }
+        
+        function toggleSection(element) {
+            element.classList.toggle('active');
+        }
+    </script>
+</body>
+</html>

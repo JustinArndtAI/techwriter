@@ -1,0 +1,1194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZipFlow User Management - Administrative Guide</title>
+    <meta name="description" content="Comprehensive admin guide covering role hierarchy, permission matrices, bulk user import, and audit logs for ZipFlow user management">
+    <link rel="stylesheet" href="../../assets/css/documentation.css">
+    <style>
+        .admin-warning {
+            background: linear-gradient(135deg, #fecaca 0%, #ef4444 100%);
+            border: 2px solid var(--error-color);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            margin: 2rem 0;
+            color: #991b1b;
+        }
+        .permission-matrix {
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: 0.5rem;
+            overflow: hidden;
+            margin: 1.5rem 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .permission-matrix th {
+            background: var(--primary-color);
+            color: white;
+            font-weight: 600;
+            text-align: center;
+            padding: 0.75rem 0.5rem;
+            font-size: 0.9rem;
+        }
+        .permission-matrix td {
+            text-align: center;
+            padding: 0.5rem;
+            font-size: 0.85rem;
+        }
+        .permission-icon {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            color: white;
+            font-weight: bold;
+            line-height: 20px;
+            font-size: 12px;
+        }
+        .permission-full { background: #10b981; }
+        .permission-partial { background: #f59e0b; }
+        .permission-none { background: #6b7280; }
+        .role-hierarchy {
+            background: var(--background);
+            border: 1px solid var(--border-color);
+            border-radius: 0.5rem;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+        .hierarchy-level {
+            background: white;
+            border-left: 4px solid var(--primary-color);
+            padding: 1rem;
+            margin: 1rem 0 1rem 2rem;
+            border-radius: 0 0.5rem 0.5rem 0;
+            position: relative;
+        }
+        .hierarchy-level::before {
+            content: '';
+            position: absolute;
+            left: -10px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 12px;
+            height: 12px;
+            background: var(--primary-color);
+            border-radius: 50%;
+            border: 3px solid var(--background);
+        }
+        .user-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+        .stat-card {
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--primary-color);
+            display: block;
+        }
+        .stat-label {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+        }
+        .bulk-import-section {
+            background: linear-gradient(135deg, #dbeafe 0%, #3b82f6 100%);
+            border: 2px solid var(--primary-color);
+            border-radius: 0.75rem;
+            padding: 2rem;
+            margin: 2rem 0;
+            color: #1e40af;
+        }
+        .csv-template {
+            background: #1e293b;
+            color: #e2e8f0;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin: 1rem 0;
+            overflow-x: auto;
+        }
+        .audit-log-entry {
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: 0.5rem;
+            padding: 1rem;
+            margin: 0.5rem 0;
+            border-left: 4px solid var(--border-color);
+        }
+        .audit-log-entry.critical { border-left-color: var(--error-color); }
+        .audit-log-entry.warning { border-left-color: var(--warning-color); }
+        .audit-log-entry.info { border-left-color: var(--primary-color); }
+        .audit-log-entry.success { border-left-color: var(--success-color); }
+        .audit-timestamp {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            font-family: monospace;
+        }
+        .audit-action {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        .audit-details {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-top: 0.25rem;
+        }
+        .access-control-panel {
+            background: white;
+            border: 2px solid var(--border-color);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+        }
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 24px;
+            margin-left: 1rem;
+        }
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 24px;
+        }
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        input:checked + .slider {
+            background-color: var(--success-color);
+        }
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+        .security-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 1rem;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-left: 0.5rem;
+        }
+        .security-high { background: #fecaca; color: #991b1b; }
+        .security-medium { background: #fef3c7; color: #92400e; }
+        .security-low { background: #d1fae5; color: #065f46; }
+        .mfa-setup {
+            background: var(--background);
+            border: 1px solid var(--border-color);
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            margin: 1rem 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="doc-header">
+        <h1>User Management Administration</h1>
+        <p class="subtitle">Complete Guide to User Access Control and Security</p>
+    </div>
+
+    <div class="breadcrumb">
+        <a href="../../index.html">Portfolio</a> / 
+        <a href="../index.html">Documentation</a> / 
+        <span>User Management</span>
+    </div>
+
+    <div class="doc-container">
+        <div class="admin-warning">
+            <strong>⚠️ Administrative Access Required:</strong> This guide covers advanced user management features that require system administrator privileges. Improper configuration can impact system security and user access.
+        </div>
+
+        <div class="toc" id="table-of-contents">
+            <h3>Table of Contents</h3>
+        </div>
+
+        <h2 id="overview">User Management Overview</h2>
+        
+        <p>ZipFlow's user management system provides comprehensive control over user access, permissions, and security settings. As a system administrator, you have the tools to create scalable user hierarchies, manage complex permission matrices, perform bulk operations, and maintain complete audit trails for compliance and security purposes.</p>
+
+        <div class="user-stats">
+            <div class="stat-card">
+                <span class="stat-number" id="total-users">1,247</span>
+                <div class="stat-label">Total Active Users</div>
+            </div>
+            <div class="stat-card">
+                <span class="stat-number" id="pending-approvals">23</span>
+                <div class="stat-label">Pending User Approvals</div>
+            </div>
+            <div class="stat-card">
+                <span class="stat-number" id="roles-configured">12</span>
+                <div class="stat-label">Configured Roles</div>
+            </div>
+            <div class="stat-card">
+                <span class="stat-number" id="mfa-enabled">89%</span>
+                <div class="stat-label">MFA Adoption Rate</div>
+            </div>
+        </div>
+
+        <div class="success-box">
+            <strong>Key Capabilities:</strong>
+            <ul>
+                <li>Hierarchical role-based access control (RBAC)</li>
+                <li>Granular permission management at feature level</li>
+                <li>Automated user provisioning and deprovisioning</li>
+                <li>Bulk user operations and CSV import/export</li>
+                <li>Multi-factor authentication enforcement</li>
+                <li>Comprehensive audit logging and compliance reporting</li>
+            </ul>
+        </div>
+
+        <h2 id="role-hierarchy">Role Hierarchy Configuration</h2>
+
+        <h3>Understanding ZipFlow's Role Structure</h3>
+
+        <p>ZipFlow uses a hierarchical role-based access control system that mirrors organizational structures while providing flexibility for complex enterprise requirements. Roles inherit permissions from parent roles and can have additional permissions granted or explicitly denied.</p>
+
+        <div class="role-hierarchy">
+            <h4>Standard Role Hierarchy</h4>
+            
+            <div class="hierarchy-level">
+                <strong>System Administrator</strong>
+                <span class="security-badge security-high">Full Access</span>
+                <p>Complete system control including user management, system configuration, and security settings. Can modify all aspects of ZipFlow including integration settings and organizational structure.</p>
+                <ul>
+                    <li>User and role management</li>
+                    <li>System configuration and integrations</li>
+                    <li>Security policy enforcement</li>
+                    <li>Audit log access and compliance reporting</li>
+                    <li>Emergency access controls</li>
+                </ul>
+            </div>
+            
+            <div class="hierarchy-level">
+                <strong>Organization Administrator</strong>
+                <span class="security-badge security-high">Org-Wide Access</span>
+                <p>Administrative control within organizational boundaries. Can manage users, budgets, and workflows for their organization or subsidiary.</p>
+                <ul>
+                    <li>User provisioning and role assignment within organization</li>
+                    <li>Department and budget structure configuration</li>
+                    <li>Workflow and approval chain setup</li>
+                    <li>Organizational reporting and analytics</li>
+                    <li>Vendor management and contract oversight</li>
+                </ul>
+            </div>
+            
+            <div class="hierarchy-level">
+                <strong>Department Administrator</strong>
+                <span class="security-badge security-medium">Departmental Scope</span>
+                <p>Administrative control within specific departments. Manages department users, budgets, and procurement policies.</p>
+                <ul>
+                    <li>Department user management</li>
+                    <li>Budget allocation and monitoring</li>
+                    <li>Department-specific workflow configuration</li>
+                    <li>Team performance reporting</li>
+                    <li>Vendor relationship management</li>
+                </ul>
+            </div>
+            
+            <div class="hierarchy-level">
+                <strong>Procurement Manager</strong>
+                <span class="security-badge security-medium">Process Control</span>
+                <p>Specialized role for procurement operations with enhanced vendor and contract management capabilities.</p>
+                <ul>
+                    <li>Advanced vendor management</li>
+                    <li>Contract negotiation and approval</li>
+                    <li>Purchasing policy enforcement</li>
+                    <li>Supplier performance monitoring</li>
+                    <li>Strategic sourcing oversight</li>
+                </ul>
+            </div>
+            
+            <div class="hierarchy-level">
+                <strong>Budget Manager</strong>
+                <span class="security-badge security-medium">Financial Control</span>
+                <p>Financial oversight role with authority over budget allocation, approval thresholds, and spending analysis.</p>
+                <ul>
+                    <li>Budget planning and allocation</li>
+                    <li>Approval limit configuration</li>
+                    <li>Financial reporting and analysis</li>
+                    <li>Cost center management</li>
+                    <li>Expense trend monitoring</li>
+                </ul>
+            </div>
+            
+            <div class="hierarchy-level">
+                <strong>Approver</strong>
+                <span class="security-badge security-low">Review Authority</span>
+                <p>Users with authority to approve purchase requests within defined limits and categories.</p>
+                <ul>
+                    <li>Review and approve/reject requests</li>
+                    <li>Manage approval queues</li>
+                    <li>Set up approval delegation</li>
+                    <li>Access approval analytics</li>
+                    <li>Configure approval preferences</li>
+                </ul>
+            </div>
+            
+            <div class="hierarchy-level">
+                <strong>Requestor</strong>
+                <span class="security-badge security-low">Basic User</span>
+                <p>Standard users who can create and track purchase requests within organizational policies.</p>
+                <ul>
+                    <li>Create and submit purchase requests</li>
+                    <li>Track request status and history</li>
+                    <li>Access vendor catalogs</li>
+                    <li>View personal spending reports</li>
+                    <li>Manage profile and preferences</li>
+                </ul>
+            </div>
+            
+            <div class="hierarchy-level">
+                <strong>Viewer</strong>
+                <span class="security-badge security-low">Read Only</span>
+                <p>Limited access role for users who need visibility into procurement data without transaction capabilities.</p>
+                <ul>
+                    <li>View assigned procurement data</li>
+                    <li>Access reports within scope</li>
+                    <li>Monitor request status</li>
+                    <li>Export authorized data</li>
+                    <li>Receive notifications</li>
+                </ul>
+            </div>
+        </div>
+
+        <h3>Custom Role Creation</h3>
+
+        <p>Organizations can create custom roles that combine permissions from multiple standard roles or define entirely new permission sets for specialized requirements.</p>
+
+        <div class="code-block">
+            <pre>
+// Custom Role Definition Example
+{
+    "role_name": "Regional_Procurement_Lead",
+    "display_name": "Regional Procurement Lead",
+    "description": "Multi-department procurement oversight for regional operations",
+    "parent_role": "procurement_manager",
+    "scope": {
+        "type": "regional",
+        "regions": ["west_coast", "southwest"],
+        "departments": ["operations", "facilities", "it"]
+    },
+    "inherited_permissions": true,
+    "additional_permissions": [
+        "cross_department_budget_view",
+        "regional_vendor_management", 
+        "emergency_approval_override",
+        "compliance_reporting_access"
+    ],
+    "restricted_permissions": [
+        "user_role_modification",
+        "system_configuration"
+    ],
+    "approval_limits": {
+        "individual_request": 50000,
+        "monthly_aggregate": 500000,
+        "emergency_override": 100000
+    }
+}
+            </pre>
+        </div>
+
+        <h2 id="permission-matrices">Permission Matrices</h2>
+
+        <h3>Core System Permissions</h3>
+
+        <p>ZipFlow uses granular permissions that can be combined to create flexible access control patterns. The permission matrix below shows standard role assignments across key system functions.</p>
+
+        <div class="permission-matrix">
+            <table>
+                <thead>
+                    <tr>
+                        <th style="min-width: 200px;">Function / Feature</th>
+                        <th>System Admin</th>
+                        <th>Org Admin</th>
+                        <th>Dept Admin</th>
+                        <th>Procurement Mgr</th>
+                        <th>Budget Mgr</th>
+                        <th>Approver</th>
+                        <th>Requestor</th>
+                        <th>Viewer</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>User Management</strong></td>
+                        <td><span class="permission-icon permission-full">F</span></td>
+                        <td><span class="permission-icon permission-partial">P</span></td>
+                        <td><span class="permission-icon permission-partial">P</span></td>
+                        <td><span class="permission-icon permission-none">-</span></td>
+                        <td><span class="permission-icon permission-none">-</span></td>
+                        <td><span class="permission-icon permission-none">-</span></td>
+                        <td><span class="permission-icon permission-none">-</span></td>
+                        <td><span class="permission-icon permission-none">-</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Role Assignment</strong></td>
+                        <td><span class="permission-icon permission-full">F</span></td>
+                        <td><span class="permission-icon permission-partial">P</span></td>
+                        <td><span class="permission-icon permission-partial">P</span></td>
+                        <td><span class="permission-icon permission-none">-</span></td>
+                        <td><span class="permission-icon permission-none">-</span></td>
+                        <td><span class="permission-icon permission-none">-</span></td>
+                        <td><span class="permission-icon permission-none">-</span></td>
+                        <td><span class="permission-icon permission-none">-</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Budget Configuration</strong></td>
+                        <td><span class="permission-icon permission-full">F</span></td>
+                        <td><span class="permission-icon permission-partial">P</span></td>
+                        <td><span class="permission-icon permission-partial">P</span></td>
+                        <td><span class="permission-icon permission-none">-</span></td>
+                        <td><span class="permission-icon permission-full">F</span></td>
+                        <td><span class="permission-icon permission-none">-</span></td>
+                        <td><span class="permission-icon permission-none">-</span></td>
+                        <td><span class="permission-icon permission-none">-</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Workflow Management</strong></td>
+                        <td><span class="permission-icon permission-full">F</span></td>
+                        <td><span class="permission-icon permission-full">F</span></td>
+                        <td><span class="permission-icon permission-partial">P</span></td>
+                        <td><span class="permission-icon permission-partial">P</span></td>
+                        <td><span class="permission-icon permission-partial">P</span></td>
+                        <td><span class="permission-icon permission-none">-</span></td>
+                        <td><span class="permission-icon permission-none">-</span></td>
+                        <td><span class="permission-icon permission-none">-</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Vendor Management</strong></td>
+                        <td><span class="permission-icon permission-full">F</span></td>
+                        <td><span class="permission-icon permission-full">F</span></td>
+                        <td><span class="permission-icon permission-partial">P</span></td>
+                        <td><span class="permission-icon permission-full">F</span></td>
+                        <td><span class="permission-icon permission-partial">P</span></td>
+                        <td><span class="permission-icon permission-partial">P</span></td>
+                        <td><span class="permission-icon permission-partial">P</span></td>
+                        <td><span class="permission-icon permission-partial">P</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Request Creation</strong></td>
+                        <td><span class="permission-icon permission-full">F</span></td>
+                        <td><span class="permission-icon permission-full">F</span></td>
+                        <td><span class="permission-icon permission-full">F</span></td>
+                        <td><span class="permission-icon permission-full">F</span></td>
+                        <td><span class="permission-icon permission-full">F</span></td>
+                        <td><span class="permission-icon permission-full">F</span></td>
+                        <td><span class="permission-icon permission-full">F</span></td>
+                        <td><span class="permission-icon permission-none">-</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Request Approval</strong></td>
+                        <td><span class="permission-icon permission-full">F</span></td>
+                        <td><span class="permission-icon permission-full">F</span></td>
+                        <td><span class="permission-icon permission-full">F</span></td>
+                        <td><span class="permission-icon permission-full">F</span></td>
+                        <td><span class="permission-icon permission-full">F</span></td>
+                        <td><span class="permission-icon permission-full">F</span></td>
+                        <td><span class="permission-icon permission-none">-</span></td>
+                        <td><span class="permission-icon permission-none">-</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Financial Reporting</strong></td>
+                        <td><span class="permission-icon permission-full">F</span></td>
+                        <td><span class="permission-icon permission-full">F</span></td>
+                        <td><span class="permission-icon permission-partial">P</span></td>
+                        <td><span class="permission-icon permission-partial">P</span></td>
+                        <td><span class="permission-icon permission-full">F</span></td>
+                        <td><span class="permission-icon permission-partial">P</span></td>
+                        <td><span class="permission-icon permission-partial">P</span></td>
+                        <td><span class="permission-icon permission-partial">P</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Analytics Dashboard</strong></td>
+                        <td><span class="permission-icon permission-full">F</span></td>
+                        <td><span class="permission-icon permission-full">F</span></td>
+                        <td><span class="permission-icon permission-partial">P</span></td>
+                        <td><span class="permission-icon permission-partial">P</span></td>
+                        <td><span class="permission-icon permission-full">F</span></td>
+                        <td><span class="permission-icon permission-partial">P</span></td>
+                        <td><span class="permission-icon permission-partial">P</span></td>
+                        <td><span class="permission-icon permission-partial">P</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>System Configuration</strong></td>
+                        <td><span class="permission-icon permission-full">F</span></td>
+                        <td><span class="permission-icon permission-none">-</span></td>
+                        <td><span class="permission-icon permission-none">-</span></td>
+                        <td><span class="permission-icon permission-none">-</span></td>
+                        <td><span class="permission-icon permission-none">-</span></td>
+                        <td><span class="permission-icon permission-none">-</span></td>
+                        <td><span class="permission-icon permission-none">-</span></td>
+                        <td><span class="permission-icon permission-none">-</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Audit Logs</strong></td>
+                        <td><span class="permission-icon permission-full">F</span></td>
+                        <td><span class="permission-icon permission-partial">P</span></td>
+                        <td><span class="permission-icon permission-partial">P</span></td>
+                        <td><span class="permission-icon permission-none">-</span></td>
+                        <td><span class="permission-icon permission-none">-</span></td>
+                        <td><span class="permission-icon permission-none">-</span></td>
+                        <td><span class="permission-icon permission-none">-</span></td>
+                        <td><span class="permission-icon permission-none">-</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="info-box">
+            <strong>Permission Legend:</strong>
+            <ul>
+                <li><span class="permission-icon permission-full">F</span> <strong>Full Access:</strong> Complete read/write permissions for all functions</li>
+                <li><span class="permission-icon permission-partial">P</span> <strong>Partial Access:</strong> Limited scope based on role hierarchy and organizational boundaries</li>
+                <li><span class="permission-icon permission-none">-</span> <strong>No Access:</strong> Feature is not available to this role</li>
+            </ul>
+        </div>
+
+        <h3>Advanced Permission Configuration</h3>
+
+        <p>Beyond role-based permissions, ZipFlow supports attribute-based access control (ABAC) for complex scenarios requiring dynamic permission evaluation.</p>
+
+        <div class="access-control-panel">
+            <h4>Dynamic Permission Rules</h4>
+            
+            <div class="code-block">
+                <pre>
+// Advanced Permission Rule Example
+{
+    "rule_name": "budget_manager_conditional_access",
+    "description": "Budget managers can approve requests up to 10x normal limit during budget planning periods",
+    "conditions": {
+        "user_role": "budget_manager",
+        "time_period": {
+            "start": "budget_planning_start",
+            "end": "budget_planning_end"
+        },
+        "request_attributes": {
+            "category": ["capital_equipment", "software", "consulting"],
+            "business_unit": "user.business_unit"
+        }
+    },
+    "permissions": {
+        "approval_limit_multiplier": 10,
+        "expedited_approval": true,
+        "cross_department_approval": true
+    },
+    "audit_requirements": {
+        "enhanced_logging": true,
+        "manager_notification": true,
+        "compliance_flag": true
+    }
+}
+                </pre>
+            </div>
+        </div>
+
+        <h2 id="bulk-operations">Bulk User Import and Management</h2>
+
+        <div class="bulk-import-section">
+            <h3>🔄 Bulk User Operations</h3>
+            <p>Efficiently manage large user populations through CSV import, automated provisioning, and batch operations. Essential for organizations with frequent employee onboarding and role changes.</p>
+        </div>
+
+        <h3>CSV Import Process</h3>
+
+        <p>ZipFlow supports bulk user import through CSV files with comprehensive data validation and error handling. The import process includes pre-validation, staging, and rollback capabilities.</p>
+
+        <h4>CSV Template Structure</h4>
+
+        <div class="csv-template">
+            <pre>
+first_name,last_name,email,department,role,manager_email,cost_center,employee_id,start_date,phone,location
+John,Smith,john.smith@company.com,IT,requestor,mike.manager@company.com,CC-IT-001,EMP001,2024-01-15,+1-555-0123,San Francisco
+Jane,Doe,jane.doe@company.com,Marketing,approver,sarah.director@company.com,CC-MKT-002,EMP002,2024-01-15,+1-555-0124,New York
+Mike,Johnson,mike.johnson@company.com,Finance,budget_manager,cfo@company.com,CC-FIN-003,EMP003,2024-01-16,+1-555-0125,Chicago
+            </pre>
+        </div>
+
+        <h4>Required Fields and Validation Rules</h4>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Field Name</th>
+                    <th>Required</th>
+                    <th>Format</th>
+                    <th>Validation Rules</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>first_name</code></td>
+                    <td>Yes</td>
+                    <td>Text</td>
+                    <td>2-50 characters, letters and spaces only</td>
+                </tr>
+                <tr>
+                    <td><code>last_name</code></td>
+                    <td>Yes</td>
+                    <td>Text</td>
+                    <td>2-50 characters, letters and spaces only</td>
+                </tr>
+                <tr>
+                    <td><code>email</code></td>
+                    <td>Yes</td>
+                    <td>Email</td>
+                    <td>Valid email format, must be unique</td>
+                </tr>
+                <tr>
+                    <td><code>department</code></td>
+                    <td>Yes</td>
+                    <td>Text</td>
+                    <td>Must match existing department name or ID</td>
+                </tr>
+                <tr>
+                    <td><code>role</code></td>
+                    <td>Yes</td>
+                    <td>Text</td>
+                    <td>Valid role name from role hierarchy</td>
+                </tr>
+                <tr>
+                    <td><code>manager_email</code></td>
+                    <td>Conditional</td>
+                    <td>Email</td>
+                    <td>Required for roles below department admin</td>
+                </tr>
+                <tr>
+                    <td><code>cost_center</code></td>
+                    <td>No</td>
+                    <td>Text</td>
+                    <td>Must match existing cost center code</td>
+                </tr>
+                <tr>
+                    <td><code>employee_id</code></td>
+                    <td>No</td>
+                    <td>Text</td>
+                    <td>Alphanumeric, must be unique if provided</td>
+                </tr>
+                <tr>
+                    <td><code>start_date</code></td>
+                    <td>No</td>
+                    <td>Date</td>
+                    <td>YYYY-MM-DD format, future dates for staged activation</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3>Import Workflow and Validation</h3>
+
+        <ol>
+            <li><strong>File Upload:</strong> Upload CSV file through admin interface or API</li>
+            <li><strong>Format Validation:</strong> System validates CSV structure and required fields</li>
+            <li><strong>Data Validation:</strong> Each row validated against business rules and constraints</li>
+            <li><strong>Staging Review:</strong> Preview import results with error/warning summary</li>
+            <li><strong>Approval Process:</strong> Import requires admin approval for execution</li>
+            <li><strong>Execution:</strong> Users created with temporary passwords and activation emails</li>
+            <li><strong>Notification:</strong> Results summary sent to administrators and new users</li>
+        </ol>
+
+        <div class="warning-box">
+            <strong>Import Best Practices:</strong>
+            <ul>
+                <li>Test imports with small batches (10-20 users) before full deployment</li>
+                <li>Validate manager email addresses exist before importing direct reports</li>
+                <li>Use staging environment for large imports exceeding 100 users</li>
+                <li>Schedule imports during low-usage periods to minimize performance impact</li>
+                <li>Prepare rollback plan and test user deactivation process</li>
+            </ul>
+        </div>
+
+        <h3>Automated User Provisioning</h3>
+
+        <p>Integration with HR systems and identity providers enables automatic user provisioning based on employee lifecycle events.</p>
+
+        <div class="code-block">
+            <pre>
+// SCIM Provisioning Configuration
+{
+    "scim_endpoint": "https://api.zipflow.com/scim/v2/users",
+    "authentication": {
+        "type": "oauth2",
+        "client_id": "hr_system_client",
+        "client_secret": "secure_client_secret",
+        "scope": "user:write"
+    },
+    "attribute_mapping": {
+        "userName": "email",
+        "name.givenName": "first_name", 
+        "name.familyName": "last_name",
+        "emails[primary eq true].value": "email",
+        "department": "department",
+        "title": "job_title",
+        "manager": "manager_email",
+        "costCenter": "cost_center",
+        "employeeNumber": "employee_id"
+    },
+    "role_assignment_rules": [
+        {
+            "condition": "title contains 'Manager'",
+            "role": "approver"
+        },
+        {
+            "condition": "department equals 'Finance'",
+            "role": "budget_manager"
+        },
+        {
+            "condition": "title contains 'Director' OR title contains 'VP'",
+            "role": "department_admin"
+        }
+    ],
+    "activation_settings": {
+        "auto_activate": true,
+        "send_welcome_email": true,
+        "require_password_change": true,
+        "mfa_enforcement": "department_policy"
+    }
+}
+            </pre>
+        </div>
+
+        <h2 id="audit-logs">Audit Logs and Compliance</h2>
+
+        <h3>Comprehensive Audit Trail</h3>
+
+        <p>ZipFlow maintains detailed audit logs for all user management activities, providing the transparency and accountability required for compliance with regulatory standards such as SOX, GDPR, and industry-specific requirements.</p>
+
+        <h4>Recent Audit Log Entries</h4>
+
+        <div class="audit-log-entry critical">
+            <div class="audit-timestamp">2024-01-16 14:32:15 UTC</div>
+            <div class="audit-action">ROLE_ELEVATION: User role changed from 'approver' to 'department_admin'</div>
+            <div class="audit-details">
+                User: jane.doe@company.com | Changed by: admin@company.com | 
+                Previous Role: Approver | New Role: Department Administrator | 
+                Justification: "Promoted to department head - requires admin access for budget management"
+            </div>
+        </div>
+
+        <div class="audit-log-entry warning">
+            <div class="audit-timestamp">2024-01-16 13:45:22 UTC</div>
+            <div class="audit-action">BULK_USER_IMPORT: 47 users imported via CSV upload</div>
+            <div class="audit-details">
+                Import File: new_employees_q1_2024.csv | Processed by: hr.admin@company.com |
+                Success: 45 users | Warnings: 2 users (missing cost center) | Errors: 0 users
+            </div>
+        </div>
+
+        <div class="audit-log-entry info">
+            <div class="audit-timestamp">2024-01-16 12:18:43 UTC</div>
+            <div class="audit-action">PERMISSION_GRANT: Budget access granted to procurement team</div>
+            <div class="audit-details">
+                Permission: budget_read_all_departments | Granted to: procurement_team_role |
+                Authorized by: cfo@company.com | Effective Date: 2024-01-16 | Expiration: 2024-12-31
+            </div>
+        </div>
+
+        <div class="audit-log-entry success">
+            <div class="audit-timestamp">2024-01-16 11:55:17 UTC</div>
+            <div class="audit-action">MFA_ENFORCEMENT: Multi-factor authentication enabled org-wide</div>
+            <div class="audit-details">
+                Policy: mandatory_mfa_all_users | Enforced by: security.admin@company.com |
+                Grace Period: 30 days | Affected Users: 1247 | Compliance Deadline: 2024-02-15
+            </div>
+        </div>
+
+        <div class="audit-log-entry info">
+            <div class="audit-timestamp">2024-01-16 10:22:31 UTC</div>
+            <div class="audit-action">USER_DEACTIVATION: Employee departure - access revoked</div>
+            <div class="audit-details">
+                User: former.employee@company.com | Deactivated by: hr.admin@company.com |
+                Reason: Employment terminated | Data Retention: 90 days | Backup Created: Yes
+            </div>
+        </div>
+
+        <h3>Audit Log Categories and Retention</h3>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Category</th>
+                    <th>Events Included</th>
+                    <th>Retention Period</th>
+                    <th>Compliance Standards</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>User Authentication</strong></td>
+                    <td>Login attempts, password changes, MFA events</td>
+                    <td>2 years</td>
+                    <td>ISO 27001, SOC 2</td>
+                </tr>
+                <tr>
+                    <td><strong>Access Control</strong></td>
+                    <td>Role changes, permission grants, privilege escalation</td>
+                    <td>7 years</td>
+                    <td>SOX, GDPR</td>
+                </tr>
+                <tr>
+                    <td><strong>Data Access</strong></td>
+                    <td>Report generation, data exports, sensitive data access</td>
+                    <td>3 years</td>
+                    <td>GDPR, HIPAA</td>
+                </tr>
+                <tr>
+                    <td><strong>Administrative Actions</strong></td>
+                    <td>System configuration, bulk operations, policy changes</td>
+                    <td>10 years</td>
+                    <td>SOX, Industry Specific</td>
+                </tr>
+                <tr>
+                    <td><strong>Financial Transactions</strong></td>
+                    <td>Approvals, budget changes, procurement activities</td>
+                    <td>7 years</td>
+                    <td>SOX, Tax Regulations</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3>Compliance Reporting</h3>
+
+        <p>Automated compliance reports can be generated for various regulatory requirements, including user access reviews, privilege escalation reports, and segregation of duties analysis.</p>
+
+        <div class="success-box">
+            <strong>Standard Compliance Reports:</strong>
+            <ul>
+                <li><strong>User Access Review:</strong> Quarterly review of all user permissions and role assignments</li>
+                <li><strong>Privileged Access Report:</strong> Monthly analysis of administrative and elevated access accounts</li>
+                <li><strong>Segregation of Duties:</strong> Ongoing monitoring for conflicting role combinations</li>
+                <li><strong>Password Policy Compliance:</strong> User compliance with password and MFA requirements</li>
+                <li><strong>Data Access Audit:</strong> Report on sensitive data access patterns and anomalies</li>
+            </ul>
+        </div>
+
+        <h2 id="security-controls">Security Controls and Multi-Factor Authentication</h2>
+
+        <h3>Multi-Factor Authentication Management</h3>
+
+        <p>ZipFlow supports multiple MFA methods with flexible enforcement policies that can be tailored to different user roles and risk levels.</p>
+
+        <div class="mfa-setup">
+            <h4>MFA Configuration Options</h4>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th>MFA Method</th>
+                        <th>Description</th>
+                        <th>Security Level</th>
+                        <th>User Experience</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Authenticator App</strong></td>
+                        <td>TOTP-based codes via Google Authenticator, Authy, etc.</td>
+                        <td>High</td>
+                        <td>6-digit code entry</td>
+                    </tr>
+                    <tr>
+                        <td><strong>SMS Text Message</strong></td>
+                        <td>One-time codes sent via SMS</td>
+                        <td>Medium</td>
+                        <td>Receive and enter code</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Email Verification</strong></td>
+                        <td>Verification codes sent to registered email</td>
+                        <td>Medium</td>
+                        <td>Email access required</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Hardware Tokens</strong></td>
+                        <td>FIDO2/WebAuthn compatible security keys</td>
+                        <td>Very High</td>
+                        <td>USB/NFC token tap</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Push Notifications</strong></td>
+                        <td>Mobile app push notifications for approval</td>
+                        <td>High</td>
+                        <td>Tap to approve/deny</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Biometric Authentication</strong></td>
+                        <td>Fingerprint or face recognition on supported devices</td>
+                        <td>High</td>
+                        <td>Biometric scan</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h3>Role-Based MFA Policies</h3>
+
+        <div class="code-block">
+            <pre>
+// MFA Policy Configuration
+{
+    "policies": [
+        {
+            "name": "admin_users_strict",
+            "applies_to": ["system_admin", "org_admin"],
+            "requirements": {
+                "mfa_required": true,
+                "allowed_methods": ["authenticator_app", "hardware_token"],
+                "session_timeout": 30,
+                "reauth_for_sensitive": true,
+                "backup_codes_required": true
+            }
+        },
+        {
+            "name": "financial_users",
+            "applies_to": ["budget_manager", "procurement_manager"], 
+            "requirements": {
+                "mfa_required": true,
+                "allowed_methods": ["authenticator_app", "push_notification", "sms"],
+                "session_timeout": 60,
+                "reauth_for_sensitive": true,
+                "high_value_approval_mfa": 10000
+            }
+        },
+        {
+            "name": "standard_users",
+            "applies_to": ["approver", "requestor"],
+            "requirements": {
+                "mfa_required": false,
+                "mfa_encouraged": true,
+                "allowed_methods": ["authenticator_app", "sms", "email"],
+                "session_timeout": 480,
+                "reauth_for_sensitive": false
+            }
+        }
+    ],
+    "global_settings": {
+        "grace_period_days": 30,
+        "backup_codes_count": 8,
+        "remember_device_days": 30,
+        "failed_attempts_lockout": 5
+    }
+}
+            </pre>
+        </div>
+
+        <h3>Advanced Security Features</h3>
+
+        <div class="info-box">
+            <strong>Enhanced Security Controls:</strong>
+            <ul>
+                <li><strong>Conditional Access:</strong> Location-based, device-based, and risk-based access controls</li>
+                <li><strong>Session Management:</strong> Intelligent session timeouts and concurrent session limits</li>
+                <li><strong>Anomaly Detection:</strong> Machine learning-based detection of unusual access patterns</li>
+                <li><strong>Privileged Access Management:</strong> Just-in-time access for administrative functions</li>
+                <li><strong>Zero Trust Architecture:</strong> Continuous verification and least-privilege access</li>
+            </ul>
+        </div>
+
+        <h2 id="user-lifecycle">User Lifecycle Management</h2>
+
+        <h3>Employee Onboarding Process</h3>
+
+        <p>Streamlined onboarding ensures new employees gain appropriate access quickly while maintaining security controls.</p>
+
+        <ol>
+            <li><strong>Pre-boarding:</strong> HR system triggers user creation with role assignment</li>
+            <li><strong>Account Creation:</strong> User account provisioned with temporary credentials</li>
+            <li><strong>Access Assignment:</strong> Role-based permissions automatically configured</li>
+            <li><strong>Welcome Communication:</strong> Automated welcome email with setup instructions</li>
+            <li><strong>Mandatory Training:</strong> Security awareness and system training assignment</li>
+            <li><strong>Manager Assignment:</strong> Approval chain and reporting relationship setup</li>
+            <li><strong>Verification:</strong> Manager confirmation of access appropriateness</li>
+        </ol>
+
+        <h3>Access Review and Recertification</h3>
+
+        <div class="warning-box">
+            <strong>Regular Access Reviews:</strong>
+            <ul>
+                <li><strong>Quarterly Review:</strong> All user access reviewed by managers and department heads</li>
+                <li><strong>Annual Certification:</strong> Comprehensive review of all roles and permissions</li>
+                <li><strong>Role Change Review:</strong> Immediate review when users change roles or departments</li>
+                <li><strong>Privileged Access Review:</strong> Monthly review of administrative and elevated access</li>
+                <li><strong>Exception Review:</strong> Ongoing review of temporary access grants and exceptions</li>
+            </ul>
+        </div>
+
+        <h3>Employee Departure Process</h3>
+
+        <p>Systematic approach to access revocation ensures data security and compliance during employee departures.</p>
+
+        <div class="code-block">
+            <pre>
+// Automated Departure Workflow
+{
+    "trigger": "hr_system_termination_event",
+    "immediate_actions": [
+        "disable_user_account",
+        "revoke_api_keys",
+        "invalidate_active_sessions",
+        "disable_mobile_access",
+        "remove_from_distribution_lists"
+    ],
+    "data_handling": {
+        "transfer_ownership": {
+            "pending_approvals": "manager",
+            "created_requests": "retain_7_days",
+            "personal_data": "backup_and_anonymize"
+        },
+        "retention_policy": {
+            "audit_logs": "retain_per_policy",
+            "transaction_history": "retain_7_years",
+            "personal_files": "delete_after_90_days"
+        }
+    },
+    "notifications": [
+        "inform_manager",
+        "notify_it_team", 
+        "alert_security_team",
+        "update_hr_system"
+    ],
+    "verification": {
+        "access_removal_confirmed": true,
+        "data_transfer_completed": true,
+        "equipment_returned": "hr_verification_required"
+    }
+}
+            </pre>
+        </div>
+
+        <h2 id="troubleshooting">Common Issues and Troubleshooting</h2>
+
+        <h3>User Access Problems</h3>
+
+        <div class="error-box">
+            <strong>Issue:</strong> User cannot access assigned functionality despite correct role assignment
+            <br><strong>Troubleshooting Steps:</strong>
+            <ol>
+                <li>Verify user account is active and not locked</li>
+                <li>Check role inheritance and permission conflicts</li>
+                <li>Review organizational hierarchy assignments</li>
+                <li>Validate department and cost center mappings</li>
+                <li>Clear user session and force re-authentication</li>
+                <li>Check for temporary access restrictions or policy violations</li>
+            </ol>
+        </div>
+
+        <h3>Bulk Import Failures</h3>
+
+        <div class="warning-box">
+            <strong>Common Import Issues:</strong>
+            <ul>
+                <li><strong>Duplicate Email Addresses:</strong> Each user must have unique email address</li>
+                <li><strong>Invalid Manager References:</strong> Manager email must exist in system before import</li>
+                <li><strong>Role Assignment Errors:</strong> Role names must match exactly (case-sensitive)</li>
+                <li><strong>Department Mismatches:</strong> Department names must exist in organizational structure</li>
+                <li><strong>CSV Format Issues:</strong> Check for hidden characters, encoding problems, or extra commas</li>
+            </ul>
+        </div>
+
+        <h2 id="best-practices">Best Practices and Recommendations</h2>
+
+        <div class="success-box">
+            <strong>Security Best Practices:</strong>
+            <ul>
+                <li><strong>Principle of Least Privilege:</strong> Grant minimum access necessary for job function</li>
+                <li><strong>Regular Access Reviews:</strong> Conduct quarterly access certification and cleanup</li>
+                <li><strong>Role-Based Design:</strong> Use roles rather than individual permissions for scalability</li>
+                <li><strong>Segregation of Duties:</strong> Prevent conflicting role assignments that could enable fraud</li>
+                <li><strong>Strong Authentication:</strong> Enforce MFA for all administrative and financial roles</li>
+                <li><strong>Audit Trail Integrity:</strong> Maintain immutable audit logs for compliance</li>
+            </ul>
+        </div>
+
+        <div class="info-box">
+            <strong>Operational Excellence:</strong>
+            <ul>
+                <li><strong>Automated Provisioning:</strong> Integrate with HR systems for efficient user lifecycle management</li>
+                <li><strong>Self-Service Options:</strong> Enable users to manage profile information and basic settings</li>
+                <li><strong>Clear Documentation:</strong> Maintain role definitions and permission matrices</li>
+                <li><strong>Training Programs:</strong> Provide role-specific training for system usage</li>
+                <li><strong>Performance Monitoring:</strong> Track user adoption and system utilization metrics</li>
+            </ul>
+        </div>
+
+        <h2 id="summary">Summary and Action Items</h2>
+
+        <div class="success-box">
+            <strong>User Management Checklist:</strong>
+            <ul>
+                <li>Establish clear role hierarchy aligned with organizational structure</li>
+                <li>Configure permission matrices based on principle of least privilege</li>
+                <li>Implement automated user provisioning and deprovisioning</li>
+                <li>Set up comprehensive audit logging and compliance reporting</li>
+                <li>Deploy multi-factor authentication with appropriate policies</li>
+                <li>Establish regular access review and recertification processes</li>
+            </ul>
+        </div>
+
+        <div class="button-group">
+            <a href="../compliance/audit-trails.html" class="btn btn-primary">Next: Audit Trails & Compliance</a>
+            <a href="../api/reference.html" class="btn btn-secondary">Previous: API Reference</a>
+        </div>
+
+        <div class="footer">
+            <p><strong>Last Updated:</strong> January 2024 | <strong>Version:</strong> 2.1</p>
+            <p>Created by <a href="../../index.html">Justin Arndt</a> - Technical Writing Portfolio</p>
+        </div>
+    </div>
+
+    <script src="../../assets/js/documentation.js"></script>
+    <script>
+        // Simulated real-time stats update
+        function updateUserStats() {
+            const stats = {
+                'total-users': Math.floor(1200 + Math.random() * 100),
+                'pending-approvals': Math.floor(15 + Math.random() * 20),
+                'roles-configured': 12,
+                'mfa-enabled': Math.floor(85 + Math.random() * 10) + '%'
+            };
+            
+            Object.keys(stats).forEach(id => {
+                const element = document.getElementById(id);
+                if (element) {
+                    element.textContent = stats[id];
+                }
+            });
+        }
+        
+        // Update stats every 30 seconds
+        setInterval(updateUserStats, 30000);
+        
+        // Initialize with current stats
+        updateUserStats();
+    </script>
+</body>
+</html>
