@@ -3,1560 +3,1453 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ZipFlow API Reference Documentation</title>
-    <meta name="description" content="Complete API reference for ZipFlow procurement platform covering authentication, purchase requests, approvals, and vendor management">
+    <title>API Reference Documentation | Justin Arndt Technical Writing Portfolio</title>
+    <meta name="description" content="Complete REST API documentation for ZipFlow procurement platform. Professional technical writing sample by Justin Arndt.">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    
+    <!-- Main Styles -->
     <link rel="stylesheet" href="../../style.css">
-    <!-- Inline styles removed - using high-contrast style.css -->
+    
+    <!-- API Documentation Specific Styles -->
+    <style>
+        /* Documentation Layout */
+        .doc-wrapper {
+            display: flex;
+            max-width: 1400px;
+            margin: 0 auto;
+            gap: 2rem;
+            padding: 0 2rem;
+            margin-top: 80px;
+        }
+        
+        /* Sidebar Navigation */
+        .doc-sidebar {
+            width: 280px;
+            position: sticky;
+            top: 100px;
+            height: calc(100vh - 120px);
+            overflow-y: auto;
+            padding: 2rem 0;
+        }
+        
+        .doc-nav-title {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--gray);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 1rem;
+        }
+        
+        .doc-nav {
+            list-style: none;
+        }
+        
+        .doc-nav-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .doc-nav-group-title {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--gray-light);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0.5rem;
+            padding: 0.5rem 1rem;
+        }
+        
+        .doc-nav-item {
+            margin-bottom: 0.25rem;
+        }
+        
+        .doc-nav-link {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            color: var(--gray);
+            text-decoration: none;
+            border-radius: 8px;
+            transition: var(--transition);
+            font-size: 0.875rem;
+        }
+        
+        .doc-nav-link:hover {
+            background: var(--gray-lighter);
+            color: var(--dark);
+        }
+        
+        .doc-nav-link.active {
+            background: var(--primary);
+            color: white;
+            font-weight: 500;
+        }
+        
+        .method-badge-small {
+            display: inline-block;
+            padding: 0.125rem 0.375rem;
+            font-size: 0.625rem;
+            font-weight: 600;
+            border-radius: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .method-badge-small.get { background: #10b981; color: white; }
+        .method-badge-small.post { background: #3b82f6; color: white; }
+        .method-badge-small.put { background: #f59e0b; color: white; }
+        .method-badge-small.delete { background: #ef4444; color: white; }
+        .method-badge-small.patch { background: #8b5cf6; color: white; }
+        
+        /* Main Content */
+        .doc-content {
+            flex: 1;
+            max-width: 900px;
+            padding: 2rem 0;
+        }
+        
+        /* Documentation Header */
+        .doc-header {
+            background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+            color: white;
+            padding: 3rem;
+            border-radius: 16px;
+            margin-bottom: 3rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .doc-header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 500px;
+            height: 500px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+        }
+        
+        .doc-header::after {
+            content: '';
+            position: absolute;
+            bottom: -30%;
+            left: -10%;
+            width: 300px;
+            height: 300px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 50%;
+        }
+        
+        .doc-breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.875rem;
+            margin-bottom: 1rem;
+            opacity: 0.9;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .doc-breadcrumb a {
+            color: white;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+        
+        .doc-breadcrumb a:hover {
+            opacity: 0.8;
+        }
+        
+        .doc-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .doc-description {
+            font-size: 1.125rem;
+            opacity: 0.95;
+            margin-bottom: 1.5rem;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .doc-meta {
+            display: flex;
+            gap: 2rem;
+            font-size: 0.875rem;
+            opacity: 0.9;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .doc-meta-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        /* API Info Cards */
+        .api-info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+        
+        .api-info-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            border: 1px solid var(--gray-lighter);
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .api-info-card h3 {
+            font-size: 0.875rem;
+            color: var(--gray);
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .api-info-card .value {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--dark);
+        }
+        
+        .api-info-card code {
+            font-family: var(--font-mono);
+            background: var(--gray-lighter);
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.875rem;
+        }
+        
+        /* Section Styles */
+        .doc-section {
+            margin-bottom: 4rem;
+        }
+        
+        .section-title {
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--dark);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .section-title::before {
+            content: '';
+            display: inline-block;
+            width: 4px;
+            height: 28px;
+            background: var(--primary);
+            border-radius: 2px;
+        }
+        
+        /* Endpoint Cards */
+        .endpoint-card {
+            background: white;
+            border-radius: 12px;
+            border: 1px solid var(--gray-lighter);
+            margin-bottom: 2rem;
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition);
+        }
+        
+        .endpoint-card:hover {
+            box-shadow: var(--shadow-md);
+            transform: translateY(-2px);
+        }
+        
+        .endpoint-header {
+            padding: 1.5rem;
+            background: var(--off-white);
+            border-bottom: 1px solid var(--gray-lighter);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .method-badge {
+            display: inline-block;
+            padding: 0.375rem 0.75rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            border-radius: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .method-badge.get { background: #10b981; color: white; }
+        .method-badge.post { background: #3b82f6; color: white; }
+        .method-badge.put { background: #f59e0b; color: white; }
+        .method-badge.delete { background: #ef4444; color: white; }
+        .method-badge.patch { background: #8b5cf6; color: white; }
+        
+        .endpoint-path {
+            font-family: var(--font-mono);
+            font-size: 1rem;
+            color: var(--dark);
+            flex: 1;
+        }
+        
+        .endpoint-body {
+            padding: 1.5rem;
+        }
+        
+        .endpoint-description {
+            color: var(--gray);
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+        
+        /* Parameters Table */
+        .params-section {
+            margin-bottom: 2rem;
+        }
+        
+        .params-title {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            color: var(--dark);
+        }
+        
+        .params-table {
+            width: 100%;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid var(--gray-lighter);
+        }
+        
+        .params-table thead {
+            background: var(--gray-lighter);
+        }
+        
+        .params-table th {
+            text-align: left;
+            padding: 0.75rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--gray);
+        }
+        
+        .params-table td {
+            padding: 0.75rem;
+            font-size: 0.875rem;
+            border-top: 1px solid var(--gray-lighter);
+        }
+        
+        .param-name {
+            font-family: var(--font-mono);
+            font-weight: 600;
+            color: var(--dark);
+        }
+        
+        .param-type {
+            display: inline-block;
+            padding: 0.125rem 0.375rem;
+            background: var(--primary-light);
+            color: white;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+        
+        .param-required {
+            display: inline-block;
+            padding: 0.125rem 0.375rem;
+            background: #ef4444;
+            color: white;
+            border-radius: 4px;
+            font-size: 0.625rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        
+        .param-optional {
+            display: inline-block;
+            padding: 0.125rem 0.375rem;
+            background: var(--gray-light);
+            color: white;
+            border-radius: 4px;
+            font-size: 0.625rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        
+        /* Code Examples */
+        .code-examples {
+            margin-top: 2rem;
+        }
+        
+        .code-tabs {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: -1px;
+            padding: 0 1rem;
+        }
+        
+        .code-tab {
+            padding: 0.5rem 1rem;
+            background: var(--gray-lighter);
+            border: 1px solid var(--gray-lighter);
+            border-bottom: none;
+            border-radius: 8px 8px 0 0;
+            color: var(--gray);
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+        
+        .code-tab:hover {
+            background: white;
+        }
+        
+        .code-tab.active {
+            background: #1e293b;
+            color: white;
+            border-color: #1e293b;
+        }
+        
+        .code-container {
+            background: #1e293b;
+            border-radius: 0 8px 8px 8px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .code-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem 1rem;
+            background: rgba(0,0,0,0.2);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .code-lang {
+            color: #94a3b8;
+            font-size: 0.75rem;
+            font-weight: 500;
+            text-transform: uppercase;
+        }
+        
+        .copy-button {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.25rem 0.75rem;
+            background: rgba(255,255,255,0.1);
+            color: #94a3b8;
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 6px;
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 0.75rem;
+        }
+        
+        .copy-button:hover {
+            background: rgba(255,255,255,0.2);
+            color: white;
+        }
+        
+        .copy-button.copied {
+            background: #10b981;
+            color: white;
+            border-color: #10b981;
+        }
+        
+        .code-content {
+            display: none;
+        }
+        
+        .code-content.active {
+            display: block;
+        }
+        
+        pre {
+            margin: 0;
+            padding: 1rem;
+            overflow-x: auto;
+            color: #e2e8f0;
+            font-family: var(--font-mono);
+            font-size: 0.875rem;
+            line-height: 1.6;
+        }
+        
+        /* Syntax Highlighting */
+        .token-keyword { color: #c792ea; }
+        .token-string { color: #a5e844; }
+        .token-number { color: #f78c6c; }
+        .token-property { color: #82aaff; }
+        .token-comment { color: #676e95; }
+        .token-function { color: #ffd580; }
+        .token-variable { color: #ff5370; }
+        
+        /* Response Example */
+        .response-section {
+            margin-top: 2rem;
+        }
+        
+        .response-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .response-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--dark);
+        }
+        
+        .status-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        
+        .status-badge.success {
+            background: #dcfce7;
+            color: #166534;
+        }
+        
+        .status-badge.error {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+        
+        /* Authentication Section */
+        .auth-section {
+            background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 12px;
+            margin-bottom: 3rem;
+        }
+        
+        .auth-section h2 {
+            color: white;
+            margin-bottom: 1rem;
+        }
+        
+        .auth-section p {
+            opacity: 0.95;
+            margin-bottom: 1rem;
+        }
+        
+        .auth-code {
+            background: rgba(0,0,0,0.2);
+            padding: 1rem;
+            border-radius: 8px;
+            font-family: var(--font-mono);
+            margin-top: 1rem;
+        }
+        
+        /* Rate Limiting Info */
+        .info-box {
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin: 2rem 0;
+            border-left: 4px solid;
+        }
+        
+        .info-box.note {
+            background: #eff6ff;
+            border-color: var(--primary);
+        }
+        
+        .info-box.warning {
+            background: #fffbeb;
+            border-color: var(--warning);
+        }
+        
+        .info-box-title {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .info-box.note .info-box-title { color: var(--primary); }
+        .info-box.warning .info-box-title { color: var(--warning); }
+        
+        /* Mobile Responsive */
+        @media (max-width: 1024px) {
+            .doc-wrapper {
+                flex-direction: column;
+            }
+            
+            .doc-sidebar {
+                width: 100%;
+                position: static;
+                height: auto;
+                border-bottom: 1px solid var(--gray-lighter);
+                padding: 1rem 0;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .doc-header {
+                padding: 2rem;
+            }
+            
+            .doc-title {
+                font-size: 1.75rem;
+            }
+            
+            .api-info-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .code-tabs {
+                overflow-x: auto;
+                padding-bottom: 0.5rem;
+            }
+        }
+    </style>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='75' font-size='75'>📝</text></svg>">
 </head>
 <body>
-    <div class="doc-header">
-        <h1>ZipFlow API Reference</h1>
-        <p class="subtitle">Complete Integration Guide for Developers</p>
-    </div>
-
-    <div class="breadcrumb">
-        <a href="../../index.html">Portfolio</a> / 
-        <a href="../index.html">Documentation</a> / 
-        <span>API Reference</span>
-    </div>
-
-    <div class="doc-container">
-        <div class="info-box">
-            <strong>API Version:</strong> v2.1 | 
-            <strong>Base URL:</strong> https://api.zipflow.com/v2 | 
-            <strong>Documentation Updated:</strong> August 2025
-        </div>
-
-        <div class="toc" id="table-of-contents">
-            <h3>Table of Contents</h3>
-        </div>
-
-        <h2 id="overview">API Overview</h2>
-        
-        <p>The ZipFlow API provides programmatic access to all core procurement platform functionality. Built on RESTful principles with JSON data formats, the API enables seamless integration with enterprise systems, custom applications, and third-party tools. This comprehensive reference covers authentication, endpoints, request/response formats, and practical implementation examples.</p>
-
-        <div class="success-box">
-            <strong>Key Features:</strong>
-            <ul>
-                <li>RESTful design with predictable resource URLs</li>
-                <li>JSON request and response bodies</li>
-                <li>OAuth 2.0 and API key authentication</li>
-                <li>Comprehensive webhook support</li>
-                <li>Rate limiting and usage monitoring</li>
-                <li>Extensive filtering and pagination options</li>
-            </ul>
-        </div>
-
-        <div class="rate-limit-info">
-            <strong>Rate Limits:</strong> 1000 requests per hour for standard accounts, 5000 per hour for enterprise accounts. Burst limits allow up to 100 requests per minute.
-        </div>
-
-        <h2 id="authentication">Authentication</h2>
-
-        <div class="auth-section">
-            <h3>🔐 Authentication Methods</h3>
-            <p>ZipFlow API supports two authentication methods: OAuth 2.0 for user-delegated access and API keys for server-to-server communication.</p>
-        </div>
-
-        <h3>OAuth 2.0 Authentication</h3>
-
-        <p>OAuth 2.0 is the recommended method for applications that need to act on behalf of users. It provides secure, token-based authentication with fine-grained scope control.</p>
-
-        <div class="tab-container">
-            <div class="tab-buttons">
-                <button class="tab-button active" onclick="switchTab('oauth-flow')">Authorization Flow</button>
-                <button class="tab-button" onclick="switchTab('oauth-scopes')">Scopes & Permissions</button>
-                <button class="tab-button" onclick="switchTab('oauth-examples')">Code Examples</button>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <span class="brand-icon">📝</span>
+                <span class="brand-name">Justin Arndt</span>
             </div>
-            
-            <div class="tab-content active" id="oauth-flow">
-                <h4>Authorization Code Flow</h4>
-                <ol>
-                    <li><strong>Authorization Request:</strong> Redirect users to authorization server</li>
-                    <li><strong>User Consent:</strong> User grants permissions to your application</li>
-                    <li><strong>Authorization Code:</strong> Receive code via redirect callback</li>
-                    <li><strong>Token Exchange:</strong> Exchange code for access and refresh tokens</li>
-                    <li><strong>API Access:</strong> Use access token for authenticated requests</li>
+            <ul class="nav-menu">
+                <li><a href="../../index.html" class="nav-link">Home</a></li>
+                <li><a href="../../index.html#about" class="nav-link">About</a></li>
+                <li><a href="../../index.html#portfolio" class="nav-link">Portfolio</a></li>
+                <li><a href="../../index.html#skills" class="nav-link">Skills</a></li>
+                <li><a href="../../index.html#contact" class="nav-link">Contact</a></li>
+            </ul>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Documentation Layout -->
+    <div class="doc-wrapper">
+        <!-- Sidebar -->
+        <aside class="doc-sidebar">
+            <div class="doc-nav-title">API Reference</div>
+            <ul class="doc-nav">
+                <li class="doc-nav-item">
+                    <a href="#overview" class="doc-nav-link active">Overview</a>
+                </li>
+                <li class="doc-nav-item">
+                    <a href="#authentication" class="doc-nav-link">Authentication</a>
+                </li>
+                
+                <li class="doc-nav-group">
+                    <div class="doc-nav-group-title">Endpoints</div>
+                    <ul class="doc-nav">
+                        <li class="doc-nav-item">
+                            <a href="#requests" class="doc-nav-link">
+                                <span class="method-badge-small get">GET</span>
+                                Requests
+                            </a>
+                        </li>
+                        <li class="doc-nav-item">
+                            <a href="#create-request" class="doc-nav-link">
+                                <span class="method-badge-small post">POST</span>
+                                Create Request
+                            </a>
+                        </li>
+                        <li class="doc-nav-item">
+                            <a href="#update-request" class="doc-nav-link">
+                                <span class="method-badge-small put">PUT</span>
+                                Update Request
+                            </a>
+                        </li>
+                        <li class="doc-nav-item">
+                            <a href="#delete-request" class="doc-nav-link">
+                                <span class="method-badge-small delete">DEL</span>
+                                Delete Request
+                            </a>
+                        </li>
+                        <li class="doc-nav-item">
+                            <a href="#vendors" class="doc-nav-link">
+                                <span class="method-badge-small get">GET</span>
+                                Vendors
+                            </a>
+                        </li>
+                        <li class="doc-nav-item">
+                            <a href="#approvals" class="doc-nav-link">
+                                <span class="method-badge-small post">POST</span>
+                                Approvals
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                
+                <li class="doc-nav-item">
+                    <a href="#errors" class="doc-nav-link">Error Handling</a>
+                </li>
+                <li class="doc-nav-item">
+                    <a href="#rate-limits" class="doc-nav-link">Rate Limits</a>
+                </li>
+                <li class="doc-nav-item">
+                    <a href="#webhooks" class="doc-nav-link">Webhooks</a>
+                </li>
+            </ul>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="doc-content">
+            <!-- Document Header -->
+            <header class="doc-header">
+                <div class="doc-breadcrumb">
+                    <a href="../../index.html">Portfolio</a>
+                    <span>/</span>
+                    <a href="#">API Documentation</a>
+                    <span>/</span>
+                    <span>Reference</span>
+                </div>
+                <h1 class="doc-title">ZipFlow REST API v2.0</h1>
+                <p class="doc-description">Complete API reference for integrating with the ZipFlow procurement platform. Build custom integrations, automate workflows, and connect with your existing systems.</p>
+                <div class="doc-meta">
+                    <div class="doc-meta-item">
+                        <span>🔧</span>
+                        <span>15 Endpoints</span>
+                    </div>
+                    <div class="doc-meta-item">
+                        <span>📖</span>
+                        <span>1,500 words</span>
+                    </div>
+                    <div class="doc-meta-item">
+                        <span>🎯</span>
+                        <span>Developers</span>
+                    </div>
+                </div>
+            </header>
+
+            <!-- API Info Cards -->
+            <div class="api-info-grid">
+                <div class="api-info-card">
+                    <h3>Base URL</h3>
+                    <div class="value"><code>https://api.zipflow.com/v2</code></div>
+                </div>
+                <div class="api-info-card">
+                    <h3>Authentication</h3>
+                    <div class="value">Bearer Token</div>
+                </div>
+                <div class="api-info-card">
+                    <h3>Rate Limit</h3>
+                    <div class="value">1000 requests/hour</div>
+                </div>
+            </div>
+
+            <!-- Overview Section -->
+            <section id="overview" class="doc-section">
+                <h2 class="section-title">Overview</h2>
+                <p>
+                    The ZipFlow API is a RESTful service that enables you to programmatically interact with the procurement platform. 
+                    Use it to create and manage purchase requests, handle approvals, sync vendor data, and integrate with your existing 
+                    ERP or financial systems.
+                </p>
+                
+                <div class="info-box note">
+                    <div class="info-box-title">
+                        <span>📘</span>
+                        <span>API Version</span>
+                    </div>
+                    <p>This documentation covers API v2.0. Version 1.0 is deprecated and will be sunset on December 31, 2025. Please migrate to v2.0 for continued support and new features.</p>
+                </div>
+
+                <h3>Key Features</h3>
+                <ul style="line-height: 2;">
+                    <li>✅ Full CRUD operations on purchase requests</li>
+                    <li>✅ Automated approval workflow triggers</li>
+                    <li>✅ Real-time webhook notifications</li>
+                    <li>✅ Bulk operations support</li>
+                    <li>✅ Comprehensive error handling</li>
+                    <li>✅ OAuth 2.0 and API key authentication</li>
+                </ul>
+            </section>
+
+            <!-- Authentication Section -->
+            <section id="authentication" class="doc-section">
+                <div class="auth-section">
+                    <h2>Authentication</h2>
+                    <p>
+                        All API requests require authentication using a Bearer token. You can generate API tokens from your ZipFlow 
+                        dashboard under Settings → API Access. Tokens do not expire but can be revoked at any time.
+                    </p>
+                    <div class="auth-code">
+                        <div>Authorization: Bearer YOUR_API_TOKEN</div>
+                        <div style="margin-top: 0.5rem; opacity: 0.7;">// Include in all request headers</div>
+                    </div>
+                </div>
+
+                <h3>Obtaining an API Token</h3>
+                <ol style="line-height: 2;">
+                    <li>Log in to your ZipFlow account</li>
+                    <li>Navigate to Settings → API Access</li>
+                    <li>Click "Generate New Token"</li>
+                    <li>Copy and securely store your token</li>
                 </ol>
 
-                <div class="code-block">
-                    <pre>
-# Step 1: Authorization URL
-https://auth.zipflow.com/oauth/authorize?
-  response_type=code&
-  client_id=YOUR_CLIENT_ID&
-  redirect_uri=https://yourapp.com/callback&
-  scope=requests:read requests:write approvals:read&
-  state=RANDOM_STATE_STRING
-
-# Step 2: Token Exchange
-POST https://auth.zipflow.com/oauth/token
-Content-Type: application/x-www-form-urlencoded
-
-grant_type=authorization_code&
-code=AUTHORIZATION_CODE&
-client_id=YOUR_CLIENT_ID&
-client_secret=YOUR_CLIENT_SECRET&
-redirect_uri=https://yourapp.com/callback
-                    </pre>
+                <div class="info-box warning">
+                    <div class="info-box-title">
+                        <span>⚠️</span>
+                        <span>Security Notice</span>
+                    </div>
+                    <p>Never share your API token or commit it to version control. Treat it like a password. If compromised, revoke immediately and generate a new token.</p>
                 </div>
-            </div>
-            
-            <div class="tab-content" id="oauth-scopes">
-                <h4>Available Scopes</h4>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Scope</th>
-                            <th>Description</th>
-                            <th>Access Level</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><code>requests:read</code></td>
-                            <td>Read purchase requests</td>
-                            <td>User's accessible requests</td>
-                        </tr>
-                        <tr>
-                            <td><code>requests:write</code></td>
-                            <td>Create and modify requests</td>
-                            <td>User's department</td>
-                        </tr>
-                        <tr>
-                            <td><code>approvals:read</code></td>
-                            <td>View approval status</td>
-                            <td>User's approval queue</td>
-                        </tr>
-                        <tr>
-                            <td><code>approvals:write</code></td>
-                            <td>Process approvals</td>
-                            <td>User's approval authority</td>
-                        </tr>
-                        <tr>
-                            <td><code>budgets:read</code></td>
-                            <td>View budget information</td>
-                            <td>Assigned budgets only</td>
-                        </tr>
-                        <tr>
-                            <td><code>vendors:read</code></td>
-                            <td>Access vendor directory</td>
-                            <td>Active vendors</td>
-                        </tr>
-                        <tr>
-                            <td><code>admin</code></td>
-                            <td>Full administrative access</td>
-                            <td>System administrators</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            
-            <div class="tab-content" id="oauth-examples">
-                <h4>Implementation Examples</h4>
+            </section>
+
+            <!-- Requests Endpoint -->
+            <section id="requests" class="doc-section">
+                <h2 class="section-title">Purchase Requests</h2>
                 
-                <div class="sdk-example">
-                    <strong>JavaScript/Node.js</strong>
-                    <div class="code-block">
-                        <pre>
-const OAuth2 = require('oauth').OAuth2;
+                <div class="endpoint-card">
+                    <div class="endpoint-header">
+                        <span class="method-badge get">GET</span>
+                        <span class="endpoint-path">/api/v2/requests</span>
+                    </div>
+                    <div class="endpoint-body">
+                        <p class="endpoint-description">
+                            Retrieve a paginated list of purchase requests. Filter by status, date range, department, or vendor.
+                        </p>
+                        
+                        <div class="params-section">
+                            <h4 class="params-title">Query Parameters</h4>
+                            <table class="params-table">
+                                <thead>
+                                    <tr>
+                                        <th>Parameter</th>
+                                        <th>Type</th>
+                                        <th>Required</th>
+                                        <th>Description</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><span class="param-name">status</span></td>
+                                        <td><span class="param-type">string</span></td>
+                                        <td><span class="param-optional">Optional</span></td>
+                                        <td>Filter by status: pending, approved, rejected, cancelled</td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="param-name">department_id</span></td>
+                                        <td><span class="param-type">integer</span></td>
+                                        <td><span class="param-optional">Optional</span></td>
+                                        <td>Filter by department ID</td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="param-name">limit</span></td>
+                                        <td><span class="param-type">integer</span></td>
+                                        <td><span class="param-optional">Optional</span></td>
+                                        <td>Number of results per page (default: 20, max: 100)</td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="param-name">offset</span></td>
+                                        <td><span class="param-type">integer</span></td>
+                                        <td><span class="param-optional">Optional</span></td>
+                                        <td>Number of results to skip for pagination</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
 
-const oauth2 = new OAuth2(
-    'YOUR_CLIENT_ID',
-    'YOUR_CLIENT_SECRET',
-    'https://auth.zipflow.com',
-    '/oauth/authorize',
-    '/oauth/token'
-);
-
-// Get authorization URL
-const authUrl = oauth2.getAuthorizeUrl({
-    redirect_uri: 'https://yourapp.com/callback',
-    scope: 'requests:read requests:write',
-    state: 'random_state_string'
+                        <div class="code-examples">
+                            <div class="code-tabs">
+                                <button class="code-tab active" onclick="switchTab('curl-get', this)">cURL</button>
+                                <button class="code-tab" onclick="switchTab('js-get', this)">JavaScript</button>
+                                <button class="code-tab" onclick="switchTab('python-get', this)">Python</button>
+                            </div>
+                            
+                            <div class="code-container">
+                                <div id="curl-get" class="code-content active">
+                                    <div class="code-header">
+                                        <span class="code-lang">cURL</span>
+                                        <button class="copy-button" onclick="copyCode(this)">
+                                            <span>📋 Copy</span>
+                                        </button>
+                                    </div>
+                                    <pre><code>curl -X GET "https://api.zipflow.com/v2/requests?status=pending&limit=10" \
+  -H "Authorization: Bearer YOUR_API_TOKEN" \
+  -H "Accept: application/json"</code></pre>
+                                </div>
+                                
+                                <div id="js-get" class="code-content">
+                                    <div class="code-header">
+                                        <span class="code-lang">JavaScript</span>
+                                        <button class="copy-button" onclick="copyCode(this)">
+                                            <span>📋 Copy</span>
+                                        </button>
+                                    </div>
+                                    <pre><code><span class="token-keyword">const</span> <span class="token-variable">response</span> = <span class="token-keyword">await</span> <span class="token-function">fetch</span>(<span class="token-string">'https://api.zipflow.com/v2/requests?status=pending&limit=10'</span>, {
+  <span class="token-property">method</span>: <span class="token-string">'GET'</span>,
+  <span class="token-property">headers</span>: {
+    <span class="token-string">'Authorization'</span>: <span class="token-string">'Bearer YOUR_API_TOKEN'</span>,
+    <span class="token-string">'Accept'</span>: <span class="token-string">'application/json'</span>
+  }
 });
 
-// Exchange code for token
-oauth2.getOAuthAccessToken(
-    authorizationCode,
-    {
-        grant_type: 'authorization_code',
-        redirect_uri: 'https://yourapp.com/callback'
-    },
-    (error, access_token, refresh_token, results) => {
-        // Store tokens securely
-        console.log('Access Token:', access_token);
-    }
-);
-                        </pre>
-                    </div>
-                </div>
+<span class="token-keyword">const</span> <span class="token-variable">data</span> = <span class="token-keyword">await</span> <span class="token-variable">response</span>.<span class="token-function">json</span>();
+<span class="token-variable">console</span>.<span class="token-function">log</span>(<span class="token-variable">data</span>);</code></pre>
+                                </div>
+                                
+                                <div id="python-get" class="code-content">
+                                    <div class="code-header">
+                                        <span class="code-lang">Python</span>
+                                        <button class="copy-button" onclick="copyCode(this)">
+                                            <span>📋 Copy</span>
+                                        </button>
+                                    </div>
+                                    <pre><code><span class="token-keyword">import</span> requests
 
-                <div class="sdk-example">
-                    <strong>Python</strong>
-                    <div class="code-block">
-                        <pre>
-import requests
-from urllib.parse import urlencode
-
-# Authorization URL
-auth_params = {
-    'response_type': 'code',
-    'client_id': 'YOUR_CLIENT_ID',
-    'redirect_uri': 'https://yourapp.com/callback',
-    'scope': 'requests:read requests:write',
-    'state': 'random_state_string'
+<span class="token-variable">url</span> = <span class="token-string">"https://api.zipflow.com/v2/requests"</span>
+<span class="token-variable">params</span> = {
+    <span class="token-string">"status"</span>: <span class="token-string">"pending"</span>,
+    <span class="token-string">"limit"</span>: <span class="token-number">10</span>
+}
+<span class="token-variable">headers</span> = {
+    <span class="token-string">"Authorization"</span>: <span class="token-string">"Bearer YOUR_API_TOKEN"</span>,
+    <span class="token-string">"Accept"</span>: <span class="token-string">"application/json"</span>
 }
 
-auth_url = f"https://auth.zipflow.com/oauth/authorize?{urlencode(auth_params)}"
+<span class="token-variable">response</span> = requests.<span class="token-function">get</span>(<span class="token-variable">url</span>, <span class="token-property">params</span>=<span class="token-variable">params</span>, <span class="token-property">headers</span>=<span class="token-variable">headers</span>)
+<span class="token-function">print</span>(<span class="token-variable">response</span>.<span class="token-function">json</span>())</code></pre>
+                                </div>
+                            </div>
+                        </div>
 
-# Token exchange
-token_data = {
-    'grant_type': 'authorization_code',
-    'code': authorization_code,
-    'client_id': 'YOUR_CLIENT_ID',
-    'client_secret': 'YOUR_CLIENT_SECRET',
-    'redirect_uri': 'https://yourapp.com/callback'
-}
-
-response = requests.post('https://auth.zipflow.com/oauth/token', data=token_data)
-tokens = response.json()
-                        </pre>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <h3>API Key Authentication</h3>
-
-        <p>API keys provide a simpler authentication method for server-to-server integrations. Keys are scoped to specific resources and can be easily revoked if compromised.</p>
-
-        <div class="warning-box">
-            <strong>Security Best Practices:</strong>
-            <ul>
-                <li>Never expose API keys in client-side code</li>
-                <li>Use environment variables to store keys</li>
-                <li>Rotate keys regularly (every 90 days recommended)</li>
-                <li>Use different keys for different environments</li>
-                <li>Monitor key usage in the admin dashboard</li>
-            </ul>
-        </div>
-
-        <div class="code-block">
-            <pre>
-# API Key Authentication Header
-Authorization: Bearer YOUR_API_KEY
-
-# Example Request
-curl -H "Authorization: Bearer zf_live_1234567890abcdef..." \
-     -H "Content-Type: application/json" \
-     https://api.zipflow.com/v2/requests
-            </pre>
-        </div>
-
-        <h2 id="purchase-requests">Purchase Requests Endpoints</h2>
-
-        <p>Purchase request endpoints provide complete CRUD operations for managing procurement requests throughout their lifecycle.</p>
-
-        <div class="endpoint-card">
-            <div class="endpoint-header" onclick="toggleEndpoint(this)">
-                <div>
-                    <span class="endpoint-method method-get">GET</span>
-                    <span class="endpoint-path">/requests</span>
-                </div>
-                <span class="expand-icon">▼</span>
-            </div>
-            <div class="endpoint-content">
-                <h4>Retrieve Purchase Requests</h4>
-                <p>Get a paginated list of purchase requests with optional filtering and sorting capabilities.</p>
-
-                <h5>Query Parameters</h5>
-                <table class="parameter-table">
-                    <thead>
-                        <tr>
-                            <th>Parameter</th>
-                            <th>Type</th>
-                            <th>Required</th>
-                            <th>Description</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><code>page</code></td>
-                            <td>integer</td>
-                            <td class="parameter-optional">Optional</td>
-                            <td>Page number (default: 1)</td>
-                        </tr>
-                        <tr>
-                            <td><code>limit</code></td>
-                            <td>integer</td>
-                            <td class="parameter-optional">Optional</td>
-                            <td>Items per page (default: 25, max: 100)</td>
-                        </tr>
-                        <tr>
-                            <td><code>status</code></td>
-                            <td>string</td>
-                            <td class="parameter-optional">Optional</td>
-                            <td>Filter by status: draft, submitted, approved, rejected</td>
-                        </tr>
-                        <tr>
-                            <td><code>department</code></td>
-                            <td>string</td>
-                            <td class="parameter-optional">Optional</td>
-                            <td>Filter by department ID</td>
-                        </tr>
-                        <tr>
-                            <td><code>created_after</code></td>
-                            <td>datetime</td>
-                            <td class="parameter-optional">Optional</td>
-                            <td>ISO 8601 format (e.g., 2024-01-01T00:00:00Z)</td>
-                        </tr>
-                        <tr>
-                            <td><code>amount_min</code></td>
-                            <td>decimal</td>
-                            <td class="parameter-optional">Optional</td>
-                            <td>Minimum request amount</td>
-                        </tr>
-                        <tr>
-                            <td><code>amount_max</code></td>
-                            <td>decimal</td>
-                            <td class="parameter-optional">Optional</td>
-                            <td>Maximum request amount</td>
-                        </tr>
-                    </tbody>
-                </table>
-
-                <h5>Response</h5>
-                <div class="status-code status-200">200 OK</div>
-
-                <div class="response-example">
-                    <pre>
-{
-  "data": [
+                        <div class="response-section">
+                            <div class="response-header">
+                                <h4 class="response-title">Response</h4>
+                                <span class="status-badge success">200 OK</span>
+                            </div>
+                            <div class="code-container">
+                                <div class="code-header">
+                                    <span class="code-lang">JSON Response</span>
+                                </div>
+                                <pre><code>{
+  <span class="token-property">"data"</span>: [
     {
-      "id": "req_1234567890",
-      "title": "Office Supplies - Q1 2024",
-      "description": "Quarterly office supplies order for marketing department",
-      "amount": 875.50,
-      "currency": "USD",
-      "status": "pending_approval",
-      "priority": "normal",
-      "category": "office_supplies",
-      "department": {
-        "id": "dept_marketing",
-        "name": "Marketing",
-        "budget_code": "MKTG-2024"
+      <span class="token-property">"id"</span>: <span class="token-number">12345</span>,
+      <span class="token-property">"request_number"</span>: <span class="token-string">"REQ-2024-001"</span>,
+      <span class="token-property">"status"</span>: <span class="token-string">"pending"</span>,
+      <span class="token-property">"total_amount"</span>: <span class="token-number">5420.50</span>,
+      <span class="token-property">"currency"</span>: <span class="token-string">"USD"</span>,
+      <span class="token-property">"requester"</span>: {
+        <span class="token-property">"id"</span>: <span class="token-number">789</span>,
+        <span class="token-property">"name"</span>: <span class="token-string">"John Smith"</span>,
+        <span class="token-property">"email"</span>: <span class="token-string">"john.smith@company.com"</span>
       },
-      "requestor": {
-        "id": "user_jane_doe",
-        "name": "Jane Doe",
-        "email": "jane.doe@company.com"
-      },
-      "vendor": {
-        "id": "vendor_office_depot",
-        "name": "Office Depot Business",
-        "status": "preferred"
-      },
-      "approval_chain": [
-        {
-          "level": 1,
-          "approver": {
-            "id": "user_mike_manager",
-            "name": "Mike Manager",
-            "role": "Department Head"
-          },
-          "status": "approved",
-          "approved_at": "2024-01-15T10:30:00Z"
-        },
-        {
-          "level": 2,
-          "approver": {
-            "id": "user_finance_team",
-            "name": "Finance Team",
-            "role": "Budget Reviewer"
-          },
-          "status": "pending",
-          "assigned_at": "2024-01-15T10:30:00Z"
-        }
-      ],
-      "line_items": [
-        {
-          "id": "item_1",
-          "description": "Premium Copy Paper - 10 reams",
-          "quantity": 10,
-          "unit_price": 45.99,
-          "total_price": 459.90
-        },
-        {
-          "id": "item_2", 
-          "description": "Blue Ink Pens - 5 boxes",
-          "quantity": 5,
-          "unit_price": 12.99,
-          "total_price": 64.95
-        }
-      ],
-      "attachments": [
-        {
-          "id": "att_quote_001",
-          "filename": "office_depot_quote.pdf",
-          "size": 245760,
-          "mime_type": "application/pdf",
-          "upload_date": "2024-01-14T16:45:00Z"
-        }
-      ],
-      "created_at": "2024-01-14T16:00:00Z",
-      "updated_at": "2024-01-15T10:30:00Z",
-      "expected_delivery": "2024-01-25T00:00:00Z"
+      <span class="token-property">"created_at"</span>: <span class="token-string">"2024-08-26T10:30:00Z"</span>,
+      <span class="token-property">"updated_at"</span>: <span class="token-string">"2024-08-26T14:15:00Z"</span>
     }
   ],
-  "pagination": {
-    "page": 1,
-    "limit": 25,
-    "total_items": 1,
-    "total_pages": 1,
-    "has_next": false,
-    "has_previous": false
+  <span class="token-property">"pagination"</span>: {
+    <span class="token-property">"total"</span>: <span class="token-number">42</span>,
+    <span class="token-property">"limit"</span>: <span class="token-number">10</span>,
+    <span class="token-property">"offset"</span>: <span class="token-number">0</span>,
+    <span class="token-property">"has_more"</span>: <span class="token-keyword">true</span>
   }
-}
-                    </pre>
-                </div>
-            </div>
-        </div>
-
-        <div class="endpoint-card">
-            <div class="endpoint-header" onclick="toggleEndpoint(this)">
-                <div>
-                    <span class="endpoint-method method-post">POST</span>
-                    <span class="endpoint-path">/requests</span>
-                </div>
-                <span class="expand-icon">▼</span>
-            </div>
-            <div class="endpoint-content">
-                <h4>Create Purchase Request</h4>
-                <p>Submit a new purchase request with line items, attachments, and approval routing.</p>
-
-                <h5>Request Body</h5>
-                <div class="code-block">
-                    <pre>
-{
-  "title": "Software License Renewal",
-  "description": "Annual renewal of Adobe Creative Cloud licenses for design team",
-  "amount": 2400.00,
-  "currency": "USD",
-  "priority": "normal",
-  "category": "software",
-  "department_id": "dept_design",
-  "vendor_id": "vendor_adobe",
-  "budget_code": "DESIGN-SW-2024",
-  "cost_center": "CC-400",
-  "expected_delivery": "2024-02-01T00:00:00Z",
-  "business_justification": "Required for ongoing design projects and client deliverables",
-  "line_items": [
-    {
-      "description": "Adobe Creative Cloud - Annual License",
-      "quantity": 10,
-      "unit_price": 240.00,
-      "total_price": 2400.00,
-      "category": "software_license"
-    }
-  ],
-  "custom_fields": {
-    "license_type": "annual",
-    "users_covered": 10,
-    "renewal_date": "2025-02-01"
-  }
-}
-                    </pre>
-                </div>
-
-                <h5>Response</h5>
-                <div class="status-code status-201">201 Created</div>
-
-                <div class="response-example">
-                    <pre>
-{
-  "id": "req_2345678901",
-  "title": "Software License Renewal",
-  "status": "submitted",
-  "approval_chain": [
-    {
-      "level": 1,
-      "approver": {
-        "id": "user_design_manager",
-        "name": "Sarah Design Manager"
-      },
-      "status": "pending",
-      "sla_expires_at": "2024-01-17T16:00:00Z"
-    }
-  ],
-  "created_at": "2024-01-16T16:00:00Z",
-  "tracking_url": "https://app.zipflow.com/requests/req_2345678901"
-}
-                    </pre>
-                </div>
-
-                <h5>Error Responses</h5>
-                <div class="status-code status-400">400 Bad Request</div>
-                <p>Invalid request data or missing required fields</p>
-
-                <div class="status-code status-403">403 Forbidden</div>
-                <p>Insufficient permissions or budget unavailable</p>
-            </div>
-        </div>
-
-        <div class="endpoint-card">
-            <div class="endpoint-header" onclick="toggleEndpoint(this)">
-                <div>
-                    <span class="endpoint-method method-put">PUT</span>
-                    <span class="endpoint-path">/requests/{id}</span>
-                </div>
-                <span class="expand-icon">▼</span>
-            </div>
-            <div class="endpoint-content">
-                <h4>Update Purchase Request</h4>
-                <p>Modify an existing purchase request. Only requests in "draft" status can be fully updated. Submitted requests allow limited modifications.</p>
-
-                <h5>Path Parameters</h5>
-                <table class="parameter-table">
-                    <thead>
-                        <tr>
-                            <th>Parameter</th>
-                            <th>Type</th>
-                            <th>Required</th>
-                            <th>Description</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><code>id</code></td>
-                            <td>string</td>
-                            <td class="parameter-required">Required</td>
-                            <td>Unique request identifier</td>
-                        </tr>
-                    </tbody>
-                </table>
-
-                <h5>Request Body</h5>
-                <div class="code-block">
-                    <pre>
-{
-  "title": "Updated Software License Renewal",
-  "amount": 2640.00,
-  "line_items": [
-    {
-      "id": "item_1",
-      "description": "Adobe Creative Cloud - Annual License",
-      "quantity": 11,
-      "unit_price": 240.00,
-      "total_price": 2640.00
-    }
-  ],
-  "custom_fields": {
-    "users_covered": 11,
-    "change_reason": "Additional user added to team"
-  }
-}
-                    </pre>
-                </div>
-
-                <h5>Response</h5>
-                <div class="status-code status-200">200 OK</div>
-                <p>Returns the updated request object with current status and approval chain.</p>
-            </div>
-        </div>
-
-        <div class="endpoint-card">
-            <div class="endpoint-header" onclick="toggleEndpoint(this)">
-                <div>
-                    <span class="endpoint-method method-delete">DELETE</span>
-                    <span class="endpoint-path">/requests/{id}</span>
-                </div>
-                <span class="expand-icon">▼</span>
-            </div>
-            <div class="endpoint-content">
-                <h4>Cancel Purchase Request</h4>
-                <p>Cancel or withdraw a purchase request. Only requests that haven't been approved can be cancelled.</p>
-
-                <h5>Response</h5>
-                <div class="status-code status-200">200 OK</div>
-
-                <div class="response-example">
-                    <pre>
-{
-  "id": "req_2345678901",
-  "status": "cancelled",
-  "cancelled_at": "2024-01-16T18:30:00Z",
-  "cancelled_by": {
-    "id": "user_jane_doe",
-    "name": "Jane Doe"
-  },
-  "message": "Request successfully cancelled"
-}
-                    </pre>
-                </div>
-
-                <h5>Error Responses</h5>
-                <div class="status-code status-403">403 Forbidden</div>
-                <p>Request cannot be cancelled (already approved or completed)</p>
-
-                <div class="status-code status-404">404 Not Found</div>
-                <p>Request not found or access denied</p>
-            </div>
-        </div>
-
-        <h2 id="approvals">Approval Endpoints</h2>
-
-        <p>Approval endpoints enable programmatic management of the approval process, including reviewing, approving, and rejecting purchase requests.</p>
-
-        <div class="endpoint-card">
-            <div class="endpoint-header" onclick="toggleEndpoint(this)">
-                <div>
-                    <span class="endpoint-method method-get">GET</span>
-                    <span class="endpoint-path">/approvals/pending</span>
-                </div>
-                <span class="expand-icon">▼</span>
-            </div>
-            <div class="endpoint-content">
-                <h4>Get Pending Approvals</h4>
-                <p>Retrieve all purchase requests pending approval by the authenticated user.</p>
-
-                <h5>Query Parameters</h5>
-                <table class="parameter-table">
-                    <thead>
-                        <tr>
-                            <th>Parameter</th>
-                            <th>Type</th>
-                            <th>Required</th>
-                            <th>Description</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><code>priority</code></td>
-                            <td>string</td>
-                            <td class="parameter-optional">Optional</td>
-                            <td>Filter by priority: low, normal, high, urgent</td>
-                        </tr>
-                        <tr>
-                            <td><code>amount_threshold</code></td>
-                            <td>decimal</td>
-                            <td class="parameter-optional">Optional</td>
-                            <td>Show only requests above threshold</td>
-                        </tr>
-                        <tr>
-                            <td><code>sla_expiring</code></td>
-                            <td>boolean</td>
-                            <td class="parameter-optional">Optional</td>
-                            <td>Show only requests with SLA expiring soon</td>
-                        </tr>
-                    </tbody>
-                </table>
-
-                <h5>Response</h5>
-                <div class="status-code status-200">200 OK</div>
-
-                <div class="response-example">
-                    <pre>
-{
-  "data": [
-    {
-      "request_id": "req_1234567890",
-      "title": "Office Supplies - Q1 2024",
-      "amount": 875.50,
-      "currency": "USD",
-      "priority": "normal",
-      "requestor": {
-        "name": "Jane Doe",
-        "department": "Marketing"
-      },
-      "approval_level": 2,
-      "assigned_at": "2024-01-15T10:30:00Z",
-      "sla_expires_at": "2024-01-17T10:30:00Z",
-      "time_remaining": "1 day 12 hours",
-      "available_actions": ["approve", "reject", "request_more_info", "delegate"],
-      "budget_impact": {
-        "remaining_budget": 15240.50,
-        "percentage_consumed": 0.32
-      }
-    }
-  ],
-  "summary": {
-    "total_pending": 1,
-    "total_value": 875.50,
-    "sla_breaches_soon": 0,
-    "high_priority": 0
-  }
-}
-                    </pre>
-                </div>
-            </div>
-        </div>
-
-        <div class="endpoint-card">
-            <div class="endpoint-header" onclick="toggleEndpoint(this)">
-                <div>
-                    <span class="endpoint-method method-post">POST</span>
-                    <span class="endpoint-path">/approvals/{request_id}/approve</span>
-                </div>
-                <span class="expand-icon">▼</span>
-            </div>
-            <div class="endpoint-content">
-                <h4>Approve Request</h4>
-                <p>Approve a purchase request at the current approval level.</p>
-
-                <h5>Request Body</h5>
-                <div class="code-block">
-                    <pre>
-{
-  "comments": "Approved - budget allocation confirmed for Q1 office supplies",
-  "conditions": [
-    "Delivery must be completed by January 25, 2024",
-    "Invoice to be sent to Accounts Payable team"
-  ],
-  "modified_amount": 875.50,
-  "notify_requestor": true
-}
-                    </pre>
-                </div>
-
-                <h5>Response</h5>
-                <div class="status-code status-200">200 OK</div>
-
-                <div class="response-example">
-                    <pre>
-{
-  "request_id": "req_1234567890",
-  "approval_status": "approved_level_2",
-  "next_approver": {
-    "id": "user_procurement_team",
-    "name": "Procurement Team",
-    "level": 3
-  },
-  "approved_at": "2024-01-16T14:15:00Z",
-  "comments": "Approved - budget allocation confirmed for Q1 office supplies",
-  "overall_status": "pending_approval",
-  "estimated_completion": "2024-01-18T17:00:00Z"
-}
-                    </pre>
-                </div>
-            </div>
-        </div>
-
-        <div class="endpoint-card">
-            <div class="endpoint-header" onclick="toggleEndpoint(this)">
-                <div>
-                    <span class="endpoint-method method-post">POST</span>
-                    <span class="endpoint-path">/approvals/{request_id}/reject</span>
-                </div>
-                <span class="expand-icon">▼</span>
-            </div>
-            <div class="endpoint-content">
-                <h4>Reject Request</h4>
-                <p>Reject a purchase request with detailed reasoning and optional suggestions.</p>
-
-                <h5>Request Body</h5>
-                <div class="code-block">
-                    <pre>
-{
-  "reason_code": "insufficient_justification",
-  "comments": "Please provide more detailed business justification and consider alternative vendors with better pricing.",
-  "suggestions": [
-    "Include ROI analysis for software purchase",
-    "Obtain quotes from at least 2 additional vendors",
-    "Consider quarterly licensing instead of annual"
-  ],
-  "allow_resubmission": true,
-  "notify_requestor": true
-}
-                    </pre>
-                </div>
-
-                <h5>Response</h5>
-                <div class="status-code status-200">200 OK</div>
-
-                <div class="response-example">
-                    <pre>
-{
-  "request_id": "req_2345678901",
-  "approval_status": "rejected",
-  "rejected_at": "2024-01-16T15:45:00Z",
-  "rejected_by": {
-    "id": "user_finance_director",
-    "name": "Finance Director"
-  },
-  "reason_code": "insufficient_justification",
-  "can_resubmit": true,
-  "resubmission_deadline": "2024-01-30T17:00:00Z"
-}
-                    </pre>
-                </div>
-            </div>
-        </div>
-
-        <h2 id="vendors">Vendor Management Endpoints</h2>
-
-        <p>Vendor endpoints provide access to supplier directory, vendor performance data, and relationship management capabilities.</p>
-
-        <div class="endpoint-card">
-            <div class="endpoint-header" onclick="toggleEndpoint(this)">
-                <div>
-                    <span class="endpoint-method method-get">GET</span>
-                    <span class="endpoint-path">/vendors</span>
-                </div>
-                <span class="expand-icon">▼</span>
-            </div>
-            <div class="endpoint-content">
-                <h4>List Vendors</h4>
-                <p>Retrieve vendor directory with filtering and search capabilities.</p>
-
-                <h5>Query Parameters</h5>
-                <table class="parameter-table">
-                    <thead>
-                        <tr>
-                            <th>Parameter</th>
-                            <th>Type</th>
-                            <th>Required</th>
-                            <th>Description</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><code>status</code></td>
-                            <td>string</td>
-                            <td class="parameter-optional">Optional</td>
-                            <td>active, inactive, preferred, pending</td>
-                        </tr>
-                        <tr>
-                            <td><code>category</code></td>
-                            <td>string</td>
-                            <td class="parameter-optional">Optional</td>
-                            <td>Filter by vendor category</td>
-                        </tr>
-                        <tr>
-                            <td><code>search</code></td>
-                            <td>string</td>
-                            <td class="parameter-optional">Optional</td>
-                            <td>Search vendor name or description</td>
-                        </tr>
-                        <tr>
-                            <td><code>country</code></td>
-                            <td>string</td>
-                            <td class="parameter-optional">Optional</td>
-                            <td>ISO country code filter</td>
-                        </tr>
-                    </tbody>
-                </table>
-
-                <h5>Response</h5>
-                <div class="status-code status-200">200 OK</div>
-
-                <div class="response-example">
-                    <pre>
-{
-  "data": [
-    {
-      "id": "vendor_office_depot",
-      "name": "Office Depot Business",
-      "status": "preferred",
-      "category": ["office_supplies", "technology"],
-      "contact": {
-        "primary_contact": "Sarah Johnson",
-        "email": "sarah.johnson@officedepot.com",
-        "phone": "+1-800-555-0123"
-      },
-      "address": {
-        "street": "6600 North Military Trail",
-        "city": "Boca Raton",
-        "state": "FL",
-        "postal_code": "33496",
-        "country": "US"
-      },
-      "performance": {
-        "rating": 4.7,
-        "on_time_delivery": 0.94,
-        "quality_score": 4.5,
-        "total_orders": 247,
-        "total_spent": 45780.32
-      },
-      "contracts": [
-        {
-          "id": "contract_od_2024",
-          "type": "master_service_agreement",
-          "effective_date": "2024-01-01",
-          "expiration_date": "2024-12-31",
-          "discount_tier": "preferred_10"
-        }
-      ],
-      "certifications": ["minority_owned", "small_business"],
-      "payment_terms": {
-        "standard_terms": "net_30",
-        "early_pay_discount": 0.02,
-        "accepted_methods": ["check", "ach", "wire_transfer"]
-      },
-      "created_at": "2023-03-15T10:00:00Z",
-      "last_updated": "2024-01-12T14:30:00Z"
-    }
-  ],
-  "pagination": {
-    "page": 1,
-    "limit": 25,
-    "total_items": 1,
-    "total_pages": 1
-  }
-}
-                    </pre>
-                </div>
-            </div>
-        </div>
-
-        <div class="endpoint-card">
-            <div class="endpoint-header" onclick="toggleEndpoint(this)">
-                <div>
-                    <span class="endpoint-method method-post">POST</span>
-                    <span class="endpoint-path">/vendors</span>
-                </div>
-                <span class="expand-icon">▼</span>
-            </div>
-            <div class="endpoint-content">
-                <h4>Create Vendor</h4>
-                <p>Add a new vendor to the system with complete profile information.</p>
-
-                <h5>Request Body</h5>
-                <div class="code-block">
-                    <pre>
-{
-  "name": "TechSource Solutions",
-  "business_type": "corporation",
-  "tax_id": "12-3456789",
-  "duns_number": "123456789",
-  "category": ["technology", "consulting"],
-  "description": "Enterprise technology solutions and consulting services",
-  "website": "https://www.techsource.com",
-  "contact": {
-    "primary_contact": "Michael Chen",
-    "title": "Account Manager",
-    "email": "m.chen@techsource.com",
-    "phone": "+1-555-123-4567",
-    "mobile": "+1-555-987-6543"
-  },
-  "address": {
-    "street": "1234 Tech Boulevard",
-    "suite": "Suite 500",
-    "city": "San Francisco",
-    "state": "CA",
-    "postal_code": "94105",
-    "country": "US"
-  },
-  "billing_address": {
-    "same_as_primary": false,
-    "street": "1234 Tech Boulevard",
-    "suite": "Billing Department",
-    "city": "San Francisco", 
-    "state": "CA",
-    "postal_code": "94105",
-    "country": "US"
-  },
-  "bank_details": {
-    "bank_name": "First National Bank",
-    "routing_number": "121000248",
-    "account_number": "1234567890",
-    "account_type": "checking"
-  },
-  "certifications": ["women_owned", "sdb_certified"],
-  "insurance": {
-    "general_liability": {
-      "carrier": "ABC Insurance",
-      "policy_number": "GL-123456789",
-      "coverage_amount": 2000000,
-      "expiration_date": "2024-12-31"
-    },
-    "professional_liability": {
-      "carrier": "XYZ Insurance", 
-      "policy_number": "PL-987654321",
-      "coverage_amount": 1000000,
-      "expiration_date": "2024-12-31"
-    }
-  },
-  "references": [
-    {
-      "company": "Fortune 500 Corp",
-      "contact": "Jane Smith",
-      "email": "j.smith@fortune500.com",
-      "phone": "+1-555-999-8888"
-    }
-  ]
-}
-                    </pre>
-                </div>
-
-                <h5>Response</h5>
-                <div class="status-code status-201">201 Created</div>
-
-                <div class="response-example">
-                    <pre>
-{
-  "id": "vendor_techsource_001",
-  "name": "TechSource Solutions",
-  "status": "pending_approval",
-  "created_at": "2024-01-16T16:45:00Z",
-  "approval_process": {
-    "current_stage": "compliance_review",
-    "assigned_to": "procurement_team",
-    "estimated_completion": "2024-01-23T17:00:00Z"
-  },
-  "next_steps": [
-    "Compliance team will review certifications",
-    "Financial verification in progress",
-    "References will be contacted within 2 business days"
-  ]
-}
-                    </pre>
-                </div>
-            </div>
-        </div>
-
-        <h2 id="webhooks">Webhook Configuration</h2>
-
-        <p>Webhooks enable real-time notifications for events in ZipFlow, allowing your applications to respond immediately to status changes, approvals, and other important events.</p>
-
-        <div class="success-box">
-            <strong>Supported Events:</strong>
-            <ul>
-                <li><code>request.created</code> - New purchase request submitted</li>
-                <li><code>request.approved</code> - Request approved at any level</li>
-                <li><code>request.rejected</code> - Request rejected</li>
-                <li><code>request.completed</code> - Request fully approved and ready for procurement</li>
-                <li><code>budget.threshold_exceeded</code> - Budget threshold warnings</li>
-                <li><code>vendor.status_changed</code> - Vendor approval status updates</li>
-            </ul>
-        </div>
-
-        <h3>Webhook Setup</h3>
-
-        <div class="code-block">
-            <pre>
-POST /webhooks
-{
-  "url": "https://yourapp.com/webhooks/zipflow",
-  "events": ["request.approved", "request.rejected"],
-  "secret": "your_webhook_secret_key",
-  "active": true,
-  "retry_policy": {
-    "max_attempts": 3,
-    "backoff_multiplier": 2
-  }
-}
-            </pre>
-        </div>
-
-        <h3>Webhook Payload Example</h3>
-
-        <div class="response-example">
-            <pre>
-{
-  "id": "evt_1234567890",
-  "type": "request.approved",
-  "created_at": "2024-01-16T14:15:00Z",
-  "data": {
-    "request": {
-      "id": "req_1234567890",
-      "title": "Office Supplies - Q1 2024",
-      "amount": 875.50,
-      "status": "approved_level_2",
-      "approval_level": 2,
-      "approver": {
-        "id": "user_finance_team",
-        "name": "Finance Team"
-      },
-      "next_approval_level": 3,
-      "next_approver": {
-        "id": "user_procurement_team",
-        "name": "Procurement Team"
-      }
-    }
-  },
-  "signature": "sha256=your_calculated_signature"
-}
-            </pre>
-        </div>
-
-        <h2 id="error-handling">Error Handling</h2>
-
-        <p>The ZipFlow API uses conventional HTTP response codes and provides detailed error information in JSON format.</p>
-
-        <h3>HTTP Status Codes</h3>
-
-        <table>
-            <thead>
-                <tr>
-                    <th>Status Code</th>
-                    <th>Meaning</th>
-                    <th>Description</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td><span class="status-code status-200">200</span></td>
-                    <td>OK</td>
-                    <td>Request successful</td>
-                </tr>
-                <tr>
-                    <td><span class="status-code status-201">201</span></td>
-                    <td>Created</td>
-                    <td>Resource created successfully</td>
-                </tr>
-                <tr>
-                    <td><span class="status-code status-400">400</span></td>
-                    <td>Bad Request</td>
-                    <td>Invalid request parameters or body</td>
-                </tr>
-                <tr>
-                    <td><span class="status-code status-401">401</span></td>
-                    <td>Unauthorized</td>
-                    <td>Authentication required or failed</td>
-                </tr>
-                <tr>
-                    <td><span class="status-code status-403">403</span></td>
-                    <td>Forbidden</td>
-                    <td>Insufficient permissions</td>
-                </tr>
-                <tr>
-                    <td><span class="status-code status-404">404</span></td>
-                    <td>Not Found</td>
-                    <td>Resource does not exist</td>
-                </tr>
-                <tr>
-                    <td><span class="status-code status-500">500</span></td>
-                    <td>Internal Server Error</td>
-                    <td>Server encountered an error</td>
-                </tr>
-            </tbody>
-        </table>
-
-        <h3>Error Response Format</h3>
-
-        <div class="response-example">
-            <pre>
-{
-  "error": {
-    "code": "validation_error",
-    "message": "Request validation failed",
-    "details": [
-      {
-        "field": "amount",
-        "message": "Amount must be greater than 0"
-      },
-      {
-        "field": "vendor_id",
-        "message": "Vendor not found or inactive"
-      }
-    ],
-    "request_id": "req_debug_abc123",
-    "timestamp": "2024-01-16T15:30:00Z"
-  }
-}
-            </pre>
-        </div>
-
-        <h2 id="sdk-examples">SDK Examples and Libraries</h2>
-
-        <p>Official and community-supported SDKs are available for popular programming languages to accelerate integration development.</p>
-
-        <div class="tab-container">
-            <div class="tab-buttons">
-                <button class="tab-button active" onclick="switchTab('sdk-javascript')">JavaScript/Node.js</button>
-                <button class="tab-button" onclick="switchTab('sdk-python')">Python</button>
-                <button class="tab-button" onclick="switchTab('sdk-php')">PHP</button>
-                <button class="tab-button" onclick="switchTab('sdk-curl')">cURL</button>
-            </div>
-            
-            <div class="tab-content active" id="sdk-javascript">
-                <div class="sdk-example">
-                    <h4>Installation</h4>
-                    <div class="code-block">
-                        <pre>npm install zipflow-api-client</pre>
-                    </div>
-                    
-                    <h4>Basic Usage</h4>
-                    <div class="code-block">
-                        <pre>
-const ZipFlow = require('zipflow-api-client');
-
-const client = new ZipFlow({
-    apiKey: 'your_api_key',
-    environment: 'production' // or 'sandbox'
-});
-
-// Create a purchase request
-async function createRequest() {
-    try {
-        const request = await client.requests.create({
-            title: 'Office Supplies Order',
-            amount: 250.00,
-            currency: 'USD',
-            category: 'office_supplies',
-            department_id: 'dept_marketing',
-            line_items: [
-                {
-                    description: 'Printer Paper - 10 reams',
-                    quantity: 10,
-                    unit_price: 12.99,
-                    total_price: 129.90
-                }
-            ]
-        });
-        
-        console.log('Request created:', request.id);
-        return request;
-    } catch (error) {
-        console.error('Error creating request:', error.message);
-        throw error;
-    }
-}
-
-// Get pending approvals
-async function getPendingApprovals() {
-    try {
-        const approvals = await client.approvals.getPending({
-            priority: 'high',
-            limit: 10
-        });
-        
-        approvals.data.forEach(approval => {
-            console.log(`Request ${approval.request_id}: ${approval.title}`);
-            console.log(`Amount: $${approval.amount} - SLA: ${approval.time_remaining}`);
-        });
-        
-        return approvals;
-    } catch (error) {
-        console.error('Error fetching approvals:', error.message);
-        throw error;
-    }
-}
-                        </pre>
+}</code></pre>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
-            
-            <div class="tab-content" id="sdk-python">
-                <div class="sdk-example">
-                    <h4>Installation</h4>
-                    <div class="code-block">
-                        <pre>pip install zipflow-python</pre>
+            </section>
+
+            <!-- Create Request Endpoint -->
+            <section id="create-request" class="doc-section">
+                <div class="endpoint-card">
+                    <div class="endpoint-header">
+                        <span class="method-badge post">POST</span>
+                        <span class="endpoint-path">/api/v2/requests</span>
                     </div>
-                    
-                    <h4>Basic Usage</h4>
-                    <div class="code-block">
-                        <pre>
-import zipflow
-from zipflow.exceptions import ZipFlowAPIError
+                    <div class="endpoint-body">
+                        <p class="endpoint-description">
+                            Create a new purchase request. The request will automatically enter the approval workflow based on your organization's rules.
+                        </p>
+                        
+                        <div class="params-section">
+                            <h4 class="params-title">Request Body</h4>
+                            <table class="params-table">
+                                <thead>
+                                    <tr>
+                                        <th>Field</th>
+                                        <th>Type</th>
+                                        <th>Required</th>
+                                        <th>Description</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><span class="param-name">vendor_id</span></td>
+                                        <td><span class="param-type">integer</span></td>
+                                        <td><span class="param-required">Required</span></td>
+                                        <td>ID of the vendor</td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="param-name">items</span></td>
+                                        <td><span class="param-type">array</span></td>
+                                        <td><span class="param-required">Required</span></td>
+                                        <td>Array of line items</td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="param-name">justification</span></td>
+                                        <td><span class="param-type">string</span></td>
+                                        <td><span class="param-required">Required</span></td>
+                                        <td>Business justification for purchase</td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="param-name">urgency</span></td>
+                                        <td><span class="param-type">string</span></td>
+                                        <td><span class="param-optional">Optional</span></td>
+                                        <td>low, normal, high, critical</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
 
-# Initialize client
-client = zipflow.Client(
-    api_key='your_api_key',
-    environment='production'  # or 'sandbox'
-)
-
-# Create a purchase request
-def create_request():
-    try:
-        request = client.requests.create(
-            title='Software License Purchase',
-            amount=1200.00,
-            currency='USD',
-            category='software',
-            department_id='dept_it',
-            vendor_id='vendor_microsoft',
-            line_items=[
-                {
-                    'description': 'Microsoft Office 365 - Annual License',
-                    'quantity': 5,
-                    'unit_price': 240.00,
-                    'total_price': 1200.00
-                }
-            ]
-        )
-        
-        print(f'Request created: {request.id}')
-        return request
-        
-    except ZipFlowAPIError as e:
-        print(f'API Error: {e.message}')
-        if e.details:
-            for detail in e.details:
-                print(f'  {detail.field}: {detail.message}')
-        raise
-
-# Approve a request
-def approve_request(request_id):
-    try:
-        approval = client.approvals.approve(
-            request_id=request_id,
-            comments='Approved - budget confirmed and vendor verified',
-            notify_requestor=True
-        )
-        
-        print(f'Request {request_id} approved')
-        print(f'Next approver: {approval.next_approver.name}')
-        return approval
-        
-    except ZipFlowAPIError as e:
-        print(f'Approval failed: {e.message}')
-        raise
-
-# List vendors with filtering
-def list_vendors():
-    try:
-        vendors = client.vendors.list(
-            status='active',
-            category='technology',
-            limit=50
-        )
-        
-        for vendor in vendors.data:
-            print(f'{vendor.name} - Rating: {vendor.performance.rating}/5')
-            
-        return vendors
-        
-    except ZipFlowAPIError as e:
-        print(f'Error listing vendors: {e.message}')
-        raise
-                        </pre>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="tab-content" id="sdk-php">
-                <div class="sdk-example">
-                    <h4>Installation</h4>
-                    <div class="code-block">
-                        <pre>composer require zipflow/zipflow-php</pre>
-                    </div>
-                    
-                    <h4>Basic Usage</h4>
-                    <div class="code-block">
-                        <pre>
-<?php
-require_once 'vendor/autoload.php';
-
-use ZipFlow\Client;
-use ZipFlow\Exception\ApiException;
-
-// Initialize client
-$client = new Client([
-    'api_key' => 'your_api_key',
-    'environment' => 'production' // or 'sandbox'
-]);
-
-// Create a purchase request
-function createRequest($client) {
-    try {
-        $request = $client->requests->create([
-            'title' => 'Marketing Materials Order',
-            'amount' => 850.00,
-            'currency' => 'USD',
-            'category' => 'marketing',
-            'department_id' => 'dept_marketing',
-            'vendor_id' => 'vendor_staples',
-            'line_items' => [
-                [
-                    'description' => 'Business Cards - 1000 count',
-                    'quantity' => 5,
-                    'unit_price' => 45.00,
-                    'total_price' => 225.00
-                ],
-                [
-                    'description' => 'Promotional Banners - Large',
-                    'quantity' => 3,
-                    'unit_price' => 125.00,
-                    'total_price' => 375.00
-                ]
-            ]
-        ]);
-        
-        echo "Request created: " . $request->id . "\n";
-        echo "Status: " . $request->status . "\n";
-        
-        return $request;
-        
-    } catch (ApiException $e) {
-        echo "API Error: " . $e->getMessage() . "\n";
-        if ($e->getDetails()) {
-            foreach ($e->getDetails() as $detail) {
-                echo "  {$detail->field}: {$detail->message}\n";
-            }
-        }
-        throw $e;
-    }
-}
-
-// Get request by ID
-function getRequest($client, $requestId) {
-    try {
-        $request = $client->requests->get($requestId);
-        
-        echo "Request: " . $request->title . "\n";
-        echo "Amount: $" . number_format($request->amount, 2) . "\n";
-        echo "Status: " . $request->status . "\n";
-        
-        if ($request->approval_chain) {
-            echo "Approval Progress:\n";
-            foreach ($request->approval_chain as $level => $approval) {
-                $status = $approval->status;
-                $approver = $approval->approver->name;
-                echo "  Level {$level}: {$status} by {$approver}\n";
-            }
-        }
-        
-        return $request;
-        
-    } catch (ApiException $e) {
-        echo "Error retrieving request: " . $e->getMessage() . "\n";
-        throw $e;
-    }
-}
-
-// Usage examples
-$request = createRequest($client);
-$retrievedRequest = getRequest($client, $request->id);
-?>
-                        </pre>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="tab-content" id="sdk-curl">
-                <div class="sdk-example">
-                    <h4>Authentication</h4>
-                    <div class="code-block">
-                        <pre>
-# Set your API key as environment variable
-export ZIPFLOW_API_KEY="your_api_key"
-
-# All requests include the Authorization header
-curl -H "Authorization: Bearer $ZIPFLOW_API_KEY" \
-     -H "Content-Type: application/json" \
-     https://api.zipflow.com/v2/requests
-                        </pre>
-                    </div>
-                    
-                    <h4>Create Purchase Request</h4>
-                    <div class="code-block">
-                        <pre>
-curl -X POST https://api.zipflow.com/v2/requests \
-  -H "Authorization: Bearer $ZIPFLOW_API_KEY" \
+                        <div class="code-examples">
+                            <div class="code-tabs">
+                                <button class="code-tab active" onclick="switchTab('curl-post', this)">cURL</button>
+                                <button class="code-tab" onclick="switchTab('js-post', this)">JavaScript</button>
+                                <button class="code-tab" onclick="switchTab('python-post', this)">Python</button>
+                            </div>
+                            
+                            <div class="code-container">
+                                <div id="curl-post" class="code-content active">
+                                    <div class="code-header">
+                                        <span class="code-lang">cURL</span>
+                                        <button class="copy-button" onclick="copyCode(this)">
+                                            <span>📋 Copy</span>
+                                        </button>
+                                    </div>
+                                    <pre><code>curl -X POST "https://api.zipflow.com/v2/requests" \
+  -H "Authorization: Bearer YOUR_API_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
-    "title": "IT Equipment Purchase",
-    "description": "New laptops for development team",
-    "amount": 4500.00,
-    "currency": "USD",
-    "category": "technology",
-    "department_id": "dept_engineering",
-    "vendor_id": "vendor_dell",
-    "line_items": [
+    "vendor_id": 456,
+    "items": [
       {
-        "description": "Dell Laptop - Developer Edition",
-        "quantity": 3,
-        "unit_price": 1500.00,
-        "total_price": 4500.00
+        "description": "Office Supplies",
+        "quantity": 10,
+        "unit_price": 25.00
       }
     ],
-    "business_justification": "Required for new team members starting next month"
-  }'
-                        </pre>
-                    </div>
-                    
-                    <h4>Approve Request</h4>
-                    <div class="code-block">
-                        <pre>
-curl -X POST https://api.zipflow.com/v2/approvals/req_1234567890/approve \
-  -H "Authorization: Bearer $ZIPFLOW_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "comments": "Approved - budget confirmed for Q1 team expansion",
-    "conditions": [
-      "Delivery required by February 15, 2024",
-      "Standard warranty extension included"
+    "justification": "Monthly office supplies replenishment",
+    "urgency": "normal"
+  }'</code></pre>
+                                </div>
+                                
+                                <div id="js-post" class="code-content">
+                                    <div class="code-header">
+                                        <span class="code-lang">JavaScript</span>
+                                        <button class="copy-button" onclick="copyCode(this)">
+                                            <span>📋 Copy</span>
+                                        </button>
+                                    </div>
+                                    <pre><code><span class="token-keyword">const</span> <span class="token-variable">requestData</span> = {
+  <span class="token-property">vendor_id</span>: <span class="token-number">456</span>,
+  <span class="token-property">items</span>: [
+    {
+      <span class="token-property">description</span>: <span class="token-string">"Office Supplies"</span>,
+      <span class="token-property">quantity</span>: <span class="token-number">10</span>,
+      <span class="token-property">unit_price</span>: <span class="token-number">25.00</span>
+    }
+  ],
+  <span class="token-property">justification</span>: <span class="token-string">"Monthly office supplies replenishment"</span>,
+  <span class="token-property">urgency</span>: <span class="token-string">"normal"</span>
+};
+
+<span class="token-keyword">const</span> <span class="token-variable">response</span> = <span class="token-keyword">await</span> <span class="token-function">fetch</span>(<span class="token-string">'https://api.zipflow.com/v2/requests'</span>, {
+  <span class="token-property">method</span>: <span class="token-string">'POST'</span>,
+  <span class="token-property">headers</span>: {
+    <span class="token-string">'Authorization'</span>: <span class="token-string">'Bearer YOUR_API_TOKEN'</span>,
+    <span class="token-string">'Content-Type'</span>: <span class="token-string">'application/json'</span>
+  },
+  <span class="token-property">body</span>: JSON.<span class="token-function">stringify</span>(<span class="token-variable">requestData</span>)
+});</code></pre>
+                                </div>
+                                
+                                <div id="python-post" class="code-content">
+                                    <div class="code-header">
+                                        <span class="code-lang">Python</span>
+                                        <button class="copy-button" onclick="copyCode(this)">
+                                            <span>📋 Copy</span>
+                                        </button>
+                                    </div>
+                                    <pre><code><span class="token-keyword">import</span> requests
+
+<span class="token-variable">url</span> = <span class="token-string">"https://api.zipflow.com/v2/requests"</span>
+<span class="token-variable">data</span> = {
+    <span class="token-string">"vendor_id"</span>: <span class="token-number">456</span>,
+    <span class="token-string">"items"</span>: [
+        {
+            <span class="token-string">"description"</span>: <span class="token-string">"Office Supplies"</span>,
+            <span class="token-string">"quantity"</span>: <span class="token-number">10</span>,
+            <span class="token-string">"unit_price"</span>: <span class="token-number">25.00</span>
+        }
     ],
-    "notify_requestor": true
-  }'
-                        </pre>
-                    </div>
-                    
-                    <h4>List Pending Approvals</h4>
-                    <div class="code-block">
-                        <pre>
-curl -G https://api.zipflow.com/v2/approvals/pending \
-  -H "Authorization: Bearer $ZIPFLOW_API_KEY" \
-  -d priority=high \
-  -d sla_expiring=true \
-  -d limit=20
-                        </pre>
+    <span class="token-string">"justification"</span>: <span class="token-string">"Monthly office supplies replenishment"</span>,
+    <span class="token-string">"urgency"</span>: <span class="token-string">"normal"</span>
+}
+
+<span class="token-variable">response</span> = requests.<span class="token-function">post</span>(<span class="token-variable">url</span>, <span class="token-property">json</span>=<span class="token-variable">data</span>, <span class="token-property">headers</span>=<span class="token-variable">headers</span>)</code></pre>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="response-section">
+                            <div class="response-header">
+                                <h4 class="response-title">Response</h4>
+                                <span class="status-badge success">201 Created</span>
+                            </div>
+                            <div class="code-container">
+                                <div class="code-header">
+                                    <span class="code-lang">JSON Response</span>
+                                </div>
+                                <pre><code>{
+  <span class="token-property">"id"</span>: <span class="token-number">12346</span>,
+  <span class="token-property">"request_number"</span>: <span class="token-string">"REQ-2024-002"</span>,
+  <span class="token-property">"status"</span>: <span class="token-string">"pending"</span>,
+  <span class="token-property">"total_amount"</span>: <span class="token-number">250.00</span>,
+  <span class="token-property">"approval_chain"</span>: [
+    {
+      <span class="token-property">"approver"</span>: <span class="token-string">"Manager"</span>,
+      <span class="token-property">"status"</span>: <span class="token-string">"pending"</span>
+    }
+  ],
+  <span class="token-property">"created_at"</span>: <span class="token-string">"2024-08-28T15:30:00Z"</span>
+}</code></pre>
+                            </div>
+                        </div>
                     </div>
                 </div>
+            </section>
+
+            <!-- Update Request Endpoint -->
+            <section id="update-request" class="doc-section">
+                <div class="endpoint-card">
+                    <div class="endpoint-header">
+                        <span class="method-badge put">PUT</span>
+                        <span class="endpoint-path">/api/v2/requests/{id}</span>
+                    </div>
+                    <div class="endpoint-body">
+                        <p class="endpoint-description">
+                            Update an existing purchase request. Only requests in "draft" or "returned" status can be modified.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Delete Request Endpoint -->
+            <section id="delete-request" class="doc-section">
+                <div class="endpoint-card">
+                    <div class="endpoint-header">
+                        <span class="method-badge delete">DELETE</span>
+                        <span class="endpoint-path">/api/v2/requests/{id}</span>
+                    </div>
+                    <div class="endpoint-body">
+                        <p class="endpoint-description">
+                            Cancel a purchase request. Only requests that haven't been fully approved can be cancelled.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Error Handling -->
+            <section id="errors" class="doc-section">
+                <h2 class="section-title">Error Handling</h2>
+                <p>
+                    The API uses standard HTTP status codes to indicate success or failure. All error responses include a JSON object with error details.
+                </p>
+
+                <table class="params-table" style="margin-top: 1.5rem;">
+                    <thead>
+                        <tr>
+                            <th>Status Code</th>
+                            <th>Description</th>
+                            <th>Common Causes</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>400</strong></td>
+                            <td>Bad Request</td>
+                            <td>Invalid parameters, malformed JSON</td>
+                        </tr>
+                        <tr>
+                            <td><strong>401</strong></td>
+                            <td>Unauthorized</td>
+                            <td>Missing or invalid API token</td>
+                        </tr>
+                        <tr>
+                            <td><strong>403</strong></td>
+                            <td>Forbidden</td>
+                            <td>Insufficient permissions</td>
+                        </tr>
+                        <tr>
+                            <td><strong>404</strong></td>
+                            <td>Not Found</td>
+                            <td>Resource doesn't exist</td>
+                        </tr>
+                        <tr>
+                            <td><strong>429</strong></td>
+                            <td>Too Many Requests</td>
+                            <td>Rate limit exceeded</td>
+                        </tr>
+                        <tr>
+                            <td><strong>500</strong></td>
+                            <td>Internal Server Error</td>
+                            <td>Server-side issue</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="response-section" style="margin-top: 2rem;">
+                    <div class="response-header">
+                        <h4 class="response-title">Error Response Format</h4>
+                        <span class="status-badge error">400 Bad Request</span>
+                    </div>
+                    <div class="code-container">
+                        <div class="code-header">
+                            <span class="code-lang">JSON Error Response</span>
+                        </div>
+                        <pre><code>{
+  <span class="token-property">"error"</span>: {
+    <span class="token-property">"code"</span>: <span class="token-string">"INVALID_PARAMETER"</span>,
+    <span class="token-property">"message"</span>: <span class="token-string">"The vendor_id field is required"</span>,
+    <span class="token-property">"field"</span>: <span class="token-string">"vendor_id"</span>,
+    <span class="token-property">"request_id"</span>: <span class="token-string">"req_abc123"</span>
+  }
+}</code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Rate Limits -->
+            <section id="rate-limits" class="doc-section">
+                <h2 class="section-title">Rate Limiting</h2>
+                <p>
+                    API requests are rate-limited to ensure platform stability. Rate limits are applied per API token.
+                </p>
+
+                <div class="api-info-grid" style="margin-top: 2rem;">
+                    <div class="api-info-card">
+                        <h3>Standard Limit</h3>
+                        <div class="value">1,000 requests/hour</div>
+                    </div>
+                    <div class="api-info-card">
+                        <h3>Burst Limit</h3>
+                        <div class="value">50 requests/minute</div>
+                    </div>
+                    <div class="api-info-card">
+                        <h3>Enterprise Limit</h3>
+                        <div class="value">10,000 requests/hour</div>
+                    </div>
+                </div>
+
+                <div class="info-box note">
+                    <div class="info-box-title">
+                        <span>📘</span>
+                        <span>Rate Limit Headers</span>
+                    </div>
+                    <p>Each response includes headers showing your current rate limit status:</p>
+                    <ul style="margin-top: 0.5rem;">
+                        <li><code>X-RateLimit-Limit</code> - Your rate limit</li>
+                        <li><code>X-RateLimit-Remaining</code> - Requests remaining</li>
+                        <li><code>X-RateLimit-Reset</code> - Unix timestamp when limit resets</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Webhooks -->
+            <section id="webhooks" class="doc-section">
+                <h2 class="section-title">Webhooks</h2>
+                <p>
+                    Configure webhooks to receive real-time notifications when events occur in ZipFlow. Webhooks are sent as HTTP POST requests to your specified endpoint.
+                </p>
+
+                <h3>Available Events</h3>
+                <ul style="line-height: 2; margin: 1rem 0;">
+                    <li><code>request.created</code> - New purchase request created</li>
+                    <li><code>request.approved</code> - Request approved by all approvers</li>
+                    <li><code>request.rejected</code> - Request rejected by approver</li>
+                    <li><code>request.cancelled</code> - Request cancelled by requester</li>
+                    <li><code>vendor.updated</code> - Vendor information changed</li>
+                </ul>
+
+                <div class="code-container" style="margin-top: 2rem;">
+                    <div class="code-header">
+                        <span class="code-lang">Webhook Payload Example</span>
+                    </div>
+                    <pre><code>{
+  <span class="token-property">"event"</span>: <span class="token-string">"request.approved"</span>,
+  <span class="token-property">"timestamp"</span>: <span class="token-string">"2024-08-28T16:45:00Z"</span>,
+  <span class="token-property">"data"</span>: {
+    <span class="token-property">"request_id"</span>: <span class="token-number">12345</span>,
+    <span class="token-property">"request_number"</span>: <span class="token-string">"REQ-2024-001"</span>,
+    <span class="token-property">"total_amount"</span>: <span class="token-number">5420.50</span>,
+    <span class="token-property">"approved_by"</span>: <span class="token-string">"jane.manager@company.com"</span>
+  }
+}</code></pre>
+                </div>
+            </section>
+
+            <!-- Navigation -->
+            <div class="doc-nav-buttons" style="display: flex; justify-content: space-between; margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--gray-lighter);">
+                <a href="../../index.html#portfolio" class="nav-btn" style="display: flex; align-items: center; gap: 0.5rem; padding: 1rem 1.5rem; background: white; border: 2px solid var(--gray-lighter); border-radius: 8px; text-decoration: none; color: var(--dark); transition: var(--transition);">
+                    <span>←</span>
+                    <span>Back to Portfolio</span>
+                </a>
+                <a href="../admin/user-management.html" class="nav-btn next" style="display: flex; align-items: center; gap: 0.5rem; padding: 1rem 1.5rem; background: var(--primary); color: white; border: 2px solid var(--primary); border-radius: 8px; text-decoration: none; transition: var(--transition); margin-left: auto;">
+                    <span>Next: User Management</span>
+                    <span>→</span>
+                </a>
             </div>
-        </div>
-
-        <h2 id="summary">Summary and Next Steps</h2>
-
-        <div class="success-box">
-            <strong>API Integration Checklist:</strong>
-            <ul>
-                <li>Obtain API credentials from ZipFlow admin console</li>
-                <li>Test authentication with sandbox environment</li>
-                <li>Implement core request/approval workflows</li>
-                <li>Set up webhook endpoints for real-time updates</li>
-                <li>Add comprehensive error handling and logging</li>
-                <li>Test thoroughly before production deployment</li>
-            </ul>
-        </div>
-
-        <div class="info-box">
-            <strong>Additional Resources:</strong>
-            <ul>
-                <li><strong>API Status:</strong> Monitor uptime at status.zipflow.com</li>
-                <li><strong>Developer Support:</strong> api-support@zipflow.com</li>
-                <li><strong>Community Forum:</strong> developers.zipflow.com</li>
-                <li><strong>Change Log:</strong> Regular updates on API improvements</li>
-                <li><strong>Rate Limit Monitoring:</strong> Usage dashboard in admin console</li>
-            </ul>
-        </div>
-
-        <div class="button-group">
-            <a href="../admin/user-management.html" class="btn btn-primary">Next: User Management</a>
-            <a href="../support/onboarding-checklist.html" class="btn btn-secondary">Previous: Onboarding Checklist</a>
-        </div>
-
-        <div class="footer">
-            <p><strong>Last Updated:</strong> August 2025 | <strong>Version:</strong> 2.1</p>
-            <p>Created by <a href="../../index.html">Justin Arndt</a> - Technical Writing Portfolio</p>
-        </div>
+        </main>
     </div>
 
-    <script src="../../assets/js/documentation.js"></script>
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <span class="brand-icon">📝</span>
+                    <span>Justin Arndt - Technical Writing Portfolio</span>
+                </div>
+                <div class="footer-links">
+                    <a href="../../index.html#portfolio">More Samples</a>
+                    <a href="../../index.html#contact">Contact</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Justin Arndt. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
     <script>
-        function toggleEndpoint(element) {
-            element.classList.toggle('active');
-        }
-        
-        function switchTab(tabName) {
-            // Hide all tab contents
-            document.querySelectorAll('.tab-content').forEach(content => {
+        // Tab Switching for Code Examples
+        function switchTab(tabId, button) {
+            // Hide all code contents in the same container
+            const container = button.closest('.code-examples');
+            container.querySelectorAll('.code-content').forEach(content => {
                 content.classList.remove('active');
             });
             
-            // Remove active class from all buttons
-            document.querySelectorAll('.tab-button').forEach(button => {
-                button.classList.remove('active');
+            // Remove active from all tabs in the same group
+            container.querySelectorAll('.code-tab').forEach(tab => {
+                tab.classList.remove('active');
             });
             
-            // Show selected tab content
-            document.getElementById(tabName).classList.add('active');
-            
-            // Add active class to clicked button
-            event.target.classList.add('active');
+            // Show selected content and mark tab as active
+            document.getElementById(tabId).classList.add('active');
+            button.classList.add('active');
         }
+
+        // Copy Code Function
+        function copyCode(button) {
+            const codeBlock = button.closest('.code-content').querySelector('code');
+            const text = codeBlock.textContent;
+            
+            navigator.clipboard.writeText(text).then(() => {
+                button.classList.add('copied');
+                button.innerHTML = '<span>✅ Copied!</span>';
+                
+                setTimeout(() => {
+                    button.classList.remove('copied');
+                    button.innerHTML = '<span>📋 Copy</span>';
+                }, 2000);
+            });
+        }
+
+        // Sidebar Navigation Active State
+        const sections = document.querySelectorAll('.doc-section');
+        const navLinks = document.querySelectorAll('.doc-nav-link');
+
+        function setActiveNavLink() {
+            let current = '';
+            
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop - 100;
+                if (scrollY >= sectionTop) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href').substring(1) === current) {
+                    link.classList.add('active');
+                }
+            });
+        }
+
+        window.addEventListener('scroll', setActiveNavLink);
+
+        // Smooth Scrolling
+        navLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href').substring(1);
+                const targetSection = document.getElementById(targetId);
+                
+                if (targetSection) {
+                    const offset = 100;
+                    const targetPosition = targetSection.offsetTop - offset;
+                    
+                    window.scrollTo({
+                        top: targetPosition,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // Mobile Navigation
+        const hamburger = document.querySelector('.hamburger');
+        const navMenu = document.querySelector('.nav-menu');
+
+        if (hamburger) {
+            hamburger.addEventListener('click', function() {
+                navMenu.classList.toggle('active');
+                hamburger.classList.toggle('active');
+            });
+        }
+
+        // Initialize
+        setActiveNavLink();
     </script>
 </body>
 </html>
